@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChallengeDay1Test {
+class Part2Test {
 
     @Test
-    void testChallenge1() {
-
+    void findIntegersListThatSumTo2020() {
     }
 }
