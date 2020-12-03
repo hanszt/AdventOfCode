@@ -23,8 +23,10 @@ public class TreesEncounteredPart2 extends Day3Challenge {
         long product = 1;
         for (Path path : Path.values()) {
             int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point(0, 0), path.getSlope());
+            LOGGER.info(String.format("The number of trees crossed using %s is %d", path.name(), numberOfTrees));
             product *= numberOfTrees;
         }
+        LOGGER.info("");
         result = product;
     }
 
