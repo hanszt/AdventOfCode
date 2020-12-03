@@ -4,8 +4,8 @@ import com.sogeti.codingchallenge.day1.ThreeDigitsSumTo2020;
 import com.sogeti.codingchallenge.day1.TwoDigitsSumTo2020;
 import com.sogeti.codingchallenge.day2.PasswordValidChallenge1;
 import com.sogeti.codingchallenge.day2.PasswordValidChallenge2;
-import com.sogeti.codingchallenge.day3.Part1;
-import com.sogeti.codingchallenge.day3.Part2;
+import com.sogeti.codingchallenge.day3.TreesEncounteredPart1;
+import com.sogeti.codingchallenge.day3.TreesEncounteredPart2;
 import com.sogeti.codingchallenge.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -37,9 +37,9 @@ public class Launcher {
                 new PasswordValidChallenge1(),
                 new PasswordValidChallenge2())),
 
-        DAY_3(new ChallengeDay("Day3?", LocalDate.of(2020, 12, 3),
-                new Part1(),
-                new Part2()));
+        DAY_3(new ChallengeDay("Toboggan Trajectory", LocalDate.of(2020, 12, 3),
+                new TreesEncounteredPart1(),
+                new TreesEncounteredPart2()));
 
         private final ChallengeDay challengeDay;
 

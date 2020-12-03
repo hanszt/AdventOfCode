@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Part2Test {
+class TreesEncounteredPart2Test {
 
     @Test
     void findIntegersListThatSumTo2020() {

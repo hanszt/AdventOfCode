@@ -21,7 +21,7 @@ public abstract class Challenge {
     public void solveChallenge() {
         try {
             LOGGER.info(String.format("Challenge title: %s%n%s", title, DOTTED_LINE));
-            LOGGER.info(String.format("Challenge description: %s%n%s", title, DOTTED_LINE));
+            LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
             List<String> inputList = loadInputList();
             long startTime = System.nanoTime();
             solve(inputList);
