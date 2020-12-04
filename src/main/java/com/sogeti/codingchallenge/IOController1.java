@@ -12,7 +12,6 @@ import java.util.List;
 
 public class IOController1 implements IIOController {
 
-    private static final String RELATIVE_PATH = "../../../input/";
     private static final Logger LOGGER = LogManager.getLogger(IOController1.class);
 
     public List<String> readInputFileByLine(String fileName) {
@@ -24,6 +23,11 @@ public class IOController1 implements IIOController {
             io.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<String> readInputFileByWord(String path) {
+        throw new UnsupportedOperationException();
     }
 }
 

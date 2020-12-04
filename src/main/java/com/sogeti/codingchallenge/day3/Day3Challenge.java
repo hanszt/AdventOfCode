@@ -64,11 +64,11 @@ public abstract class Day3Challenge extends Challenge {
 
     private static final Character TREE = '#';
 
-    int calculateNumberOfTreesEncountered(List<List<Character>> grid, Point position, Point slope) {
+    int calculateNumberOfTreesEncountered(List<List<Character>> treeGrid, Point position, Point slope) {
         int numberOfTrees = 0;
-        while (position.getY() < grid.size()) {
-            LOGGER.trace("x: " + position.x + ", y: " + position.y + ", Is tree: " + grid.get(position.y).get(position.x));
-            if (grid.get(position.y).get(position.x).equals(TREE)) {
+        while (position.getY() < treeGrid.size()) {
+            LOGGER.trace("x: " + position.x + ", y: " + position.y + ", Is tree: " + treeGrid.get(position.y).get(position.x));
+            if (treeGrid.get(position.y).get(position.x).equals(TREE)) {
                 numberOfTrees++;
             }
             position.translate(slope.x, slope.y);
@@ -80,7 +80,7 @@ public abstract class Day3Challenge extends Challenge {
         int patternLength = inputList.get(0).length();
         int height = inputList.size();
         // for each step down, three steps right
-        double length = height * (Path.SLOPE7_1.getSlope().getX() + 1);
+        double length = height * (Path.SLOPE7_1.getSlope().getX());
         long timesRepeatedHorizontally = Math.round(length / patternLength);
         List<List<Character>> charGird = new ArrayList<>();
 

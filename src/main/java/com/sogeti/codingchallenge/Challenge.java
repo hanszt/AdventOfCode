@@ -13,7 +13,7 @@ public abstract class Challenge {
     private final String title;
     private final String description;
 
-    public Challenge(String title, String description) {
+    protected Challenge(String title, String description) {
         this.title = title;
         this.description = description;
     }
