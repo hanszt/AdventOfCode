@@ -23,6 +23,7 @@ public abstract class Day4Challenge extends Challenge {
         return new IOController2().readInputFileByLine("20201204-input-day4.txt");
     }
 
+    int validPassports = 0;
     int totalPassportsChecked = 0;
 
     @Override
@@ -102,6 +103,8 @@ public abstract class Day4Challenge extends Challenge {
 
     protected abstract void calculateResult(List<Passport> passports);
 
-    public abstract void printResult();
+    public void printResult() {
+        LOGGER.info(String.format("The number of valid passports is: %d of %d", validPassports, totalPassportsChecked));
+    }
 
 }
