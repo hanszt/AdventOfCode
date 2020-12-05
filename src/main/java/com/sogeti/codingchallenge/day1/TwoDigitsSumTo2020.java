@@ -5,7 +5,7 @@ import java.util.*;
 public class TwoDigitsSumTo2020 extends Day1Challenge {
 
     public TwoDigitsSumTo2020() {
-        super("Coding challenge day 1 part 1", "");
+        super("Two digits sum to 2020", "Find the product of the two entries that sum to 2020");
     }
 
     @Override

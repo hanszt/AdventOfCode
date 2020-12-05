@@ -81,16 +81,11 @@ public abstract class Day3Challenge extends Challenge {
         int height = inputList.size();
         // for each step down, three steps right
         double length = height * (Path.SLOPE7_1.getSlope().getX());
-        long timesRepeatedHorizontally = Math.round(length / patternLength);
+        int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
         List<List<Character>> charGird = new ArrayList<>();
-
         for (String patternRow : inputList) {
-            StringBuilder newRowBuilder = new StringBuilder();
-            for (int i = 0; i < timesRepeatedHorizontally; i++) {
-                newRowBuilder.append(patternRow);
-            }
             List<Character> newRow = new ArrayList<>();
-            char[] newRowArray = newRowBuilder.toString().toCharArray();
+            char[] newRowArray = patternRow.repeat(timesRepeatedHorizontally).toCharArray();
             for (char c : newRowArray) {
                 newRow.add(c);
             }
@@ -99,7 +94,5 @@ public abstract class Day3Challenge extends Challenge {
         return charGird;
     }
 
-
     public abstract void printResult();
-
 }

@@ -8,10 +8,11 @@ import java.util.List;
 public abstract class Challenge {
 
     private static final Logger LOGGER = LogManager.getLogger(Challenge.class);
-    protected static final String DOTTED_LINE = "----------------------------------------------";
+    protected static final String DOTTED_LINE = "-------------------------------------------------------------------";
 
     private final String title;
     private final String description;
+    private long solveTime = 0;
 
     protected Challenge(String title, String description) {
         this.title = title;
@@ -20,15 +21,16 @@ public abstract class Challenge {
 
     public void solveChallenge() {
         try {
-            LOGGER.info(String.format("Challenge title: %s%n%s", title, DOTTED_LINE));
+            LOGGER.info(String.format("%s%n%s", title, DOTTED_LINE));
             LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
             List<String> inputList = loadInputList();
             long startTime = System.nanoTime();
             solve(inputList);
             long endTime = System.nanoTime();
-            LOGGER.info("The result:");
+            LOGGER.info("Answer:");
             printResult();
-            String message = String.format("Solved in %5.5f ms%n", (endTime - startTime) / 1e6);
+            solveTime = endTime - startTime;
+            String message = String.format("Solved in %5.5f ms%n", solveTime / 1e6);
             LOGGER.info(message + DOTTED_LINE);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -42,4 +44,7 @@ public abstract class Challenge {
 
     protected abstract void printResult();
 
+    public long getSolveTime() {
+        return solveTime;
+    }
 }

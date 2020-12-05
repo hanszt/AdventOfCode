@@ -7,7 +7,7 @@ import java.util.List;
 public class PassportProcessingPart2 extends Day4Challenge {
 
     public PassportProcessingPart2() {
-        super("Counting valid passports day 4 part 2", "");
+        super("Passport Processing part 2", "Find the number of valid passports. ");
     }
 
     @Override

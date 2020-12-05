@@ -5,12 +5,13 @@ import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+
+import static com.sogeti.codingchallenge.Launcher.LINE_RETURN;
 
 public class ChallengeDay {
 
     private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
-
-    public static final String HASHTAG_LINE_RETURN = String.format("#############################################################################################################################################################%n");
 
     private static int next = 0;
 
@@ -29,18 +30,18 @@ public class ChallengeDay {
     }
 
     public void solveChallenges() {
-        try {
-            LOGGER.info(String.format("%sDay %d: %s%nDate: %s", textColor, dayNr, title, date.format(DateTimeFormatter.ISO_DATE)));
-            LOGGER.info(HASHTAG_LINE_RETURN);
-            for (Challenge challenge : challenges) {
-                challenge.solveChallenge();
-                LOGGER.info(HASHTAG_LINE_RETURN);
-            }
-            LOGGER.info(HASHTAG_LINE_RETURN);
-            LOGGER.info(String.format("%n%n"));
-        } catch (NullPointerException e) {
-            LOGGER.error("No input file found");
-            e.printStackTrace();
+        LOGGER.info(String.format("%sDay %d: %s%nDate: %s", textColor, dayNr, title, date.format(DateTimeFormatter.ISO_DATE)));
+        LOGGER.info(LINE_RETURN);
+        for (Challenge challenge : challenges) {
+            challenge.solveChallenge();
+            LOGGER.info(LINE_RETURN);
         }
+        LOGGER.info(LINE_RETURN);
+        LOGGER.info(String.format("%n%n"));
     }
+
+    public long getSolveTime() {
+        return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElseThrow();
+    }
+
 }

@@ -5,7 +5,7 @@ import java.util.*;
 public class ThreeDigitsSumTo2020 extends Day1Challenge {
 
     public ThreeDigitsSumTo2020() {
-        super("Find the product of the three digits that sum to 2020", "");
+        super("Three digits sum to 2020", "Find the product of the three digits that sum to 2020");
     }
 
     /**
@@ -26,7 +26,8 @@ public class ThreeDigitsSumTo2020 extends Day1Challenge {
         for (int i= 0; i < integerList.size(); i++) {
             for (int j = i + 1; j < integerList.size(); j++) {
                 int difference = SUM_TO_BE_FOUND - integerList.get(i) - integerList.get(j);
-                if (!usedIntegers.contains(integerList.get(i)) && !usedIntegers.contains(integerList.get(j)) && integers.contains(difference)) {
+                if (!usedIntegers.contains(integerList.get(i)) && !usedIntegers.contains(integerList.get(j))
+                        && integers.contains(difference)) {
                     Integer[] threeEntries = {integerList.get(i), integerList.get(j), difference};
                     entriesList.add(threeEntries);
                     usedIntegers.add(integerList.get(i));

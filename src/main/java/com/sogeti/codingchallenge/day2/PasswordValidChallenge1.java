@@ -24,7 +24,7 @@ public class PasswordValidChallenge1 extends Day2Challenge {
      */
 
     public PasswordValidChallenge1() {
-        super("Coding challenge day 2 part 1","Coding challenge day 2 part 1");
+        super("Valid passwords part 1","Count the passwords that are valid, see part one of ChallengeDay2.md for the validity rules");
     }
 
     void countNumberOfValidPasswords(String password, Policy policy) {

@@ -13,7 +13,7 @@ public class TreesEncounteredPart2 extends Day3Challenge {
 
 
     public TreesEncounteredPart2() {
-        super("Finding trees day 3 part 2", "Find the product of the number of trees crossed of all the given paths");
+        super("Counting number of trees crossed part 2", "Find the product of the number of trees crossed by all the given paths");
     }
 
     private long result = 0;

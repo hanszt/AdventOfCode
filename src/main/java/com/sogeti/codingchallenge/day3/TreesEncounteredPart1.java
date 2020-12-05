@@ -13,7 +13,7 @@ public class TreesEncounteredPart1 extends Day3Challenge {
     private int result = 0;
 
     public TreesEncounteredPart1() {
-        super("Coding challenge day 3 Toboggan trajectory part 1", "Find the number of trees crossed");
+        super("Counting number of trees crossed part 1", "Find the number of trees crossed");
     }
 
     @Override

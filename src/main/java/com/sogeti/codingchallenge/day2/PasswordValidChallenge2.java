@@ -22,7 +22,7 @@ public class PasswordValidChallenge2 extends Day2Challenge {
      */
 
     public PasswordValidChallenge2() {
-        super("Coding challenge day 2 part 2", "Coding challenge day 2 part 1");
+        super("Valid passwords part 2","Count the passwords that are valid, see part two of ChallengeDay2.md for the validity rules");
     }
 
     @Override
