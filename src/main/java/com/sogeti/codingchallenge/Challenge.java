@@ -20,22 +20,17 @@ public abstract class Challenge {
     }
 
     public void solveChallenge() {
-        try {
-            LOGGER.info(String.format("%s%n%s", title, DOTTED_LINE));
-            LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
-            List<String> inputList = loadInputList();
-            long startTime = System.nanoTime();
-            solve(inputList);
-            long endTime = System.nanoTime();
-            LOGGER.info("Answer:");
-            printResult();
-            solveTime = endTime - startTime;
-            String message = String.format("Solved in %5.5f ms%n", solveTime / 1e6);
-            LOGGER.info(message + DOTTED_LINE);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
+        LOGGER.info(String.format("%s%n%s", title, DOTTED_LINE));
+        LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
+        List<String> inputList = loadInputList();
+        long startTime = System.nanoTime();
+        solve(inputList);
+        long endTime = System.nanoTime();
+        LOGGER.info("Answer:");
+        printResult();
+        solveTime = endTime - startTime;
+        String message = String.format("Solved in %5.5f ms%n", solveTime / 1e6);
+        LOGGER.info(message + DOTTED_LINE);
     }
 
     protected abstract void solve(List<String> inputList);

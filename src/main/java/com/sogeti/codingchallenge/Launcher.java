@@ -10,13 +10,14 @@ import com.sogeti.codingchallenge.day4.PassportProcessingPart1;
 import com.sogeti.codingchallenge.day4.PassportProcessingPart2;
 import com.sogeti.codingchallenge.day5.Part1BinaryBoarding;
 import com.sogeti.codingchallenge.day5.Part2BinaryBoarding;
+import com.sogeti.codingchallenge.day6.Part1CustomCustoms;
+import com.sogeti.codingchallenge.day6.Part2CustomCustoms;
 import com.sogeti.codingchallenge.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Launcher {
@@ -63,6 +64,9 @@ public class Launcher {
         challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Binary boarding pass", LocalDate.of(2020, 12, 5),
                 new Part1BinaryBoarding(),
                 new Part2BinaryBoarding()));
+        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Custom customs", LocalDate.of(2020, 12, 6),
+                new Part1CustomCustoms(),
+                new Part2CustomCustoms()));
     }
 
     private void start() {

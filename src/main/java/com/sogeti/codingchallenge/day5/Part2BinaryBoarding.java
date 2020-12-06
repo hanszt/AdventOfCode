@@ -30,10 +30,11 @@ public class Part2BinaryBoarding extends Day5Challenge {
                 }
             }
         }
+        findHighestSeatID(seatIds);
         for (Integer seatId : possibleSeatIds) {
             // some of the seats at the very front and back of the plane don't exist on this aircraft, they'll be missing from your list.
             // My seat isn't in the very front or back of the plane
-            if (seatId > highestSeatIdOnBoardingPass) {
+            if (seatId < highestSeatIdOnBoardingPass) {
                 mySeatId = seatId;
             }
         }

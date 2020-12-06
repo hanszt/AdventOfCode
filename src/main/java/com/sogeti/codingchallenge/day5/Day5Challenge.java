@@ -20,7 +20,6 @@ public abstract class Day5Challenge extends Challenge {
     static final char KEEP_LOWER_HALF_COLS = 'L';
     static final char KEEP_UPPER_HALF_COLS = 'R';
     static final int AMOUNT_SIGNS_FRONT_BACK = 7;
-    static final int AMOUNT_SIGNS_LEFT_RIGHT = 3;
 
     int highestSeatIdOnBoardingPass = 0;
     final List<Seat> seats = new ArrayList<>();
@@ -36,19 +35,17 @@ public abstract class Day5Challenge extends Challenge {
 
     @Override
     protected void solve(List<String> inputList) {
-        seats.addAll(inputList.stream().map(string ->
-                extractSeat(string, NUMBER_OF_ROWS, NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
-//        boardingPasses.forEach(boardingPass -> LOGGER.info(boardingPass + ", seatId=" + boardingPass.getSeatID(NUMBER_OF_COLUMNS)));
+        seats.addAll(inputList.stream().map(this::extractSeat).collect(Collectors.toList()));
         calculateResult();
     }
 
     protected abstract void calculateResult();
 
-    Seat extractSeat(String string, int initNumberOfRows, int initNumberOfCols) {
+    Seat extractSeat(String string) {
         int lowerBoundRows = 0;
-        int upperBoundRows = initNumberOfRows;
+        int upperBoundRows = NUMBER_OF_ROWS;
         int lowerBoundCols = 0;
-        int upperBoundCols = initNumberOfCols;
+        int upperBoundCols = NUMBER_OF_COLUMNS;
         for (int i = 0; i < string.length(); i++) {
             if (i < AMOUNT_SIGNS_FRONT_BACK) {
                 if (string.charAt(i) == KEEP_UPPER_HALF_ROWS) {
@@ -73,6 +70,10 @@ public abstract class Day5Challenge extends Challenge {
 
     private int newUpperBound(int lower, int upper) {
         return upper - ((upper - lower) / 2);
+    }
+
+    void findHighestSeatID(List<Integer> boardingPassIds) {
+        highestSeatIdOnBoardingPass = boardingPassIds.stream().reduce(Integer::max).orElseThrow();
     }
 
     public abstract void printResult();
