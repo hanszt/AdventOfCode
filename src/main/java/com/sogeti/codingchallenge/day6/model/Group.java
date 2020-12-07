@@ -14,7 +14,7 @@ public class Group {
         this.personsInGroupAnswers = personsInGroupAnswers;
     }
 
-    public int amountAnsweredYes() {
+    public int amountAnyoneAnsweredYes() {
         Set<Character> answeredYes = new HashSet<>(answers);
         return answeredYes.size();
     }

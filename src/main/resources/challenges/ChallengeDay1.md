@@ -1,4 +1,4 @@
-# Challenge day 1 
+# --- Day 1: Report Repair ---
 
 ### Part 1
 

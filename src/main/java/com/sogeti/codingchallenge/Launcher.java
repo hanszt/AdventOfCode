@@ -49,22 +49,22 @@ public class Launcher {
     private final List<ChallengeDay> challengeDays = new ArrayList<>();
 
     public Launcher() {
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Sum to 2020", LocalDate.of(2020, 12, 1),
+        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
                 new TwoDigitsSumTo2020(),
                 new ThreeDigitsSumTo2020()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Are the passwords valid?", LocalDate.of(2020, 12, 2),
+        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Password Philosophy", LocalDate.of(2020, 12, 2),
                 new PasswordValidChallenge1(),
                 new PasswordValidChallenge2()));
         challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Toboggan Trajectory", LocalDate.of(2020, 12, 3),
                 new TreesEncounteredPart1(),
                 new TreesEncounteredPart2()));
-        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Valid Passports", LocalDate.of(2020, 12, 4),
+        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Passport Processing", LocalDate.of(2020, 12, 4),
                 new PassportProcessingPart1(),
                 new PassportProcessingPart2()));
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Binary boarding pass", LocalDate.of(2020, 12, 5),
+        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Binary Boarding", LocalDate.of(2020, 12, 5),
                 new Part1BinaryBoarding(),
                 new Part2BinaryBoarding()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Custom customs", LocalDate.of(2020, 12, 6),
+        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Custom Customs", LocalDate.of(2020, 12, 6),
                 new Part1CustomCustoms(),
                 new Part2CustomCustoms()));
     }

@@ -22,6 +22,6 @@ public class Part2CustomCustoms extends Day6Challenge {
 
     @Override
     public void printResult() {
-        LOGGER.info(String.format("The sum of the counted answers everyone in the group answered yes to is: %d", yesAnswersSum));
+        LOGGER.info(String.format("The sum of the counted answers everyone in the group answered 'yes' to is: %d", yesAnswersSum));
     }
 }
