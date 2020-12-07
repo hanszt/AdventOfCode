@@ -12,6 +12,7 @@ import com.sogeti.codingchallenge.day5.Part1BinaryBoarding;
 import com.sogeti.codingchallenge.day5.Part2BinaryBoarding;
 import com.sogeti.codingchallenge.day6.Part1CustomCustoms;
 import com.sogeti.codingchallenge.day6.Part2CustomCustoms;
+import com.sogeti.codingchallenge.day7.Part1HandyHaversacks;
 import com.sogeti.codingchallenge.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -71,7 +72,8 @@ public class Launcher {
 
     private void start() {
         LOGGER.info(TITTLE);
-        challengeDays.forEach(ChallengeDay::solveChallenges);
+//        challengeDays.forEach(ChallengeDay::solveChallenges);
+        new Part1HandyHaversacks().solveChallenge();
         LOGGER.info(String.format("Total solve time: %.2f seconds%n%s",
                 challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9, LINE_RETURN));
         new MainPanelLauncher().demo();
