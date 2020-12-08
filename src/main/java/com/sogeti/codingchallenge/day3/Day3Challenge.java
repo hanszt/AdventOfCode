@@ -1,7 +1,6 @@
 package com.sogeti.codingchallenge.day3;
 
 import com.sogeti.codingchallenge.Challenge;
-import com.sogeti.codingchallenge.IOController1;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -12,42 +11,20 @@ import java.util.List;
 public abstract class Day3Challenge extends Challenge {
 
     private static final Logger LOGGER = LogManager.getLogger(Day3Challenge.class);
+    private static final Character TREE = '#';
 
     protected Day3Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description);
-    }
-
-    enum Path {
-        SLOPE3_1(new Point(3, 1)),
-        SLOPE1_1(new Point(1, 1)),
-        SLOPE5_1(new Point(5, 1)),
-        SLOPE7_1(new Point(7, 1)),
-        SLOPE1_2(new Point(1, 2));
-
-        private final Point slope;
-
-        Path(Point slope) {
-            this.slope = slope;
-        }
-
-        public Point getSlope() {
-            return slope;
-        }
+        super(challengeTitle, description, "20201203-input-day3.txt");
     }
 
     @Override
-    protected List<String> loadInputList() {
-        return new IOController1().readInputFileByLine("20201203-input-day3.txt");
-    }
-
-    @Override
-    protected void solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         List<List<Character>> grid = buildGrid(inputList);
-        calculateResult(grid);
         LOGGER.trace(gridAsString(grid));
+        return getMessage(calculateResult(grid));
     }
 
-    protected abstract void calculateResult(List<List<Character>> grid);
+    protected abstract long calculateResult(List<List<Character>> grid);
 
     private String gridAsString(List<List<Character>> grid) {
         StringBuilder sb = new StringBuilder();
@@ -60,9 +37,6 @@ public abstract class Day3Challenge extends Challenge {
         sb.append("\n");
         return sb.toString();
     }
-
-
-    private static final Character TREE = '#';
 
     int calculateNumberOfTreesEncountered(List<List<Character>> treeGrid, Point position, Point slope) {
         int numberOfTrees = 0;
@@ -94,5 +68,23 @@ public abstract class Day3Challenge extends Challenge {
         return charGird;
     }
 
-    public abstract void printResult();
+    public abstract String getMessage(long result);
+
+    enum Path {
+        SLOPE3_1(new Point(3, 1)),
+        SLOPE1_1(new Point(1, 1)),
+        SLOPE5_1(new Point(5, 1)),
+        SLOPE7_1(new Point(7, 1)),
+        SLOPE1_2(new Point(1, 2));
+
+        private final Point slope;
+
+        Path(Point slope) {
+            this.slope = slope;
+        }
+
+        public Point getSlope() {
+            return slope;
+        }
+    }
 }

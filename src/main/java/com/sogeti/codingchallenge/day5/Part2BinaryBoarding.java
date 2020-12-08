@@ -1,5 +1,7 @@
 package com.sogeti.codingchallenge.day5;
 
+import com.sogeti.codingchallenge.day5.model.Seat;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,10 +14,9 @@ public class Part2BinaryBoarding extends Day5Challenge {
         super("Binary boarding pass part 2", "What is your seat Id? See ChallengeDay5.md part 2 for the assignment. ");
     }
 
-    private int mySeatId = 0;
-
     @Override
-    protected void calculateResult() {
+    protected int calculateResult(List<Seat> seats) {
+        int mySeatId = 0;
         // flight completely full
         Set<Integer> possibleSeatIds = new HashSet<>();
         List<Integer> seatIds = seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList());
@@ -30,7 +31,7 @@ public class Part2BinaryBoarding extends Day5Challenge {
                 }
             }
         }
-        findHighestSeatID(seatIds);
+        int highestSeatIdOnBoardingPass = findHighestSeatID(seatIds);
         for (Integer seatId : possibleSeatIds) {
             // some of the seats at the very front and back of the plane don't exist on this aircraft, they'll be missing from your list.
             // My seat isn't in the very front or back of the plane
@@ -38,10 +39,11 @@ public class Part2BinaryBoarding extends Day5Challenge {
                 mySeatId = seatId;
             }
         }
+        return mySeatId;
     }
 
     @Override
-    public void printResult() {
-        LOGGER.info(String.format("The id of my seat is: %d", mySeatId));
+    public String getMessage(int mySeatId) {
+        return String.format("The id of my seat is: %d", mySeatId);
     }
 }

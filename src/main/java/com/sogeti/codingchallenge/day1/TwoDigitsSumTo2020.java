@@ -1,6 +1,8 @@
 package com.sogeti.codingchallenge.day1;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 
 public class TwoDigitsSumTo2020 extends Day1Challenge {
 

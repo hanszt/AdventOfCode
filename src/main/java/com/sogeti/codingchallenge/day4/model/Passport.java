@@ -10,12 +10,19 @@ import java.util.Set;
 public class Passport {
 
     private static final Logger LOGGER = LogManager.getLogger(Passport.class);
-
+    private static final int LOWEST_BIRTH_YEAR = 1920;
+    private static final int HIGHEST_BIRTH_YEAR = 2002;
+    private static final int LOWEST_ISSUE_YEAR = 2010;
+    private static final int HIGHEST_ISSUE_YEAR = 2020;
+    private static final int LOWEST_EXPIRATION_YEAR = 2020;
+    private static final int HIGHEST_EXPIRATION_YEAR = 2030;
+    private static final Set<String> VALID_EYE_COLORS = new HashSet<>(Arrays.asList("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth"));
+    private static final int UNIT_LENGTH = 2;
+    private static final int MINIMUM_HEIGHT_STRING_LENGTH = 3;
     private String passwordID;
     private String expirationYear;
     private String issueYear;
     private String countryId;
-
     private String birthYear;
     private String height;
     private String eyeColor;
@@ -42,15 +49,6 @@ public class Passport {
         return mandatoryPassportFieldsPresent && userFieldsPresent;
     }
 
-    private static final int LOWEST_BIRTH_YEAR = 1920;
-    private static final int HIGHEST_BIRTH_YEAR = 2002;
-    private static final int LOWEST_ISSUE_YEAR = 2010;
-    private static final int HIGHEST_ISSUE_YEAR = 2020;
-    private static final int LOWEST_EXPIRATION_YEAR = 2020;
-    private static final int HIGHEST_EXPIRATION_YEAR = 2030;
-
-    private static final Set<String> VALID_EYE_COLORS = new HashSet<>(Arrays.asList("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth"));
-
     public boolean fieldsMeetCriteria() {
         if (requiredFieldsPresent()) {
             boolean birthYearValid = checkYear(birthYear, LOWEST_BIRTH_YEAR, HIGHEST_BIRTH_YEAR);
@@ -69,7 +67,7 @@ public class Passport {
 
     private String isValidAsString(boolean birthYearValid, boolean issueYearValid, boolean expirationYearValid,
                                    boolean heightValid, boolean hairColorValid, boolean eyeColorValid, boolean passportIdValid) {
-        return  "birthYearValid=" + birthYearValid +
+        return "birthYearValid=" + birthYearValid +
                 "\nissueYearValid=" + issueYearValid +
                 "\nexpirationYearValid=" + expirationYearValid +
                 "\nheightValid=" + heightValid +
@@ -77,9 +75,6 @@ public class Passport {
                 "\neyeColorValid=" + eyeColorValid +
                 "\npassportIdValid=" + passportIdValid + "\n";
     }
-
-    private static final int UNIT_LENGTH = 2;
-    private static final int MINIMUM_HEIGHT_STRING_LENGTH = 3;
 
     private boolean checkHeight(String height) {
         if (height.length() >= MINIMUM_HEIGHT_STRING_LENGTH) {

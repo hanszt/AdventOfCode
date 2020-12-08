@@ -2,15 +2,15 @@ package com.sogeti.codingchallenge.day2.model;
 
 public class Policy {
 
-        private final int lowerBound;
-        private final int upperBound;
-        private final char character;
+    private final int lowerBound;
+    private final int upperBound;
+    private final char character;
 
-        public Policy(int lowerBound, int upperBound, char character) {
-            this.lowerBound = lowerBound;
-            this.upperBound = upperBound;
-            this.character = character;
-        }
+    public Policy(int lowerBound, int upperBound, char character) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+        this.character = character;
+    }
 
     public int getLowerBound() {
         return lowerBound;
@@ -25,12 +25,12 @@ public class Policy {
     }
 
     @Override
-        public String toString() {
-            return "Policy{" +
-                    "lowerBound=" + lowerBound +
-                    ", upperBound=" + upperBound +
-                    ", character=" + character +
-                    '}';
-        }
+    public String toString() {
+        return "Policy{" +
+                "lowerBound=" + lowerBound +
+                ", upperBound=" + upperBound +
+                ", character=" + character +
+                '}';
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.sogeti.codingchallenge.day4;
 
 import com.sogeti.codingchallenge.Challenge;
-import com.sogeti.codingchallenge.IOController2;
 import com.sogeti.codingchallenge.day4.model.Passport;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,25 +12,24 @@ import java.util.List;
 public abstract class Day4Challenge extends Challenge {
 
     private static final Logger LOGGER = LogManager.getLogger(Day4Challenge.class);
-
+    private static final String BIRTH_YEAR = "byr";
+    private static final String ISSUE_YEAR = "iyr";
+    private static final String EXPIRATION_YEAR = "eyr";
+    private static final String HEIGHT = "hgt";
+    private static final String HAIR_COLOR = "hcl";
+    private static final String EYE_COLOR = "ecl";
+    private static final String PASSPORT_ID = "pid";
+    private static final String COUNTRY_ID = "cid";
     protected Day4Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description);
+        super(challengeTitle, description, "20201204-input-day4.txt");
     }
 
     @Override
-    protected List<String> loadInputList() {
-        return new IOController2().readInputFileByLine("20201204-input-day4.txt");
-    }
-
-    int validPassports = 0;
-    int totalPassportsChecked = 0;
-
-    @Override
-    protected void solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         List<Passport> passports = getPasswords(inputList);
-        calculateResult(passports);
+        long validPasswords = calculateResult(passports);
+        return getMessage(validPasswords, passports);
     }
-
 
     private List<Passport> getPasswords(List<String> inputByLineList) {
         List<Passport> passportList = new ArrayList<>();
@@ -47,15 +45,6 @@ public abstract class Day4Challenge extends Challenge {
         }
         return passportList;
     }
-
-    private static final String BIRTH_YEAR = "byr";
-    private static final String ISSUE_YEAR = "iyr";
-    private static final String EXPIRATION_YEAR = "eyr";
-    private static final String HEIGHT = "hgt";
-    private static final String HAIR_COLOR = "hcl";
-    private static final String EYE_COLOR = "ecl";
-    private static final String PASSPORT_ID = "pid";
-    private static final String COUNTRY_ID = "cid";
 
     private Passport createPassportFromValues(List<String> passwordEntries) {
         Passport passport = new Passport();
@@ -101,10 +90,10 @@ public abstract class Day4Challenge extends Challenge {
         return passport;
     }
 
-    protected abstract void calculateResult(List<Passport> passports);
+    protected abstract long calculateResult(List<Passport> passports);
 
-    public void printResult() {
-        LOGGER.info(String.format("The number of valid passports is: %d of %d", validPassports, totalPassportsChecked));
+    public String getMessage(long validPassports, List<Passport> passports) {
+        return String.format("The number of valid passports is: %d of %d", validPassports, passports.size());
     }
 
 }

@@ -1,5 +1,8 @@
 package com.sogeti.codingchallenge.day5;
 
+import com.sogeti.codingchallenge.day5.model.Seat;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Part1BinaryBoarding extends Day5Challenge {
@@ -9,12 +12,13 @@ public class Part1BinaryBoarding extends Day5Challenge {
     }
 
     @Override
-    protected void calculateResult() {
-        findHighestSeatID(seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
+    protected int calculateResult(List<Seat> seats) {
+        return findHighestSeatID(seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
     }
 
-    public void printResult() {
-        LOGGER.info(String.format("The highest seat ID is: %d", highestSeatIdOnBoardingPass));
+    @Override
+    public String getMessage(int result) {
+        return String.format("The highest seat ID is: %d", result);
     }
 
 }

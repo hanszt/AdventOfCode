@@ -1,8 +1,6 @@
 package com.sogeti.codingchallenge.day7;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class Part1HandyHaversacks extends Day7Challenge {
 
@@ -12,29 +10,18 @@ public class Part1HandyHaversacks extends Day7Challenge {
                         " at least one shiny gold bag?");
     }
 
-    //TODO: Make it work
     @Override
-    protected void solveByRules(Map<String, Bag> bags) {
-        Set<String> colorsContainingShinyGold = new HashSet<>();
-        for (Bag bag : bags.values()) {
-            for (String childBagColor : bag.childBagColorsToAmounts.keySet()) {
-                Bag childBag = bags.get(childBagColor);
-            }
-
-        }
-        System.out.println(colorsContainingShinyGold.size());
+    protected long solveByRules(Map<String, Bag> bags) {
+        return bags.values().stream().filter(bag -> hasDescendent(bags, SHINY_GOLD, bag)).count();
     }
 
-    private int checkBagColor(String bagColor, Map<String, Bag> bags) {
-        Bag bag = bags.get(bagColor);
-        if (bag.childBagColorsToAmounts.isEmpty()) {
-            return 0;
-        }
-        return 0;
+    private boolean hasDescendent(Map<String, Bag> bags, String target, Bag bag) {
+        return bag.childBagColorsToAmounts.keySet().stream()
+                .anyMatch(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
     }
 
-    public void printResult() {
-        LOGGER.info(String.format("%d", 0));
+    String getMessage(long numberOfBags) {
+        return String.format("The number of bags containing a %s bag at least once: %d", SHINY_GOLD, numberOfBags);
     }
 
 }

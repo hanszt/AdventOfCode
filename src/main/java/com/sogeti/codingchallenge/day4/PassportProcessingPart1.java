@@ -11,11 +11,8 @@ public class PassportProcessingPart1 extends Day4Challenge {
     }
 
     @Override
-    protected void calculateResult(List<Passport> passports) {
-        for (Passport p : passports) {
-            if (p.requiredFieldsPresent()) validPassports++;
-            totalPassportsChecked++;
-        }
+    protected long calculateResult(List<Passport> passports) {
+        return passports.stream().filter(Passport::requiredFieldsPresent).count();
     }
 
 }

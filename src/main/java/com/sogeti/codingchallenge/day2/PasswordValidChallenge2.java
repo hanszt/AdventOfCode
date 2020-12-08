@@ -22,16 +22,15 @@ public class PasswordValidChallenge2 extends Day2Challenge {
      */
 
     public PasswordValidChallenge2() {
-        super("Valid passwords part 2","Count the passwords that are valid, see part two of ChallengeDay2.md for the validity rules");
+        super("Valid passwords part 2", "Count the passwords that are valid, see part two of ChallengeDay2.md for the validity rules");
     }
 
     @Override
-    void countNumberOfValidPasswords(String password, Policy policy) {
+    boolean isValid(String password, Policy policy) {
         int matchesWithPolicyChar = 0;
         if (password.charAt(policy.getLowerBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
         if (password.charAt(policy.getUpperBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
-        boolean valid = matchesWithPolicyChar == 1;
-        if (valid) validPasswords++;
+        return matchesWithPolicyChar == 1;
     }
 
 }

@@ -1,18 +1,13 @@
 package com.sogeti.codingchallenge.day5;
 
 import com.sogeti.codingchallenge.Challenge;
-import com.sogeti.codingchallenge.IOController2;
 import com.sogeti.codingchallenge.day5.model.Seat;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Day5Challenge extends Challenge {
 
-    static final Logger LOGGER = LogManager.getLogger(Day5Challenge.class);
     static final int NUMBER_OF_ROWS = 128;
     static final int NUMBER_OF_COLUMNS = 8;
     static final char KEEP_LOWER_HALF_ROWS = 'F';
@@ -21,25 +16,18 @@ public abstract class Day5Challenge extends Challenge {
     static final char KEEP_UPPER_HALF_COLS = 'R';
     static final int AMOUNT_SIGNS_FRONT_BACK = 7;
 
-    int highestSeatIdOnBoardingPass = 0;
-    final List<Seat> seats = new ArrayList<>();
-
     protected Day5Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description);
+        super(challengeTitle, description, "20201205-input-day5.txt");
     }
 
     @Override
-    protected List<String> loadInputList() {
-        return new IOController2().readInputFileByLine("20201205-input-day5.txt");
+    protected String solve(List<String> inputList) {
+        List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
+        int result = calculateResult(seats);
+        return getMessage(result);
     }
 
-    @Override
-    protected void solve(List<String> inputList) {
-        seats.addAll(inputList.stream().map(this::extractSeat).collect(Collectors.toList()));
-        calculateResult();
-    }
-
-    protected abstract void calculateResult();
+    protected abstract int calculateResult(List<Seat> seats);
 
     Seat extractSeat(String string) {
         int lowerBoundRows = 0;
@@ -72,10 +60,10 @@ public abstract class Day5Challenge extends Challenge {
         return upper - ((upper - lower) / 2);
     }
 
-    void findHighestSeatID(List<Integer> boardingPassIds) {
-        highestSeatIdOnBoardingPass = boardingPassIds.stream().reduce(Integer::max).orElseThrow();
+    int findHighestSeatID(List<Integer> boardingPassIds) {
+        return boardingPassIds.stream().reduce(Integer::max).orElseThrow();
     }
 
-    public abstract void printResult();
+    public abstract String getMessage(int result);
 
 }

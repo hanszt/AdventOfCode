@@ -7,16 +7,17 @@ import java.util.List;
 
 public abstract class Challenge {
 
-    private static final Logger LOGGER = LogManager.getLogger(Challenge.class);
     protected static final String DOTTED_LINE = "-------------------------------------------------------------------";
-
+    private static final Logger LOGGER = LogManager.getLogger(Challenge.class);
     private final String title;
     private final String description;
+    private final String inputFileName;
     private long solveTime = 0;
 
-    protected Challenge(String title, String description) {
+    protected Challenge(String title, String description, String inputFileName) {
         this.title = title;
         this.description = description;
+        this.inputFileName = inputFileName;
     }
 
     public void solveChallenge() {
@@ -24,20 +25,24 @@ public abstract class Challenge {
         LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
         List<String> inputList = loadInputList();
         long startTime = System.nanoTime();
-        solve(inputList);
+        String result = solve(inputList);
         long endTime = System.nanoTime();
         LOGGER.info("Answer:");
-        printResult();
+        logMessage(result);
         solveTime = endTime - startTime;
         String message = String.format("Solved in %5.5f ms%n", solveTime / 1e6);
         LOGGER.info(message + DOTTED_LINE);
     }
 
-    protected abstract void solve(List<String> inputList);
+    protected List<String> loadInputList() {
+        return new IOController1().readInputFileByLine(inputFileName);
+    }
 
-    protected abstract List<String> loadInputList();
+    protected abstract String solve(List<String> inputList);
 
-    protected abstract void printResult();
+    protected void logMessage(String result) {
+        LOGGER.info(result);
+    }
 
     public long getSolveTime() {
         return solveTime;

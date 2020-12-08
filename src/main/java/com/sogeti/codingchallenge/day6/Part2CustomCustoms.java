@@ -13,15 +13,12 @@ public class Part2CustomCustoms extends Day6Challenge {
     }
 
     @Override
-    protected void calculateResult(List<Group> groups) {
-        for(Group group : groups) {
-            int amountAnsweredYes = group.amountEveryoneAnsweredYes();
-            yesAnswersSum += amountAnsweredYes;
-        }
+    protected int calculateResult(List<Group> groups) {
+        return groups.stream().map(Group::amountEveryoneAnsweredYes).reduce(0, (acc, cur) -> acc += cur);
     }
 
     @Override
-    public void printResult() {
-        LOGGER.info(String.format("The sum of the counted answers everyone in the group answered 'yes' to is: %d", yesAnswersSum));
+    protected String getMessage(int result) {
+        return String.format("The sum of the counted answers everyone in the group answered 'yes' to is: %d", result);
     }
 }

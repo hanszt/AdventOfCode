@@ -2,10 +2,7 @@ package com.sogeti.codingchallenge.day2;
 
 
 import com.sogeti.codingchallenge.Challenge;
-import com.sogeti.codingchallenge.IOController1;
 import com.sogeti.codingchallenge.day2.model.Policy;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -26,30 +23,25 @@ public abstract class Day2Challenge extends Challenge {
      * and the corporate policy when that password was set.
      */
 
-    static final Logger LOGGER = LogManager.getLogger(Day2Challenge.class);
-
-    private int numberOfPasswords = 0;
-    int validPasswords = 0;
-
-    public Day2Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description);
+    protected Day2Challenge(String challengeTitle, String description) {
+        super(challengeTitle, description, "20201202-input-day2.txt");
     }
 
     @Override
-    protected void solve(List<String> inputList) {
-        inputList.stream().map(line -> line.split(": ")).forEach(array -> checkPasswordValidity(array[0], array[1]));
+    protected String solve(List<String> inputList) {
+        long validPasswords = inputList.stream().filter(this::passwordIsValid).count();
+        return getMessage(inputList, validPasswords);
     }
 
-    @Override
-    protected List<String> loadInputList() {
-        return new IOController1().readInputFileByLine("20201202-input-day2.txt");
-    }
-
-    void checkPasswordValidity(String string, String password) {
-        numberOfPasswords++;
+    boolean passwordIsValid(String line) {
+        String[] array = line.split(": ");
+        String string = array[0];
+        String password = array[1];
         Policy policy = getPolicyFromString(string);
-        countNumberOfValidPasswords(password, policy);
+        return isValid(password, policy);
     }
+
+    abstract boolean isValid(String password, Policy policy);
 
     private Policy getPolicyFromString(String string) {
         char character = string.charAt(string.length() - 1);
@@ -58,11 +50,8 @@ public abstract class Day2Challenge extends Challenge {
         return new Policy(Integer.parseInt(lowerAndUpper[0]), Integer.parseInt(lowerAndUpper[1]), character);
     }
 
-    abstract void countNumberOfValidPasswords(String password, Policy policy);
+    public String getMessage(List<String> inputList, long validPasswords) {
+        return String.format("%d of the %d passwords are valid%n%s%n", validPasswords, inputList.size(), DOTTED_LINE);
 
-    public void printResult() {
-        String message = String.format("%d of the %d passwords are valid", validPasswords, numberOfPasswords);
-        LOGGER.info(message);
-        LOGGER.info(DOTTED_LINE);
     }
 }

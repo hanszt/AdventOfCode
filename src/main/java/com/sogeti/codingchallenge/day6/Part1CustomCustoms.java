@@ -11,17 +11,13 @@ public class Part1CustomCustoms extends Day6Challenge {
                 "What is the sum of those counts?. ");
     }
 
+    @Override
+    protected int calculateResult(List<Group> groups) {
+        return groups.stream().map(Group::amountAnyoneAnsweredYes).reduce(0, (acc, cur) -> acc += cur);
+    }
 
     @Override
-    protected void calculateResult(List<Group> groups) {
-        for (Group group : groups) {
-            int amountAnyoneAnsweredYes = group.amountAnyoneAnsweredYes();
-            yesAnswersSum += amountAnyoneAnsweredYes;
-        }
+    protected String getMessage(int result) {
+        return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %d", result);
     }
-
-    public void printResult() {
-        LOGGER.info(String.format("The sum of the counts in each group to which anyone answered 'yes' is: %d", yesAnswersSum));
-    }
-
 }

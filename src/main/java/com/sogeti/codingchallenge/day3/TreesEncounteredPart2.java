@@ -16,10 +16,8 @@ public class TreesEncounteredPart2 extends Day3Challenge {
         super("Counting number of trees crossed part 2", "Find the product of the number of trees crossed by all the given paths");
     }
 
-    private long result = 0;
-
     @Override
-    protected void calculateResult(List<List<Character>> grid) {
+    protected long calculateResult(List<List<Character>> grid) {
         long product = 1;
         for (Path path : Path.values()) {
             int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point(0, 0), path.getSlope());
@@ -27,12 +25,12 @@ public class TreesEncounteredPart2 extends Day3Challenge {
             product *= numberOfTrees;
         }
         LOGGER.info("");
-        result = product;
+        return product;
     }
 
     @Override
-    public void printResult() {
-        LOGGER.info("The product of all the number of trees crossed is: " + result);
+    public String getMessage(long result) {
+        return "The product of all the number of trees crossed is: " + result;
     }
 
 }
