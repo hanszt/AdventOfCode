@@ -4,11 +4,11 @@ class Instruction {
 
 
     private static int next = 0;
-    final int nr;
-    final int argument;
-    int global;
-    boolean visited;
-    String descriptor;
+    private final int nr;
+    private final int argument;
+
+    private boolean visited;
+    private String descriptor;
 
     public Instruction(String descriptor, int argument) {
         this.nr = ++next;
@@ -20,12 +20,28 @@ class Instruction {
         Instruction.next = next;
     }
 
-    public int getGlobal() {
-        return global;
+    public int getNr() {
+        return nr;
     }
 
-    public void setGlobal(int global) {
-        this.global = global;
+    public int getArgument() {
+        return argument;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public String getDescriptor() {
+        return descriptor;
+    }
+
+    public void setDescriptor(String descriptor) {
+        this.descriptor = descriptor;
     }
 
     @Override

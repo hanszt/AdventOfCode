@@ -3,7 +3,8 @@ package com.sogeti.codingchallenge.day8;
 import com.sogeti.codingchallenge.Challenge;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public abstract class Day8Challenge extends Challenge {
 
@@ -17,7 +18,7 @@ public abstract class Day8Challenge extends Challenge {
     @Override
     protected String solve(List<String> inputList) {
         Instruction.setNext(0);
-        List<Instruction> instructions = inputList.stream().map(this::instruction).collect(Collectors.toList());
+        List<Instruction> instructions = inputList.stream().map(this::instruction).collect(toList());
         int global = solveByInstructions(instructions);
         return getMessage(global);
     }
@@ -28,14 +29,14 @@ public abstract class Day8Challenge extends Challenge {
         int position = 0;
         int global = 0;
         Instruction lastInstruction = null;
-        while (position < instructions.size() && !instructions.get(position).visited) {
+        while (position < instructions.size() && !instructions.get(position).isVisited()) {
             Instruction instruction = instructions.get(position);
-            switch (instruction.descriptor) {
+            switch (instruction.getDescriptor()) {
                 case JUMP:
-                    position += instruction.argument;
+                    position += instruction.getArgument();
                     break;
                 case ACCUMULATOR:
-                    global += instruction.argument;
+                    global += instruction.getArgument();
                     position++;
                     break;
                 case NO_OPERATION:
@@ -44,7 +45,7 @@ public abstract class Day8Challenge extends Challenge {
                 default:
                     throw new UnsupportedOperationException();
             }
-            instruction.visited = true;
+            instruction.setVisited(true);
             lastInstruction = instruction;
         }
         return new Result(lastInstruction, global);
@@ -62,12 +63,20 @@ public abstract class Day8Challenge extends Challenge {
 
     static class Result {
 
-        final Instruction lastInstruction;
-        final int global;
+        private final Instruction lastInstruction;
+        private final int global;
 
         public Result(Instruction lastInstruction, int global) {
             this.lastInstruction = lastInstruction;
             this.global = global;
+        }
+
+        public Instruction getLastInstruction() {
+            return lastInstruction;
+        }
+
+        public int getGlobal() {
+            return global;
         }
     }
 

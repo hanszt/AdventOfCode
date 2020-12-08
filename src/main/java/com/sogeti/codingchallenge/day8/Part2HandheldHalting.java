@@ -13,18 +13,18 @@ public class Part2HandheldHalting extends Day8Challenge {
     @Override
     protected int solveByInstructions(List<Instruction> instructions) {
         for (Instruction instruction : instructions) {
-            instructions.forEach(item -> item.visited = false);
+            instructions.forEach(item -> item.setVisited(false));
             swapJumpAndNoOperation(instruction);
             Result result = testInstructions(instructions);
-            if (result.lastInstruction.nr == instructions.size()) return result.global;
+            if (result.getLastInstruction().getNr() == instructions.size()) return result.getGlobal();
             swapJumpAndNoOperation(instruction);
         }
         return 0;
     }
 
     private void swapJumpAndNoOperation(Instruction instruction) {
-        if (instruction.descriptor.equals(NO_OPERATION)) instruction.descriptor = JUMP;
-        else if (instruction.descriptor.equals(JUMP)) instruction.descriptor = NO_OPERATION;
+        if (instruction.getDescriptor().equals(NO_OPERATION)) instruction.setDescriptor(JUMP);
+        else if (instruction.getDescriptor().equals(JUMP)) instruction.setDescriptor(NO_OPERATION);
     }
 
     @Override

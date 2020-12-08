@@ -13,7 +13,7 @@ public class Part1HandheldHalting extends Day8Challenge {
 
     @Override
     protected int solveByInstructions(List<Instruction> instructions) {
-        return testInstructions(instructions).global;
+        return testInstructions(instructions).getGlobal();
     }
 
     public String getMessage(int global) {
