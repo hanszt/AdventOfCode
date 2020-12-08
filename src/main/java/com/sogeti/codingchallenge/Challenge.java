@@ -1,5 +1,6 @@
 package com.sogeti.codingchallenge;
 
+import com.sogeti.codingchallenge.io.IOController2;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,7 @@ public abstract class Challenge {
     }
 
     protected List<String> loadInputList() {
-        return new IOController1().readInputFileByLine(inputFileName);
+        return new IOController2().readInputFileByLine(inputFileName);
     }
 
     protected abstract String solve(List<String> inputList);

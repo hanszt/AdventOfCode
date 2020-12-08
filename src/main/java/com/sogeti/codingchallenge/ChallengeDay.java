@@ -30,18 +30,15 @@ public class ChallengeDay {
     }
 
     public void solveChallenges() {
-        LOGGER.info(String.format("%sDay %d: %s%nDate: %s", textColor, dayNr, title, date.format(DateTimeFormatter.ISO_DATE)));
-        LOGGER.info(LINE_RETURN);
+        LOGGER.info(String.format("%n%n%sDay %d: %s%nDate: %s%n%s",
+                textColor, dayNr, title, date.format(DateTimeFormatter.ISO_DATE), LINE_RETURN));
         for (Challenge challenge : challenges) {
             challenge.solveChallenge();
-            LOGGER.info(LINE_RETURN);
         }
-        LOGGER.info(LINE_RETURN);
-        LOGGER.info(String.format("%n%n"));
     }
 
     public long getSolveTime() {
-        return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElseThrow();
+        return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElse(0L);
     }
 
 }
