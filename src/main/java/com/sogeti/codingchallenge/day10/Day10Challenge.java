@@ -2,6 +2,7 @@ package com.sogeti.codingchallenge.day10;
 
 import com.sogeti.codingchallenge.Challenge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Day10Challenge extends Challenge {
@@ -12,12 +13,11 @@ public abstract class Day10Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-
-
-        return getMessage(0);
+        List<?> list = new ArrayList<>();
+        return getMessage(solveByList(list));
     }
 
-
+    protected abstract long solveByList(List<?> list);
 
 
     abstract String getMessage(long value);

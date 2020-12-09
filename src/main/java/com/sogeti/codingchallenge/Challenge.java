@@ -26,7 +26,7 @@ public abstract class Challenge {
         LOGGER.info(String.format("Challenge description: %s%n%s", description, DOTTED_LINE));
         List<String> inputList = loadInputList();
         long startTime = System.nanoTime();
-        String result = solve(inputList);
+        Object result = solve(inputList);
         long endTime = System.nanoTime();
         LOGGER.info("Answer:");
         logMessage(result);
@@ -39,9 +39,9 @@ public abstract class Challenge {
         return new IOController2().readInputFileByLine(inputFileName);
     }
 
-    protected abstract String solve(List<String> inputList);
+    protected abstract Object solve(List<String> inputList);
 
-    protected void logMessage(String result) {
+    protected void logMessage(Object result) {
         LOGGER.info(result);
     }
 

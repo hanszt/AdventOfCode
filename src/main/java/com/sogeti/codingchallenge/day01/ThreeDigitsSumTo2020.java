@@ -5,19 +5,9 @@ import java.util.*;
 public class ThreeDigitsSumTo2020 extends Day01Challenge {
 
     public ThreeDigitsSumTo2020() {
-        super("Three digits sum to 2020", "Find the product of the three digits that sum to 2020");
+        super("Three digits sum to 2020 part 2", "Find the product of the three digits that sum to 2020");
     }
 
-    /**
-     * The Elves in accounting are thankful for your help;
-     * one of them even offers you a starfish coin they had left over from a past vacation.
-     * They offer you a second one if you can find three numbers in your expense report that meet the same criteria.
-     * <p>
-     * Using the above example again, the three entries that sum to 2020 are 979, 366, and 675.
-     * Multiplying them together produces the answer, 241861950.
-     * <p>
-     * In your expense report, what is the product of the three entries that sum to 2020?
-     */
     @Override
     protected List<Integer[]> findIntegersListThatSumTo2020(SortedSet<Integer> integers) {
         Set<Integer> usedIntegers = new HashSet<>();

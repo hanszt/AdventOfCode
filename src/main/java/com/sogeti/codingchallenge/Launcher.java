@@ -16,8 +16,10 @@ import com.sogeti.codingchallenge.day07.Part1HandyHaversacks;
 import com.sogeti.codingchallenge.day07.Part2HandyHaversacks;
 import com.sogeti.codingchallenge.day08.Part1HandheldHalting;
 import com.sogeti.codingchallenge.day08.Part2HandheldHalting;
-import com.sogeti.codingchallenge.day09.Part1;
-import com.sogeti.codingchallenge.day09.Part2;
+import com.sogeti.codingchallenge.day09.Part1EncodingError;
+import com.sogeti.codingchallenge.day09.Part2EncodingError;
+import com.sogeti.codingchallenge.day10.Part1;
+import com.sogeti.codingchallenge.day10.Part2;
 import com.sogeti.codingchallenge.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -64,9 +66,10 @@ public class Launcher {
                 new Part1HandyHaversacks(), new Part2HandyHaversacks()));
         challengeDays.add(new ChallengeDay(ANSI_CYAN, "Handheld Halting", LocalDate.of(2020, 12, 8),
                 new Part1HandheldHalting(), new Part2HandheldHalting()));
-        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Day 9", LocalDate.of(2020, 12, 9),
+        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "EncodingError", LocalDate.of(2020, 12, 9),
+                new Part1EncodingError(), new Part2EncodingError()));
+        challengeDays.add(new ChallengeDay(ANSI_RED, "Day 10", LocalDate.of(2020, 12, 10),
                 new Part1(), new Part2()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "Day 10", LocalDate.of(2020, 12, 10)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 11)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 12)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 13)));
@@ -94,6 +97,7 @@ public class Launcher {
         LOGGER.info(String.format("%n%s%sTotal solve time: %.2f seconds%n%s", ANSI_RESET, LINE_RETURN,
                 challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9, LINE_RETURN));
         new MainPanelLauncher().demo();
+
     }
 
 }

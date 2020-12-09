@@ -38,7 +38,7 @@ public abstract class Day01Challenge extends Challenge {
             }
             String result = String.format("The %d digits from the list that sum to %d are: %s%nThe product of these digits is: %d%n",
                     entries.length, SUM_TO_BE_FOUND, isb, product);
-            sb.append(result).append(String.format("%n%s%n", DOTTED_LINE));
+            sb.append(result);
         }
         return sb.toString();
     }

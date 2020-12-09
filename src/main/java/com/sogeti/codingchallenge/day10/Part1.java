@@ -1,5 +1,7 @@
 package com.sogeti.codingchallenge.day10;
 
+import java.util.List;
+
 public class Part1 extends Day10Challenge {
 
     public Part1() {
@@ -8,12 +10,17 @@ public class Part1 extends Day10Challenge {
     }
 
 
+    @Override
+    protected long solveByList(List<?> list) {
 
 
+
+        return 0;
+    }
 
     @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    String getMessage(long number) {
+        return String.format("%d", number);
     }
 
 }

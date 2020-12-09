@@ -7,7 +7,8 @@ import java.util.SortedSet;
 public class TwoDigitsSumTo2020 extends Day01Challenge {
 
     public TwoDigitsSumTo2020() {
-        super("Two digits sum to 2020", "Find the product of the two entries that sum to 2020");
+        super("Two digits sum to 2020 part 1",
+                "Find the product of the two entries that sum to 2020");
     }
 
     @Override
