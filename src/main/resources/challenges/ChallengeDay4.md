@@ -46,6 +46,8 @@ According to the above bags, your improved system would report 2 valid passports
 
 Count the number of valid passports - those that have all required fields. Treat cid as optional. In your batch file, how many passports are valid?
 
+Your puzzle answer was 245.
+
 ## --- Part Two ---
 
 The line is moving more quickly now, but you overhear airport security talking about how passports with invalid data are getting through. Better add some data validation, quick!
@@ -117,11 +119,3 @@ Here are some invalid passports:
 Count the number of valid passports - those that have all required fields and valid values. Continue to treat cid as optional. In your batch file, how many passports are valid?
 
 Your puzzle answer was 133.
-
-Both parts of this puzzle are complete! They provide two gold stars: **
-
-At this point, you should return to your Advent calendar and try another puzzle.
-
-If you still want to see it, you can get your puzzle input.
-
-You can also [Shareon Twitter Mastodon] this puzzle.

@@ -30,6 +30,8 @@ The first and third passwords are valid: they contain one a or nine c, both with
 
 How many passwords are valid according to their policies?
 
+Your puzzle answer was 467.
+
 ### Part 2
 
 While it appears you validated the passwords correctly, they don't seem to be what the Official Toboggan Corporate Authentication System is expecting.
@@ -45,3 +47,5 @@ Given the same example list from above:
     2-9 c: ccccccccc is invalid: both position 2 and position 9 contain c.
 
 How many passwords are valid according to the new interpretation of the policies?
+
+Your puzzle answer was 441.

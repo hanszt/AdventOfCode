@@ -40,6 +40,8 @@ Here are some other boarding passes:
 
 As a sanity check, look through your list of boarding passes. What is the highest boardingPass ID on a boarding pass?
 
+Your puzzle answer was 911.
+
 ## Part 2
 Ding! The "fasten boardingPass belt" signs have turned on. Time to find your boardingPass.
 
@@ -48,3 +50,5 @@ It's a completely full flight, so your boardingPass should be the only missing b
 Your boardingPass wasn't at the very front or back, though; the seats with IDs +1 and -1 from yours will be in your list.
 
 What is the ID of your boardingPass?
+
+Your puzzle answer was 629.
