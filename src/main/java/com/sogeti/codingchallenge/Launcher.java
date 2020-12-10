@@ -18,8 +18,9 @@ import com.sogeti.codingchallenge.day08.Part1HandheldHalting;
 import com.sogeti.codingchallenge.day08.Part2HandheldHalting;
 import com.sogeti.codingchallenge.day09.Part1EncodingError;
 import com.sogeti.codingchallenge.day09.Part2EncodingError;
-import com.sogeti.codingchallenge.day10.Part1;
-import com.sogeti.codingchallenge.day10.Part2;
+import com.sogeti.codingchallenge.day10.Part1AdaptorArray;
+import com.sogeti.codingchallenge.day10.Part2AdaptorArrayWithCaching;
+import com.sogeti.codingchallenge.day10.Part2AdaptorArrayWithoutCaching;
 import com.sogeti.codingchallenge.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -69,7 +70,7 @@ public class Launcher {
         challengeDays.add(new ChallengeDay(ANSI_YELLOW, "EncodingError", LocalDate.of(2020, 12, 9),
                 new Part1EncodingError(), new Part2EncodingError()));
         challengeDays.add(new ChallengeDay(ANSI_RED, "Day 10", LocalDate.of(2020, 12, 10),
-                new Part1(), new Part2()));
+                new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(), new Part2AdaptorArrayWithoutCaching()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 11)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 12)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 13)));
