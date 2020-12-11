@@ -22,7 +22,7 @@ import hzt.aoc.day10.Part1AdaptorArray;
 import hzt.aoc.day10.Part2AdaptorArrayWithCaching;
 import hzt.aoc.day10.Part2AdaptorArrayWithCachingLongs;
 import hzt.aoc.day11.Part1;
-import hzt.aoc.day11.Part2;
+import hzt.aoc.day11.Part2SeatingSystem;
 import hzt.aoc.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -75,7 +75,7 @@ public class Launcher {
                 new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(),
                 new Part2AdaptorArrayWithCachingLongs()/*, new Part2AdaptorArrayWithoutCaching()*/));
         challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "", LocalDate.of(2020, 12, 11),
-                new Part1(), new Part2()));
+                new Part1(), new Part2SeatingSystem()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 12)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 13)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 14)));

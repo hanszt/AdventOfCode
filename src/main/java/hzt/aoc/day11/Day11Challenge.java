@@ -3,22 +3,40 @@ package hzt.aoc.day11;
 import hzt.aoc.Challenge;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day11Challenge extends Challenge {
 
     Day11Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201211-input-day11.txt");
+        super(challengeTitle, description, "20201211-input-day11ref.txt");
     }
+
+    static final char EMPTY_SEAT = 'L';
+    static final char OCCUPIED_SEAT = '#';
 
     @Override
     protected String solve(List<String> inputList) {
-        List<Integer> integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toList());
-        return getMessage(solveByInput(integers));
+        return getMessage(solveByInput(inputList));
     }
 
-    protected abstract long solveByInput(List<Integer> integers);
+    protected long solveByInput(List<String> inputList) {
+        int occupied = 0;
+        int prevOccupied = -1;
+        int counter = 0;
+        while (counter < 10) {
+//        while (occupied != prevOccupied) {
+            prevOccupied = occupied;
+            occupied = checkOccupiedAndUpdateList(inputList);
+            System.out.println(prevOccupied);
+            System.out.println(occupied);
+            System.out.println();
+            counter++;
+        }
+        return occupied;
+    }
 
+    protected abstract int checkOccupiedAndUpdateList(List<String> inputList);
 
-    abstract String getMessage(long value);
+    private String getMessage(long value) {
+        return String.format("The number of seats occupied after equilibrium: %d%n", value);
+    }
 }
