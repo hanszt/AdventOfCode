@@ -48,4 +48,8 @@ public abstract class Challenge {
     public long getSolveTime() {
         return solveTime;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }

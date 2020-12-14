@@ -39,4 +39,11 @@ public class ChallengeDay {
         return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElse(0L);
     }
 
+    public Challenge[] getChallenges() {
+        return challenges;
+    }
+
+    public int getDayNr() {
+        return dayNr;
+    }
 }

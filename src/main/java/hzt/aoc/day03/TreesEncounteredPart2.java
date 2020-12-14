@@ -13,7 +13,7 @@ public class TreesEncounteredPart2 extends Day03Challenge {
 
 
     public TreesEncounteredPart2() {
-        super("Counting number of trees crossed part 2",
+        super("Toboggan Trajectory part 2",
                 "Find the product of the number of trees crossed by all the given paths");
     }
 

@@ -31,12 +31,13 @@ import hzt.aoc.day13.Part2ShuttleSearch;
 import hzt.aoc.day13.Part2ShuttleSearchOwnImpl;
 import hzt.aoc.day14.Part1DockingData;
 import hzt.aoc.day14.Part2DockingData;
-import hzt.aoc.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Launcher {
@@ -110,10 +111,23 @@ public class Launcher {
     private void start() {
         LOGGER.info(String.format("%n%s", TITTLE));
         challengeDays.forEach(ChallengeDay::solveChallenges);
-        LOGGER.info(String.format("%n%s%sTotal solve time: %.2f seconds%n%s", ANSI_RESET, LINE_RETURN,
-                challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9, LINE_RETURN));
-        new MainPanelLauncher().demo();
+        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
+        LOGGER.info(String.format("%sTotal solve time: %.2f seconds%n%s",
+                LINE_RETURN, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
+                LINE_RETURN));
 
+    }
+
+    private String getSortedSolveTimes(List<ChallengeDay> challengeDays) {
+        List<Pair<Challenge, Integer>> challenges = new ArrayList<>();
+        challengeDays.forEach(day -> Arrays.asList(day.getChallenges()).forEach(c -> challenges.add(new Pair<>(c, day.getDayNr()))));
+        challenges.sort(Comparator.comparing(c -> c.getLeft().getSolveTime()));
+        StringBuilder sb = new StringBuilder();
+        for (Pair<Challenge, Integer> p : challenges) {
+            sb.append(String.format("Day %2d Challenge: %50s, solve time: %8.3f milliseconds%n",
+                    p .getRight(), p.getLeft().getTitle(), p.getLeft().getSolveTime() / 1e6));
+        }
+        return sb.toString();
     }
 
 }

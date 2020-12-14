@@ -5,7 +5,7 @@ import java.util.*;
 public class ThreeDigitsSumTo2020 extends Day01Challenge {
 
     public ThreeDigitsSumTo2020() {
-        super("Three digits sum to 2020 part 2", "Find the product of the three digits that sum to 2020");
+        super("Report Repair part 2", "Find the product of the three digits that sum to 2020");
     }
 
     @Override
