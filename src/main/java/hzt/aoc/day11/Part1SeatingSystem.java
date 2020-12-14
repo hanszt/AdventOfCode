@@ -8,11 +8,22 @@ public class Part1SeatingSystem extends Day11Challenge {
     public Part1SeatingSystem() {
         super("Seating System part 1",
                 "Simulate your seating area by applying the seating rules repeatedly until no seats change state. " +
-                        "How many seats end up occupied?");
+                        "How many seats end up occupied?",
+                "20201211-input-day11.txt");
     }
 
     @Override
-    protected int checkOccupiedAndUpdateList(List<String> inputList) {
+    protected Object solve(List<String> inputList) {
+        int occupied = 0;
+        int prevOccupied = -1;
+        while (occupied != prevOccupied) {
+            prevOccupied = occupied;
+            occupied = checkOccupiedAndUpdateList(inputList);
+        }
+        return getMessage(occupied);
+    }
+
+    private int checkOccupiedAndUpdateList(List<String> inputList) {
         int occupied = 0;
         List<String> newList = new ArrayList<>();
         for (int row = 0; row < inputList.size(); row++) {
@@ -57,13 +68,11 @@ public class Part1SeatingSystem extends Day11Challenge {
     }
 
     private String extractNeighboursByRow(String row, int col) {
-        String neighBours;
+        String neighbours;
         if (row != null) {
-            neighBours = row.substring(col > 0 ? col - 1 : col, col < row.length() - 1 ? col + 2 : col + 1);
-        } else neighBours = "";
-        return neighBours;
+            neighbours = row.substring(col > 0 ? col - 1 : col, col < row.length() - 1 ? col + 2 : col + 1);
+        } else neighbours = "";
+        return neighbours;
     }
-
-
 
 }

@@ -1,8 +1,9 @@
 package hzt.aoc.day11;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntBinaryOperator;
 
+// Credits to Johan de Jong
 public class Part2SeatingSystem extends Day11Challenge {
 
     public Part2SeatingSystem() {
@@ -12,78 +13,102 @@ public class Part2SeatingSystem extends Day11Challenge {
 
                         "For example, the empty seat below would see eight occupied seats. echter " +
                         "Given the new visibility method and the rule change for occupied seats becoming empty, " +
-                        "once equilibrium is reached, how many seats end up occupied?");
+                        "once equilibrium is reached, how many seats end up occupied?",
+                "20201211-input-day11.txt");
     }
 
+    private char[][] state;
+    private int width;
+    private int height;
+
     @Override
-    protected int checkOccupiedAndUpdateList(List<String> inputList) {
-        List<String> newList = new ArrayList<>();
-//        System.out.println("before: ");
-//        inputList.forEach(System.out::println);
-        int occupied = 0;
-        char[][] grid = new char[inputList.size()][inputList.get(0).length()];
-        char[][] newGrid = new char[inputList.size()][inputList.get(0).length()];
-        for (int row = 0; row < inputList.size(); row++) {
-            grid[row] = inputList.get(row).toCharArray();
-            newGrid[row] = inputList.get(row).toCharArray();
-            for (int col = 0; col < grid[row].length; col++) {
-                char curChar = grid[row][col];
-                int occupiedInLineOfSight = occupiedSeatsInLineOfSight(grid, row, col);
-//                System.out.print(curChar + "->" + occupiedInLineOfSight + " ");
-                if (applyRules(curChar, occupiedInLineOfSight, row, col, newGrid)) occupied++;
+    protected Object solve(List<String> inputList) {
+        width = inputList.get(0).length();
+        height = inputList.size();
+        state = new char[height][width];
+        for (int y = 0; y < height; y++) {
+            String s = inputList.get(y);
+            for (int x = 0; x < width; x++) {
+                state[y][x] = s.charAt(x);
             }
-//            System.out.println();
-            newList.add(String.copyValueOf(newGrid[row]));
         }
-//        System.out.println();
-        inputList.clear();
-        inputList.addAll(newList);
-//        System.out.println("after");
-//        inputList.forEach(System.out::println);
-//        System.out.println();
-        return occupied;
+        return getMessage(iterate(this::adjacentOccupiedLine));
+    }
+
+    private int iterate(IntBinaryOperator adjacentOccupiedFunction) {
+        boolean updated = true;
+        while (updated) {
+            updated = performUpdate(adjacentOccupiedFunction);
+        }
+        return countOccupied();
+    }
+
+    private boolean performUpdate(IntBinaryOperator adjacentOccupiedFunction) {
+        boolean updated = false;
+        char[][] nextState = new char[height][width];
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (state[row][col] == EMPTY_SEAT && adjacentOccupiedFunction.applyAsInt(col, row) == 0) {
+                    nextState[row][col] = OCCUPIED_SEAT;
+                    updated = true;
+                } else if (state[row][col] == OCCUPIED_SEAT &&
+                        adjacentOccupiedFunction.applyAsInt(col, row) >= THRESHOLD_BECOMES_EMPTY) {
+                    nextState[row][col] = EMPTY_SEAT;
+                    updated = true;
+                } else {
+                    nextState[row][col] = state[row][col];
+                }
+            }
+        }
+        state = nextState;
+        return updated;
     }
 
     private static final int THRESHOLD_BECOMES_EMPTY = 5;
 
-    private static final int[][] DIRECTIONS = {
-            {1, 0}, {1, 1},
-            {0, 1}, {-1, 1},
-            {-1, 0}, {-1, -1},
-            {0, -1}, {1, -1}};
-    //TODO what is going on with the char array and empty chars
-
-    int occupiedSeatsInLineOfSight(char[][] curGrid, int row, int col) {
-        int occupiedInLineOfSight = 0;
-        for (int[] dir : DIRECTIONS) {
-            int dRow = row;
-            int dCol = col;
-            while (dRow >= 0 && dRow < curGrid.length
-                    && dCol >= 0 && dCol < curGrid[0].length) {
-                if (row != dRow || col != dCol) {
-                    char checked = curGrid[dRow][dCol];
-                    if (checked != FLOOR) {
-                        if (checked == OCCUPIED_SEAT) occupiedInLineOfSight++;
-                        break;
-                    }
+    private int adjacentOccupiedLine(int x, int y) {
+        int result = 0;
+        for (int dy = -1; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                if ((dx != 0 || dy != 0) && adjacentOccupiedLine(x, y, dx, dy)) {
+                    result++;
                 }
-                dCol += dir[0];
-                dRow += dir[1];
             }
         }
-        return occupiedInLineOfSight;
-    }
-    private boolean applyRules(char curChar, int occupiedInLineOfSight, int row, int col, char[][] newGrid) {
-        if (curChar == EMPTY_SEAT && occupiedInLineOfSight == 0) newGrid[row][col] = OCCUPIED_SEAT;
-        else if (curChar == OCCUPIED_SEAT && occupiedInLineOfSight >= THRESHOLD_BECOMES_EMPTY) {
-            newGrid[row][col] = EMPTY_SEAT;
-        }
-        return newGrid[row][col] == OCCUPIED_SEAT;
+        return result;
     }
 
+    private boolean adjacentOccupiedLine(int x, int y, int dx, int dy) {
+        while (true) {
+            x += dx;
+            y += dy;
+            char c = get(x, y);
+            if (c == OCCUPIED_SEAT) return true;
+            if (c == EMPTY_SEAT || c == '\0') return false;
+        }
+    }
+
+    private int countOccupied() {
+        int result = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (state[y][x] == OCCUPIED_SEAT) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
+    private char get(int x, int y) {
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            return '\0';
+        }
+        return state[y][x];
+    }
 
     @Override
     String getMessage(long value) {
-        return String.format("The number of seats occupied after equilibrium: %d (not right yet...)%n", value);
+        return String.format("The number of seats occupied after equilibrium: %d%n", value);
     }
 }

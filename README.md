@@ -21,3 +21,4 @@ the second puzzle is unlocked when you complete the first. Each puzzle grants on
 
 ## Sources
 [Ascii art Advent of code 2020!](http://patorjk.com/software/taag/#p=display&f=Epic&t=Advent%20of%20code%202020!)
+[Chinese remainder theorem](https://math.stackexchange.com/questions/3088578/find-the-smallest-natural-number-using-chinese-remainder-theorem)

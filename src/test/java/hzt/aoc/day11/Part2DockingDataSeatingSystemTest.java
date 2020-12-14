@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hzt.aoc.day11.Day11Challenge.FLOOR;
+import static hzt.aoc.day11.Day11Challenge.OCCUPIED_SEAT;
+
 class Part2DockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate() {
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         int row = 3;
         int col = 3;
         char[][] grid = {
@@ -18,7 +20,7 @@ class Part2DockingDataSeatingSystemTest {
                 {'L', 'L', 'L', 'L'},
                 {'L', 'L', '.', 'L'},
                 {'L', '.', 'L', 'L'}};
-        int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+        int occupied = occupiedSeatsInLineOfSight(grid, row, col);
         System.out.println();
         for (char[] array : grid) {
             for (char c : array) System.out.print(c);
@@ -30,7 +32,6 @@ class Part2DockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate1() {
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         int row = 3;
         int col = 2;
         char[][] grid = {
@@ -38,7 +39,7 @@ class Part2DockingDataSeatingSystemTest {
                 {'#', '#', '#', '#'},
                 {'#', '#', '.', '#'},
                 {'#', '.', '#', '#'}};
-        int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+        int occupied = occupiedSeatsInLineOfSight(grid, row, col);
         System.out.println();
         for (char[] array : grid) {
             for (char c : array) System.out.print(c);
@@ -50,7 +51,6 @@ class Part2DockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate3() {
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         int row = 3;
         int col = 2;
         char[][] grid = {
@@ -58,7 +58,7 @@ class Part2DockingDataSeatingSystemTest {
                 {'#', '#', '#', '#'},
                 {'#', '#', '.', '#'},
                 {'#', '.', '#', '#'}};
-        int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+        int occupied = occupiedSeatsInLineOfSight(grid, row, col);
         System.out.println();
         for (char[] array : grid) {
             for (char c : array) System.out.print(c);
@@ -70,7 +70,6 @@ class Part2DockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate2() {
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         int row = 2;
         int col = 2;
         char[][] grid = {
@@ -78,7 +77,7 @@ class Part2DockingDataSeatingSystemTest {
                 {'#', '#', '#', '#'},
                 {'#', '#', '.', '#'},
                 {'#', '.', '#', '#'}};
-        int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+        int occupied = occupiedSeatsInLineOfSight(grid, row, col);
         System.out.println();
         for (char[] array : grid) {
             for (char c : array) System.out.print(c);
@@ -91,7 +90,6 @@ class Part2DockingDataSeatingSystemTest {
     @Test
     void isOccupiedAfterUpdate4() {
         List<Integer> occupiedValues = new ArrayList<>();
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         char[][] grid = {
                 {'#', '.', '#', '#', '#'},
                 {'.', '.', '#', '.', '#'},
@@ -109,7 +107,7 @@ class Part2DockingDataSeatingSystemTest {
 
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[0].length; col++) {
-                int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+                int occupied = occupiedSeatsInLineOfSight(grid, row, col);
                 occupiedValues.add(occupied);
                 System.out.print(occupied + ",");
             }
@@ -128,7 +126,6 @@ class Part2DockingDataSeatingSystemTest {
     @Test
     void isOccupiedAfterUpdate5() {
         List<Integer> occupiedValues = new ArrayList<>();
-        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
         char[][] grid = {
                 {'#', '.', '#', '#', '.', '#', '#', '.', '#', '#'},
                 {'#', '#', '#', '#', '#', '#', '#', '.', '#', '#'},
@@ -154,7 +151,7 @@ class Part2DockingDataSeatingSystemTest {
 
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[0].length; col++) {
-                int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+                int occupied = occupiedSeatsInLineOfSight(grid, row, col);
                 occupiedValues.add(occupied);
                 System.out.print(occupied + ",");
             }
@@ -169,5 +166,38 @@ class Part2DockingDataSeatingSystemTest {
         Assertions.assertArrayEquals(expected, actual);
 
     }
+
+    private static final int[][] DIRECTIONS = {
+            {1, 0}, {1, 1},
+            {0, 1}, {-1, 1},
+            {-1, 0}, {-1, -1},
+            {0, -1}, {1, -1}};
+
+    int occupiedSeatsInLineOfSight(char[][] curGrid, int row, int col) {
+        int occupiedInLineOfSight = 0;
+        for (int[] dir : DIRECTIONS) {
+            if (occupiedInLineOfSight(curGrid, row, col, dir)) occupiedInLineOfSight++;
+        }
+        return occupiedInLineOfSight;
+    }
+
+    private boolean occupiedInLineOfSight(char[][] curGrid, int row, int col, int[] dir) {
+        int dRow = row;
+        int dCol = col;
+        while (dRow >= 0 && dRow < curGrid.length
+                && dCol >= 0 && dCol < curGrid[0].length) {
+            if (row != dRow || col != dCol) {
+                char checked = curGrid[dRow][dCol];
+                if (checked != FLOOR) {
+                    if (checked == OCCUPIED_SEAT) return true;
+                    break;
+                }
+            }
+            dCol += dir[0];
+            dRow += dir[1];
+        }
+        return false;
+    }
+
 
 }

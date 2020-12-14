@@ -86,9 +86,9 @@ public class Launcher {
                 new Part1SeatingSystem(), new Part2SeatingSystem()));
         challengeDays.add(new ChallengeDay(ANSI_GREEN, "Rain Risk", LocalDate.of(2020, 12, 12),
                 new Part1RainRisk(), new Part2RainRisk()));
-        challengeDays.add(new ChallengeDay(ANSI_RED, "Shuttle Search", LocalDate.of(2020, 12, 13),
+        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Shuttle Search", LocalDate.of(2020, 12, 13),
                 new Part1ShuttleSearch(), new Part2ShuttleSearchOwnImpl(), new Part2ShuttleSearch()));
-        challengeDays.add(new ChallengeDay(ANSI_RED, "Docking Data", LocalDate.of(2020, 12, 14),
+        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Docking Data", LocalDate.of(2020, 12, 14),
                 new Part1DockingData(), new Part2DockingData()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 15)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 16)));
