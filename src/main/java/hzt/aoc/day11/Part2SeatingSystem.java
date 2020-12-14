@@ -18,8 +18,8 @@ public class Part2SeatingSystem extends Day11Challenge {
     @Override
     protected int checkOccupiedAndUpdateList(List<String> inputList) {
         List<String> newList = new ArrayList<>();
-        System.out.println("before: ");
-        inputList.forEach(System.out::println);
+//        System.out.println("before: ");
+//        inputList.forEach(System.out::println);
         int occupied = 0;
         char[][] grid = new char[inputList.size()][inputList.get(0).length()];
         char[][] newGrid = new char[inputList.size()][inputList.get(0).length()];
@@ -29,21 +29,21 @@ public class Part2SeatingSystem extends Day11Challenge {
             for (int col = 0; col < grid[row].length; col++) {
                 char curChar = grid[row][col];
                 int occupiedInLineOfSight = occupiedSeatsInLineOfSight(grid, row, col);
-                System.out.print(curChar + "->" + occupiedInLineOfSight + " ");
+//                System.out.print(curChar + "->" + occupiedInLineOfSight + " ");
                 if (applyRules(curChar, occupiedInLineOfSight, row, col, newGrid)) occupied++;
             }
-            System.out.println();
+//            System.out.println();
             newList.add(String.copyValueOf(newGrid[row]));
         }
-        System.out.println();
+//        System.out.println();
         inputList.clear();
         inputList.addAll(newList);
-        System.out.println("after");
-        inputList.forEach(System.out::println);
-        System.out.println();
+//        System.out.println("after");
+//        inputList.forEach(System.out::println);
+//        System.out.println();
         return occupied;
     }
-
+    
     private static final int THRESHOLD_BECOMES_EMPTY = 5;
     private static final int[][] DIRECTIONS = {
             {1, 0}, {1, 1},
@@ -51,6 +51,7 @@ public class Part2SeatingSystem extends Day11Challenge {
             {-1, 0}, {-1, -1},
             {0, -1}, {1, -1}};
 
+    //TODO what is going on with the char array and empty chars
     int occupiedSeatsInLineOfSight(char[][] curGrid, int row, int col) {
         int occupiedInLineOfSight = 0;
         for (int[] dir : DIRECTIONS) {
@@ -60,10 +61,10 @@ public class Part2SeatingSystem extends Day11Challenge {
                     && dCol >= 0 && dCol < curGrid[0].length) {
                 if (row != dRow || col != dCol) {
                     char checked = curGrid[dRow][dCol];
-                    if (checked == OCCUPIED_SEAT) {
-                        occupiedInLineOfSight++;
+                    if (checked != FLOOR) {
+                        if (checked == OCCUPIED_SEAT) occupiedInLineOfSight++;
                         break;
-                    } else if (checked == EMPTY_SEAT) break;
+                    }
                 }
                 dCol += dir[0];
                 dRow += dir[1];

@@ -21,8 +21,12 @@ import hzt.aoc.day09.Part2EncodingError;
 import hzt.aoc.day10.Part1AdaptorArray;
 import hzt.aoc.day10.Part2AdaptorArrayWithCaching;
 import hzt.aoc.day10.Part2AdaptorArrayWithCachingLongs;
-import hzt.aoc.day11.Part1;
+import hzt.aoc.day11.Part1SeatingSystem;
 import hzt.aoc.day11.Part2SeatingSystem;
+import hzt.aoc.day12.Part1RainRisk;
+import hzt.aoc.day12.Part2RainRisk;
+import hzt.aoc.day13.Part1ShuttleSearch;
+import hzt.aoc.day13.Part2ShuttleSearch;
 import hzt.aoc.view.MainPanelLauncher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -74,10 +78,12 @@ public class Launcher {
         challengeDays.add(new ChallengeDay(ANSI_RED, "Adaptor Array", LocalDate.of(2020, 12, 10),
                 new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(),
                 new Part2AdaptorArrayWithCachingLongs()/*, new Part2AdaptorArrayWithoutCaching()*/));
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "", LocalDate.of(2020, 12, 11),
-                new Part1(), new Part2SeatingSystem()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 12)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 13)));
+        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Seating System", LocalDate.of(2020, 12, 11),
+                new Part1SeatingSystem(), new Part2SeatingSystem()));
+        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Rain Risk", LocalDate.of(2020, 12, 12),
+                new Part1RainRisk(), new Part2RainRisk()));
+        challengeDays.add(new ChallengeDay(ANSI_RED, "Shuttle Search", LocalDate.of(2020, 12, 13),
+                new Part1ShuttleSearch(), new Part2ShuttleSearch()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 14)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 15)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 16)));

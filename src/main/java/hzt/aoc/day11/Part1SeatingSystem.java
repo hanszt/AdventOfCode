@@ -3,9 +3,9 @@ package hzt.aoc.day11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Part1 extends Day11Challenge {
+public class Part1SeatingSystem extends Day11Challenge {
 
-    public Part1() {
+    public Part1SeatingSystem() {
         super("Seating System part 1",
                 "Simulate your seating area by applying the seating rules repeatedly until no seats change state. " +
                         "How many seats end up occupied?");
@@ -27,6 +27,7 @@ public class Part1 extends Day11Challenge {
     }
 
     private static final int THRESHOLD_BECOMES_EMPTY = 4;
+
 
     private int checkAndUpdateRow(String upperRow, String curRow, String lowerRow, List<String> newList) {
         int occupied = 0;

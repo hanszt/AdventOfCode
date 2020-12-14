@@ -6,12 +6,13 @@ import java.util.List;
 
 public abstract class Day11Challenge extends Challenge {
 
-    Day11Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201211-input-day11ref.txt");
-    }
-
     static final char EMPTY_SEAT = 'L';
     static final char OCCUPIED_SEAT = '#';
+    static final char FLOOR = '.';
+
+    Day11Challenge(String challengeTitle, String description) {
+        super(challengeTitle, description, "20201211-input-day11ref2.txt");
+    }
 
     @Override
     protected String solve(List<String> inputList) {
@@ -22,8 +23,8 @@ public abstract class Day11Challenge extends Challenge {
         int occupied = 0;
         int prevOccupied = -1;
         int counter = 0;
-        while (counter < 10) {
-//        while (occupied != prevOccupied) {
+//        while (counter < 10) {
+        while (occupied != prevOccupied) {
             prevOccupied = occupied;
             occupied = checkOccupiedAndUpdateList(inputList);
             System.out.println(prevOccupied);

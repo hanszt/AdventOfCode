@@ -125,4 +125,49 @@ class Part2SeatingSystemTest {
 
     }
 
+    @Test
+    void isOccupiedAfterUpdate5() {
+        List<Integer> occupiedValues = new ArrayList<>();
+        Part2SeatingSystem part2SeatingSystem = new Part2SeatingSystem();
+        char[][] grid = {
+                {'#', '.', '#', '#', '.', '#', '#', '.', '#', '#'},
+                {'#', '#', '#', '#', '#', '#', '#', '.', '#', '#'},
+                {'#', '.', '#', '.', '#', '.', '.', '#', '.', '.'},
+                {'#', '#', '#', '#', '.', '#', '#', '.', '#', '#'},
+                {'#', '.', '#', '#', '.', '#', '#', '.', '#', '#'},
+                {'#', '.', '#', '#', '#', '#', '#', '.', '#', '#'},
+                {'.', '.', '#', '.', '#', '.', '.', '.', '.', '.'},
+                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+                {'#', '.', '#', '#', '#', '#', '#', '#', '.', '#'},
+                {'#', '.', '#', '#', '#', '#', '#', '.', '#', '#'}};
+        Integer[] expected = {
+                3, 5, 5, 5, 5, 5, 5, 5, 5, 3,
+                4, 7, 7, 7, 7, 7, 7, 7, 6, 5,
+                5, 8, 8, 8, 8, 8, 8, 6, 7, 5,
+                5, 8, 8, 8, 8, 8, 8, 8, 7, 5,
+                5, 8, 7, 8, 8, 8, 8, 8, 8, 5,
+                5, 7, 8, 8, 8, 8, 8, 8, 7, 5,
+                5, 7, 7, 8, 7, 7, 7, 7, 7, 5,
+                5, 6, 8, 8, 8, 8, 8, 8, 7, 4,
+                4, 7, 7, 8, 8, 8, 7, 7, 7, 5,
+                3, 5, 5, 5, 5, 5, 5, 5, 5, 3,};
+
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+                int occupied = part2SeatingSystem.occupiedSeatsInLineOfSight(grid, row, col);
+                occupiedValues.add(occupied);
+                System.out.print(occupied + ",");
+            }
+            System.out.println();
+        }
+
+        for (char[] array : grid) {
+            for (char c : array) System.out.print(c + " ");
+            System.out.println();
+        }
+        Integer[] actual = occupiedValues.toArray(new Integer[0]);
+        Assertions.assertArrayEquals(expected, actual);
+
+    }
+
 }
