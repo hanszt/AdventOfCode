@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-class Part2SeatingSystemTest {
+class Part2DockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate() {

@@ -1,4 +1,4 @@
---- Day 13: Shuttle Search ---
+# --- Day 13: Shuttle Search ---
 
 Your ferry can make it safely to a nearby port, but it won't get much further. When you call to book another ship, you discover that no ships embark from that port to your vacation island. You'll need to get from the port to the nearest airport.
 
@@ -50,7 +50,7 @@ Your puzzle answer was 2947.
 
 The first half of this puzzle is complete! It provides one gold star: *
 
-# --- Part Two ---
+## --- Part Two ---
 
 The shuttle company is running a contest: one gold coin for anyone that can find the earliest timestamp such that the first bus ID departs at that time and each subsequent listed bus ID departs at that subsequent minute. (The first line in your input is no longer relevant.)
 

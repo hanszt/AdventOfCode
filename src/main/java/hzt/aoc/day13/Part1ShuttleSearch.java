@@ -34,6 +34,6 @@ public class Part1ShuttleSearch extends Day13Challenge {
 
     @Override
     String getMessage(Number global) {
-        return String.format("%d", global);
+        return String.format("%s", global);
     }
 }

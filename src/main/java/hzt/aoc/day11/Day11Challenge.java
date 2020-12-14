@@ -37,7 +37,7 @@ public abstract class Day11Challenge extends Challenge {
 
     protected abstract int checkOccupiedAndUpdateList(List<String> inputList);
 
-    private String getMessage(long value) {
+    String getMessage(long value) {
         return String.format("The number of seats occupied after equilibrium: %d%n", value);
     }
 }

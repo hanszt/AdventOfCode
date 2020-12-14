@@ -2,7 +2,6 @@ package hzt.aoc.day08;
 
 class Instruction {
 
-
     private static int next = 0;
     private final int nr;
     private final int argument;

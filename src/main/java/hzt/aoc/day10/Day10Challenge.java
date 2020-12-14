@@ -11,7 +11,12 @@ public abstract class Day10Challenge extends Challenge {
         super(challengeTitle, description, "20201210-input-day10.txt");
     }
 
+    Day10Challenge(String challengeTitle, String description, String inputFilename) {
+        super(challengeTitle, description, inputFilename);
+    }
+
     static final int MAX_STEP_APART = 3;
+
 
     @Override
     protected String solve(List<String> inputList) {

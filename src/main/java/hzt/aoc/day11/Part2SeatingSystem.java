@@ -43,15 +43,16 @@ public class Part2SeatingSystem extends Day11Challenge {
 //        System.out.println();
         return occupied;
     }
-    
+
     private static final int THRESHOLD_BECOMES_EMPTY = 5;
+
     private static final int[][] DIRECTIONS = {
             {1, 0}, {1, 1},
             {0, 1}, {-1, 1},
             {-1, 0}, {-1, -1},
             {0, -1}, {1, -1}};
-
     //TODO what is going on with the char array and empty chars
+
     int occupiedSeatsInLineOfSight(char[][] curGrid, int row, int col) {
         int occupiedInLineOfSight = 0;
         for (int[] dir : DIRECTIONS) {
@@ -72,7 +73,6 @@ public class Part2SeatingSystem extends Day11Challenge {
         }
         return occupiedInLineOfSight;
     }
-
     private boolean applyRules(char curChar, int occupiedInLineOfSight, int row, int col, char[][] newGrid) {
         if (curChar == EMPTY_SEAT && occupiedInLineOfSight == 0) newGrid[row][col] = OCCUPIED_SEAT;
         else if (curChar == OCCUPIED_SEAT && occupiedInLineOfSight >= THRESHOLD_BECOMES_EMPTY) {
@@ -81,4 +81,9 @@ public class Part2SeatingSystem extends Day11Challenge {
         return newGrid[row][col] == OCCUPIED_SEAT;
     }
 
+
+    @Override
+    String getMessage(long value) {
+        return String.format("The number of seats occupied after equilibrium: %d (not right yet...)%n", value);
+    }
 }
