@@ -1,9 +1,12 @@
-package hzt.aoc;
+package hzt;
 
-import hzt.aoc.day01.ThreeDigitsSumTo2020;
-import hzt.aoc.day01.TwoDigitsSumTo2020;
-import hzt.aoc.day02.PasswordValidChallenge02;
-import hzt.aoc.day02.PasswordValidChallenge1;
+import hzt.aoc.Challenge;
+import hzt.aoc.ChallengeDay;
+import hzt.aoc.Pair;
+import hzt.aoc.day01.Part2ReportRepair;
+import hzt.aoc.day01.Part1ReportRepair;
+import hzt.aoc.day02.Part2PasswordPhilosophy;
+import hzt.aoc.day02.Part1PasswordPhilosophy;
 import hzt.aoc.day03.TreesEncounteredPart1;
 import hzt.aoc.day03.TreesEncounteredPart2;
 import hzt.aoc.day04.PassportProcessingPart1;
@@ -31,6 +34,8 @@ import hzt.aoc.day13.Part2ShuttleSearch;
 import hzt.aoc.day13.Part2ShuttleSearchOwnImpl;
 import hzt.aoc.day14.Part1DockingData;
 import hzt.aoc.day14.Part2DockingData;
+import hzt.aoc.day15.Part1RambunctiousRecitation;
+import hzt.aoc.day15.Part2RambunctiousRecitation;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -42,8 +47,7 @@ import java.util.List;
 
 public class Launcher {
 
-    public static final String LINE_RETURN =
-            String.format("___________________________________________________________________%n");
+    public static final String DOTTED_LINE = "___________________________________________________________________";
     private static final Logger LOGGER = LogManager.getLogger(Launcher.class);
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
@@ -63,9 +67,9 @@ public class Launcher {
 
     public Launcher() {
         challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
-                new TwoDigitsSumTo2020(), new ThreeDigitsSumTo2020()));
+                new Part1ReportRepair(), new Part2ReportRepair()));
         challengeDays.add(new ChallengeDay(ANSI_GREEN, "Password Philosophy", LocalDate.of(2020, 12, 2),
-                new PasswordValidChallenge1(), new PasswordValidChallenge02()));
+                new Part1PasswordPhilosophy(), new Part2PasswordPhilosophy()));
         challengeDays.add(new ChallengeDay(ANSI_CYAN, "Toboggan Trajectory", LocalDate.of(2020, 12, 3),
                 new TreesEncounteredPart1(), new TreesEncounteredPart2()));
         challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Passport Processing", LocalDate.of(2020, 12, 4),
@@ -91,7 +95,8 @@ public class Launcher {
                 new Part1ShuttleSearch(), new Part2ShuttleSearchOwnImpl(), new Part2ShuttleSearch()));
         challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Docking Data", LocalDate.of(2020, 12, 14),
                 new Part1DockingData(), new Part2DockingData()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 15)));
+        challengeDays.add(new ChallengeDay(ANSI_RED, "Rambunctious Recitation", LocalDate.of(2020, 12, 15),
+                new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 16)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 17)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 18)));
@@ -111,21 +116,21 @@ public class Launcher {
     private void start() {
         LOGGER.info(String.format("%n%s", TITTLE));
         challengeDays.forEach(ChallengeDay::solveChallenges);
-        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
-        LOGGER.info(String.format("%sTotal solve time: %.2f seconds%n%s",
-                LINE_RETURN, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
-                LINE_RETURN));
+//        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
+        LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
+                DOTTED_LINE, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
+                DOTTED_LINE));
 
     }
 
     private String getSortedSolveTimes(List<ChallengeDay> challengeDays) {
-        List<Pair<Challenge, Integer>> challenges = new ArrayList<>();
-        challengeDays.forEach(day -> Arrays.asList(day.getChallenges()).forEach(c -> challenges.add(new Pair<>(c, day.getDayNr()))));
+        List<Pair<Challenge, ChallengeDay>> challenges = new ArrayList<>();
+        challengeDays.forEach(day -> Arrays.asList(day.getChallenges()).forEach(challenge -> challenges.add(new Pair<>(challenge, day))));
         challenges.sort(Comparator.comparing(c -> c.getLeft().getSolveTime()));
         StringBuilder sb = new StringBuilder();
-        for (Pair<Challenge, Integer> p : challenges) {
+        for (Pair<Challenge, ChallengeDay> p : challenges) {
             sb.append(String.format("Day %2d Challenge: %50s, solve time: %8.3f milliseconds%n",
-                    p .getRight(), p.getLeft().getTitle(), p.getLeft().getSolveTime() / 1e6));
+                    p .getRight().getDayNr(), p.getLeft().getNote(), p.getLeft().getSolveTime() / 1e6));
         }
         return sb.toString();
     }

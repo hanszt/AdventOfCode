@@ -6,7 +6,7 @@ import java.util.List;
 public class TreesEncounteredPart1 extends Day03Challenge {
 
     public TreesEncounteredPart1() {
-        super("Toboggan Trajectory part 1",
+        super("part 1",
                 "Find the number of trees crossed");
     }
 

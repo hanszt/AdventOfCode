@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
+import static hzt.Launcher.DOTTED_LINE;
+
 public class ChallengeDay {
 
     private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
@@ -25,11 +27,12 @@ public class ChallengeDay {
         this.title = title;
         this.date = date;
         this.challenges = challenges;
+        for(Challenge c : challenges) c.setTitle(title);
     }
 
     public void solveChallenges() {
-        LOGGER.info(String.format("%n%n%sDay %d: %s%nDate: %s%n%s",
-                textColor, dayNr, title, date.format(DateTimeFormatter.ISO_DATE), Launcher.LINE_RETURN));
+        LOGGER.info(String.format("%n%n%s%s%nDay %d: %s%nDate: %s%n%s", textColor,
+                DOTTED_LINE, dayNr, title, date.format(DateTimeFormatter.ISO_DATE), DOTTED_LINE));
         for (Challenge challenge : challenges) {
             challenge.solveChallenge();
         }

@@ -5,7 +5,7 @@ import java.util.List;
 public class Part2HandheldHalting extends Day08Challenge {
 
     public Part2HandheldHalting() {
-        super("Handheld Halting part 2",
+        super("part 2",
                 "Fix the program so that it terminates normally by changing exactly one jmp (to nop) or nop (to jmp). " +
                         "What is the value of the accumulator after the program terminates?");
     }

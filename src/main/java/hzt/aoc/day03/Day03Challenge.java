@@ -14,8 +14,8 @@ public abstract class Day03Challenge extends Challenge {
     private static final Logger LOGGER = LogManager.getLogger(Day03Challenge.class);
     private static final Character TREE = '#';
 
-    protected Day03Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201203-input-day3.txt");
+    protected Day03Challenge(String part, String description) {
+        super(part, description, "20201203-input-day3.txt");
     }
 
     @Override

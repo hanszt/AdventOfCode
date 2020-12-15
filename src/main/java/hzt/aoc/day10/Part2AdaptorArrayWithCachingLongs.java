@@ -8,7 +8,7 @@ import java.util.Map;
 public class Part2AdaptorArrayWithCachingLongs extends Day10Challenge {
 
     public Part2AdaptorArrayWithCachingLongs() {
-        super("Adapter Array part 2 with caching using longs",
+        super("part 2 with caching using longs",
                 "What is the total number of distinct ways " +
                         "you can arrange the adapters to connect the charging outlet to your device?");
     }

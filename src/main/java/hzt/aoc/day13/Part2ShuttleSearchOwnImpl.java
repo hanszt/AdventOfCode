@@ -6,7 +6,7 @@ import java.util.*;
 public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
 
     public Part2ShuttleSearchOwnImpl() {
-        super("Shuttle Search part 2",
+        super("part 2",
                 "What is the earliest timestamp such that all of the listed bus IDs depart at " +
                         "offsets matching their positions in the list? (This is a brute force implementation. Is too slow)",
                 "20201213-input-day13ref2.txt");
@@ -39,6 +39,6 @@ public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
 
     @Override
     String getMessage(Number global) {
-        return String.format("%s%n (only works for small inputs)", global);
+        return String.format("%s (only works for small inputs)", global);
     }
 }

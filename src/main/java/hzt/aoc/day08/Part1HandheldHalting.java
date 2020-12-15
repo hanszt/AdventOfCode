@@ -5,7 +5,7 @@ import java.util.List;
 public class Part1HandheldHalting extends Day08Challenge {
 
     public Part1HandheldHalting() {
-        super("Handheld Halting part 1",
+        super("part 1",
                 "Immediately before any instruction is executed a second time, " +
                         "what value is in the accumulator?");
     }

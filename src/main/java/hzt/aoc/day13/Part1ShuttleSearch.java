@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Part1ShuttleSearch extends Day13Challenge {
 
     public Part1ShuttleSearch() {
-        super("Shuttle Search part 1",
+        super("part 1",
                 "What is the ID of the earliest bus you can take to the airport " +
                         "multiplied by the number of minutes you'll need to wait for that bus?");
     }

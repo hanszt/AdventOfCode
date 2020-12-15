@@ -13,7 +13,7 @@ public class Part2ShuttleSearch extends Day13Challenge {
     private static final Logger LOGGER = LogManager.getLogger(Part2ShuttleSearch.class);
 
     public Part2ShuttleSearch() {
-        super("Shuttle Search part 2",
+        super("part 2",
                 "What is the earliest timestamp such that all of the listed bus IDs depart at " +
                         "offsets matching their positions in the list?");
     }
@@ -104,6 +104,6 @@ public class Part2ShuttleSearch extends Day13Challenge {
 
     @Override
     String getMessage(Number global) {
-        return String.format("%s%n", global);
+        return String.format("%s", global);
     }
 }

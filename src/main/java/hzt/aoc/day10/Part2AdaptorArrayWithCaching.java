@@ -9,7 +9,7 @@ import java.util.Map;
 public class Part2AdaptorArrayWithCaching extends Day10Challenge {
 
     public Part2AdaptorArrayWithCaching() {
-        super("Adapter Array part 2 with caching using bigInteger",
+        super("part 2 with caching using bigInteger",
                 "What is the total number of distinct ways " +
                         "you can arrange the adapters to connect the charging outlet to your device?");
     }

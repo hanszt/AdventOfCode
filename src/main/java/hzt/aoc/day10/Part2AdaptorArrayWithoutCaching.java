@@ -6,7 +6,7 @@ import java.util.List;
 public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
 
     public Part2AdaptorArrayWithoutCaching() {
-        super("Adapter Array part 2 without caching",
+        super("part 2 without caching",
                 "What is the total number of distinct ways " +
                         "you can arrange the adapters to connect the charging outlet to your device?",
                 "20201210-input-day10ref2.txt");

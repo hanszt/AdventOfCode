@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
-public class TwoDigitsSumTo2020 extends Day01Challenge {
+public class Part1ReportRepair extends Day01Challenge {
 
-    public TwoDigitsSumTo2020() {
-        super("Report Repair part 1",
+    public Part1ReportRepair() {
+        super("part 1",
                 "Find the product of the two entries that sum to 2020");
     }
 

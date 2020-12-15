@@ -2,10 +2,10 @@ package hzt.aoc.day01;
 
 import java.util.*;
 
-public class ThreeDigitsSumTo2020 extends Day01Challenge {
+public class Part2ReportRepair extends Day01Challenge {
 
-    public ThreeDigitsSumTo2020() {
-        super("Report Repair part 2", "Find the product of the three digits that sum to 2020");
+    public Part2ReportRepair() {
+        super("part 2", "Find the product of the three digits that sum to 2020");
     }
 
     @Override

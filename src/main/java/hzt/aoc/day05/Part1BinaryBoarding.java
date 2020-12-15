@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Part1BinaryBoarding extends Day05Challenge {
 
     public Part1BinaryBoarding() {
-        super("Binary boarding pass part 1", "Find the highest seat ID on a boarding pass in the list. ");
+        super("part 1", "Find the highest seat ID on a boarding pass in the list. ");
     }
 
     @Override

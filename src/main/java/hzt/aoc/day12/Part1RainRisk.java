@@ -6,7 +6,7 @@ import java.util.List;
 public class Part1RainRisk extends Day12Challenge {
 
     public Part1RainRisk() {
-        super("Rain Risk part 1",
+        super("part 1",
                 "What is the Manhattan distance between that location and the ship's starting position? See ChallengeDAy12.md");
     }
 

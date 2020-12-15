@@ -5,7 +5,7 @@ import java.util.Map;
 public class Part2HandyHaversacks extends Day07Challenge {
 
     public Part2HandyHaversacks() {
-        super("Handy Haversacks part 2ref",
+        super("part 2",
                 "How many individual bags are required inside your single shiny gold bag?");
     }
 

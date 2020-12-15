@@ -7,7 +7,7 @@ import java.util.function.IntBinaryOperator;
 public class Part2SeatingSystem extends Day11Challenge {
 
     public Part2SeatingSystem() {
-        super("Seating System part 2",
+        super("part 2",
                 "Now, instead of considering just the eight immediately adjacent seats, " +
                         "consider the first seat in each of those eight directions. " +
 

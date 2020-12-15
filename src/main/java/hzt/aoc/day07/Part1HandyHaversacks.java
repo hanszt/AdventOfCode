@@ -5,7 +5,7 @@ import java.util.Map;
 public class Part1HandyHaversacks extends Day07Challenge {
 
     public Part1HandyHaversacks() {
-        super("Handy Haversacks part 1",
+        super("part 1",
                 "What is the number of bag colors that can contain" +
                         " at least one shiny gold bag?");
     }

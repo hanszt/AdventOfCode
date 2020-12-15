@@ -8,8 +8,8 @@ import java.util.List;
 
 public abstract class Day02Challenge extends Challenge {
 
-    protected Day02Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201202-input-day2.txt");
+    protected Day02Challenge(String part, String description) {
+        super(part, description, "20201202-input-day2.txt");
     }
 
     @Override

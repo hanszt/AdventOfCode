@@ -6,7 +6,7 @@ import java.util.List;
 public class Part2RainRisk extends Day12Challenge {
 
     public Part2RainRisk() {
-        super("Rain Risk part 2",
+        super("part 2",
                 "Almost all of the actions indicate how to move a waypoint which is relative to the ship's position: (See ChallengeDay12.md)" +
                         "What is the Manhattan distance between that location and the ship's starting position?");
     }

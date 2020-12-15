@@ -12,8 +12,8 @@ public abstract class Day01Challenge extends Challenge {
 
     static final int SUM_TO_BE_FOUND = 2020;
 
-    protected Day01Challenge(String challenge, String description) {
-        super(challenge, description, "20201201-input-day1.txt");
+    protected Day01Challenge(String part, String description) {
+        super(part, description, "20201201-input-day1.txt");
     }
 
     @Override

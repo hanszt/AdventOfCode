@@ -6,7 +6,7 @@ import java.util.List;
 public class Part2EncodingError extends Day09Challenge {
 
     public Part2EncodingError() {
-        super("Encoding Error part 2",
+        super("part 2",
                 "you must find a contiguous set of at least two numbers " +
                         "in your list which sum to the invalid number from step 1. " +
                         "To find the encryption weakness, add together the smallest and largest number in this contiguous range");

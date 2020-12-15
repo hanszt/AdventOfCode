@@ -6,7 +6,7 @@ import java.util.List;
 public class Part1SeatingSystem extends Day11Challenge {
 
     public Part1SeatingSystem() {
-        super("Seating System part 1",
+        super("part 1",
                 "Simulate your seating area by applying the seating rules repeatedly until no seats change state. " +
                         "How many seats end up occupied?",
                 "20201211-input-day11.txt");

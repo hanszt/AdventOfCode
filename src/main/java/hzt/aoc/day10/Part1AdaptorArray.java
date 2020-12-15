@@ -5,7 +5,7 @@ import java.util.List;
 public class Part1AdaptorArray extends Day10Challenge {
 
     public Part1AdaptorArray() {
-        super("Adapter Array part 1",
+        super("part 1",
                 "Find a chain that uses all of your adapters to connect the charging outlet to " +
                         "your device's built-in adapter and count the joltage differences between the charging outlet, " +
                         "the adapters, and your device. " +

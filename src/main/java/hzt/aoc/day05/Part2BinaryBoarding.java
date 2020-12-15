@@ -11,7 +11,7 @@ public class Part2BinaryBoarding extends Day05Challenge {
 
     public Part2BinaryBoarding() {
 
-        super("Binary boarding pass part 2", "What is your seat Id? See ChallengeDay5.md part 2 for the assignment. ");
+        super("part 2", "What is your seat Id? See ChallengeDay5.md part 2 for the assignment. ");
     }
 
     @Override

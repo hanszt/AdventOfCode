@@ -2,10 +2,10 @@ package hzt.aoc.day02;
 
 import hzt.aoc.day02.model.Policy;
 
-public class PasswordValidChallenge1 extends Day02Challenge {
+public class Part1PasswordPhilosophy extends Day02Challenge {
 
-    public PasswordValidChallenge1() {
-        super("Valid passwords part 1",
+    public Part1PasswordPhilosophy() {
+        super("part 1",
                 "Count the passwords that are valid, see part one of ChallengeDay2.md for the validity rules");
     }
 

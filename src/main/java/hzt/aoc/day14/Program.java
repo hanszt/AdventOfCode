@@ -35,11 +35,6 @@ public class Program implements Iterable<Pair<Integer, Integer>> {
         return Long.parseLong(String.valueOf(array), 2);
     }
 
-    private String convertIntToBinaryString(int integer) {
-        String binaryString = Integer.toBinaryString(integer);
-        return "0".repeat(BITMASK_LENGTH - binaryString.length()).concat(binaryString);
-    }
-
     public Set<Long> getMemoryLocationsAfterBitMaskApplication(int memoryAddress) {
         String binaryString = convertIntToBinaryString(memoryAddress);
         Set<char[]> possibleMemoryLocations = new HashSet<>();
@@ -62,6 +57,11 @@ public class Program implements Iterable<Pair<Integer, Integer>> {
             }
         }
         return possibleMemoryLocations.stream().map(e -> Long.parseLong(String.valueOf(e), 2)).collect(Collectors.toSet());
+    }
+
+    private String convertIntToBinaryString(int integer) {
+        String binaryString = Integer.toBinaryString(integer);
+        return "0".repeat(BITMASK_LENGTH - binaryString.length()).concat(binaryString);
     }
 
     @Override
