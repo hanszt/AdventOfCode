@@ -4,9 +4,7 @@ import hzt.aoc.Challenge;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day15Challenge extends Challenge {
 
@@ -18,7 +16,7 @@ public abstract class Day15Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        List<Integer> numbers = Arrays.stream(inputList.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> numbers = commaSeparatedStringToIntegerList(inputList.get(0));
         return getMessage(getNthNumberSpoken(numbers));
     }
 

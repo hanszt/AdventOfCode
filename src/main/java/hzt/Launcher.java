@@ -36,6 +36,8 @@ import hzt.aoc.day14.Part1DockingData;
 import hzt.aoc.day14.Part2DockingData;
 import hzt.aoc.day15.Part1RambunctiousRecitation;
 import hzt.aoc.day15.Part2RambunctiousRecitation;
+import hzt.aoc.day16.Part1;
+import hzt.aoc.day16.Part2;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -115,7 +117,9 @@ public class Launcher {
 
     private void start() {
         LOGGER.info(String.format("%n%s", TITTLE));
-        challengeDays.forEach(ChallengeDay::solveChallenges);
+//        challengeDays.forEach(ChallengeDay::solveChallenges);
+        new Part1().setTitle("Ticket Translation").solveChallenge();
+        new Part2().setTitle("Ticket Translation").solveChallenge();
 //        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
                 DOTTED_LINE, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,

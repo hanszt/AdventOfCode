@@ -31,10 +31,10 @@ public abstract class Day04Challenge extends Challenge {
         return getMessage(validPasswords, passports);
     }
 
-    private List<Passport> getPasswords(List<String> inputByLineList) {
+    private List<Passport> getPasswords(List<String> lines) {
         List<Passport> passportList = new ArrayList<>();
         List<String> passportValues = new ArrayList<>();
-        for (String string : inputByLineList) {
+        for (String string : lines) {
             String[] strings = string.split("\\s");
             passportValues.addAll(Arrays.asList(strings));
             if (string.matches("\\s*")) {

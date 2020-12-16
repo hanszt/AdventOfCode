@@ -4,13 +4,16 @@ import hzt.aoc.io.IOController2;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static hzt.Launcher.DOTTED_LINE;
 
 public abstract class Challenge {
 
-    private static final Logger LOGGER = LogManager.getLogger(Challenge.class);
+    protected static final Logger LOGGER = LogManager.getLogger(Challenge.class);
+
     private String title;
     private final String note;
     private final String description;
@@ -36,6 +39,10 @@ public abstract class Challenge {
         LOGGER.info(message + DOTTED_LINE);
     }
 
+    protected List<Integer> commaSeparatedStringToIntegerList(String s) {
+        return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+    }
+
     protected List<String> loadInputList() {
         return new IOController2().readInputFileByLine(inputFileName);
     }
@@ -54,7 +61,8 @@ public abstract class Challenge {
         return note;
     }
 
-    public void setTitle(String title) {
+    public Challenge setTitle(String title) {
         this.title = title;
+        return this;
     }
 }

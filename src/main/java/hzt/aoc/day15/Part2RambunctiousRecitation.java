@@ -11,7 +11,8 @@ public class Part2RambunctiousRecitation extends Day15Challenge {
                 "Given your starting numbers, what will be the 30000000th number spoken?");
     }
 
-    private static final int THRESHOLD = 30000000;
+    private static final int THRESHOLD = 30_000_000;
+    private static final int LOG_STEP = 3_000_000;
 
     @Override
     protected int getNthNumberSpoken(List<Integer> numbers) {
@@ -29,7 +30,7 @@ public class Part2RambunctiousRecitation extends Day15Challenge {
             seenLastToIndex.put(last, index);
             last = seenLastTemp == -1 ? 0 : (index - seenLastTemp);
             index++;
-            start = logTime(index, 3000000, 0, last, start);
+            start = logTime(index, LOG_STEP, 0, last, start);
         }
         return last;
     }

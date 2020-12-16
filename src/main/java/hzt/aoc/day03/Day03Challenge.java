@@ -54,7 +54,6 @@ public abstract class Day03Challenge extends Challenge {
     private List<List<Character>> buildGrid(List<String> inputList) {
         int patternLength = inputList.get(0).length();
         int height = inputList.size();
-        // for each step down, three steps right
         double length = height * (Path.SLOPE7_1.getSlope().getX());
         int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
         List<List<Character>> charGird = new ArrayList<>();
