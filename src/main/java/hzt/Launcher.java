@@ -3,10 +3,10 @@ package hzt;
 import hzt.aoc.Challenge;
 import hzt.aoc.ChallengeDay;
 import hzt.aoc.Pair;
-import hzt.aoc.day01.Part2ReportRepair;
 import hzt.aoc.day01.Part1ReportRepair;
-import hzt.aoc.day02.Part2PasswordPhilosophy;
+import hzt.aoc.day01.Part2ReportRepair;
 import hzt.aoc.day02.Part1PasswordPhilosophy;
+import hzt.aoc.day02.Part2PasswordPhilosophy;
 import hzt.aoc.day03.TreesEncounteredPart1;
 import hzt.aoc.day03.TreesEncounteredPart2;
 import hzt.aoc.day04.PassportProcessingPart1;
@@ -36,8 +36,10 @@ import hzt.aoc.day14.Part1DockingData;
 import hzt.aoc.day14.Part2DockingData;
 import hzt.aoc.day15.Part1RambunctiousRecitation;
 import hzt.aoc.day15.Part2RambunctiousRecitation;
-import hzt.aoc.day16.Part1;
-import hzt.aoc.day16.Part2;
+import hzt.aoc.day16.Part1TicketTranslation;
+import hzt.aoc.day16.Part2TicketTranslation;
+import hzt.aoc.day17.Part1ConwayCubes;
+import hzt.aoc.day17.Part2ConwayCubes;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -99,8 +101,10 @@ public class Launcher {
                 new Part1DockingData(), new Part2DockingData()));
         challengeDays.add(new ChallengeDay(ANSI_RED, "Rambunctious Recitation", LocalDate.of(2020, 12, 15),
                 new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 16)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 17)));
+        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Ticket Translation", LocalDate.of(2020, 12, 16),
+                new Part1TicketTranslation(), new Part2TicketTranslation()));
+        challengeDays.add(new ChallengeDay(ANSI_GREEN, "ConwayCubes", LocalDate.of(2020, 12, 17),
+                new Part1ConwayCubes(), new Part2ConwayCubes()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 18)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 19)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 20)));
@@ -117,9 +121,9 @@ public class Launcher {
 
     private void start() {
         LOGGER.info(String.format("%n%s", TITTLE));
-//        challengeDays.forEach(ChallengeDay::solveChallenges);
-        new Part1().setTitle("Ticket Translation").solveChallenge();
-        new Part2().setTitle("Ticket Translation").solveChallenge();
+        challengeDays.forEach(ChallengeDay::solveChallenges);
+
+
 //        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
                 DOTTED_LINE, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
@@ -134,7 +138,7 @@ public class Launcher {
         StringBuilder sb = new StringBuilder();
         for (Pair<Challenge, ChallengeDay> p : challenges) {
             sb.append(String.format("Day %2d Challenge: %50s, solve time: %8.3f milliseconds%n",
-                    p .getRight().getDayNr(), p.getLeft().getNote(), p.getLeft().getSolveTime() / 1e6));
+                    p.getRight().getDayOfMonth(), p.getLeft().getNote(), p.getLeft().getSolveTime() / 1e6));
         }
         return sb.toString();
     }

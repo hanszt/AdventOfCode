@@ -13,16 +13,12 @@ public class ChallengeDay {
 
     private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
 
-    private static int next = 0;
-
-    private final int dayNr;
     private final String textColor;
     private final String title;
     private final LocalDate date;
     private final Challenge[] challenges;
 
     public ChallengeDay(String textColor, String title, LocalDate date, Challenge... challenges) {
-        this.dayNr = ++next;
         this.textColor = textColor;
         this.title = title;
         this.date = date;
@@ -32,7 +28,7 @@ public class ChallengeDay {
 
     public void solveChallenges() {
         LOGGER.info(String.format("%n%n%s%s%nDay %d: %s%nDate: %s%n%s", textColor,
-                DOTTED_LINE, dayNr, title, date.format(DateTimeFormatter.ISO_DATE), DOTTED_LINE));
+                DOTTED_LINE, date.getDayOfMonth(), title, date.format(DateTimeFormatter.ISO_DATE), DOTTED_LINE));
         for (Challenge challenge : challenges) {
             challenge.solveChallenge();
         }
@@ -46,7 +42,7 @@ public class ChallengeDay {
         return challenges;
     }
 
-    public int getDayNr() {
-        return dayNr;
+    public int getDayOfMonth() {
+        return date.getDayOfMonth();
     }
 }

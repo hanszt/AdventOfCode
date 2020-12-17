@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Part1 extends Day16Challenge {
+public class Part1TicketTranslation extends Day16Challenge {
 
-    public Part1() {
+    public Part1TicketTranslation() {
         super("part 1",
-                "");
+                "Consider the validity of the nearby tickets you scanned. What is your ticket scanning error rate?");
     }
 
     @Override

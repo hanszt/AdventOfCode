@@ -5,11 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 // credits to turkey dev
-public class Part2 extends Day16Challenge {
+public class Part2TicketTranslation extends Day16Challenge {
 
-    public Part2() {
+    public Part2TicketTranslation() {
         super("part 2",
-                "");
+                "Once you work out which field is which, look for the six fields on your ticket that start with the word departure. \n" +
+                        "What do you get if you multiply those six values together?");
     }
 
     private static final int FIRST_SIX_FIELDS = 6;
@@ -30,7 +31,7 @@ public class Part2 extends Day16Challenge {
         }
         LOGGER.info(ourTicketValues);
         iterateUntilUniqueValueForeEachField(possibleMatches);
-        LOGGER.info(getPrintOfPossibleMatches(possibleMatches));
+        LOGGER.info(possibleMatchesAsString(possibleMatches));
         return getAnswer(possibleMatches, ourTicketValues);
     }
 
@@ -38,7 +39,7 @@ public class Part2 extends Day16Challenge {
         while (!isDone(possibleMatches)) filterOutUniqueValues(possibleMatches);
     }
 
-    private String getPrintOfPossibleMatches(boolean[][] possibleMatches) {
+    private String possibleMatchesAsString(boolean[][] possibleMatches) {
         StringBuilder sb = new StringBuilder();
         for (boolean[] array : possibleMatches) {
             for (boolean bool : array) {
