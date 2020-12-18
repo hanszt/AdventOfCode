@@ -40,6 +40,8 @@ import hzt.aoc.day16.Part1TicketTranslation;
 import hzt.aoc.day16.Part2TicketTranslation;
 import hzt.aoc.day17.Part1ConwayCubes;
 import hzt.aoc.day17.Part2ConwayCubes;
+import hzt.aoc.day18.Part1OperationOrder;
+import hzt.aoc.day18.Part2OperationOrder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -105,7 +107,8 @@ public class Launcher {
                 new Part1TicketTranslation(), new Part2TicketTranslation()));
         challengeDays.add(new ChallengeDay(ANSI_GREEN, "ConwayCubes", LocalDate.of(2020, 12, 17),
                 new Part1ConwayCubes(), new Part2ConwayCubes()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 18)));
+        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Operation Order", LocalDate.of(2020, 12, 18),
+                new Part1OperationOrder(), new Part2OperationOrder()));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 19)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 20)));
 //        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 21)));
@@ -122,8 +125,6 @@ public class Launcher {
     private void start() {
         LOGGER.info(String.format("%n%s", TITTLE));
         challengeDays.forEach(ChallengeDay::solveChallenges);
-
-
 //        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
                 DOTTED_LINE, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
