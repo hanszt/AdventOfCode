@@ -22,13 +22,8 @@ public class Part2OperationOrder extends Day18Challenge {
             newList = new ArrayList<>(elementList);
             for (int i = 0; i < elementList.size(); i++) {
                 if (elementList.get(i).equals(OPERATOR_TO_EVALUATE_FIRST)) {
-                    subResult = calculateSubResult(elementList, i);
-                    int j = 0;
-                    while (j < EVALUATION_LENGTH) {
-                        newList.remove(i - 1);
-                        j++;
-                    }
-                    newList.add(i - 1, subResult);
+                    subResult = parseAndCalculateSubResult(elementList, i);
+                    replaceEquationBySubResult(newList, subResult, i - 1, EVALUATION_LENGTH);
                     break;
                 }
             }
@@ -40,9 +35,9 @@ public class Part2OperationOrder extends Day18Challenge {
         return subResult;
     }
 
-    private String calculateSubResult(List<String> elementList, int i) {
-        long first = Long.parseLong(elementList.get(i - 1));
-        long second = Long.parseLong(elementList.get(i + 1));
+    private String parseAndCalculateSubResult(List<String> elementList, int index) {
+        long first = Long.parseLong(elementList.get(index - 1));
+        long second = Long.parseLong(elementList.get(index + 1));
         long longSubResult = evaluate(first, OPERATOR_TO_EVALUATE_FIRST, second);
         return String.valueOf(longSubResult);
     }

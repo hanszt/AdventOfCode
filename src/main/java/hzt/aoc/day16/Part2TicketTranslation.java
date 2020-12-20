@@ -29,9 +29,9 @@ public class Part2TicketTranslation extends Day16Challenge {
                 }
             }
         }
-        LOGGER.info(ourTicketValues);
+        LOGGER.trace(ourTicketValues);
         iterateUntilUniqueValueForeEachField(possibleMatches);
-        LOGGER.info(possibleMatchesAsString(possibleMatches));
+        LOGGER.trace(possibleMatchesAsString(possibleMatches));
         return getAnswer(possibleMatches, ourTicketValues);
     }
 
@@ -93,10 +93,11 @@ public class Part2TicketTranslation extends Day16Challenge {
 
     private long getAnswer(boolean[][] possibleMatches, List<Integer> ourTicketValues) {
         long answer = 1;
-        for (int col = 0; col < FIRST_SIX_FIELDS; col++) {
-            for (int row = 0; row < possibleMatches.length; row++) {
+        for (int row = 0; row < FIRST_SIX_FIELDS; row++) {
+            for (int col = 0; col < possibleMatches.length; col++) {
                 if (possibleMatches[row][col]) {
-                    answer *= ourTicketValues.get(row);
+                    int value = ourTicketValues.get(col);
+                    answer *= value;
                     break;
                 }
             }

@@ -38,6 +38,10 @@ public class ChallengeDay {
         return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElse(0L);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public Challenge[] getChallenges() {
         return challenges;
     }

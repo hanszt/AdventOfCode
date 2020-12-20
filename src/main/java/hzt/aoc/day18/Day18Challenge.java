@@ -32,7 +32,7 @@ public abstract class Day18Challenge extends Challenge {
                 .collect(Collectors.toList());
     }
 
-    long solveEquation(List<String> elementList) {
+    private long solveEquation(List<String> elementList) {
         String subResult;
         while (elementList.contains("(")) {
             int indexOpenBracket = 0;
@@ -42,14 +42,9 @@ public abstract class Day18Challenge extends Challenge {
                     indexOpenBracket = i;
                 } else if (elementList.get(i).equals(")")) {
                     List<String> subList = elementList.subList(indexOpenBracket + 1, i);
-                    subResult = evaluateBetweenParentheses(subList);
                     LOGGER.trace(subList);
-                    int j = 0;
-                    while (j < subList.size() + 1) {
-                        newList.remove(indexOpenBracket);
-                        j++;
-                    }
-                    newList.add(indexOpenBracket, subResult);
+                    subResult = evaluateBetweenParentheses(subList);
+                    replaceEquationBySubResult(newList, subResult, indexOpenBracket, subList.size() + 1);
                     newList.remove(indexOpenBracket + 1);
                     LOGGER.trace(subResult);
                     break;
@@ -59,6 +54,15 @@ public abstract class Day18Challenge extends Challenge {
         }
         subResult = evaluateBetweenParentheses(elementList);
         return Long.parseLong(subResult);
+    }
+
+    void replaceEquationBySubResult(List<String> newList, String subResult, int index, int equationLength) {
+        int j = 0;
+        while (j < equationLength) {
+            newList.remove(index);
+            j++;
+        }
+        newList.add(index, subResult);
     }
 
     abstract String evaluateBetweenParentheses(List<String> strings);
@@ -82,7 +86,7 @@ public abstract class Day18Challenge extends Challenge {
     long evaluate(long first, String operator, long second) {
         if (operator.equals("+")) return first + second;
         else if (operator.equals("*")) return first * second;
-        else throw new UnsupportedOperationException("The operator is not recognized...");
+        else throw new UnsupportedOperationException("Operator " + operator + " is not supported...");
     }
 
     abstract String getMessage(long value);

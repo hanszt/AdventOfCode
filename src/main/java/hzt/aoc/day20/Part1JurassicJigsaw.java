@@ -1,8 +1,8 @@
-package hzt.aoc.day19;
+package hzt.aoc.day20;
 
-public class Part1 extends Day19Challenge {
+public class Part1JurassicJigsaw extends Day20Challenge {
 
-    public Part1() {
+    public Part1JurassicJigsaw() {
         super("part 1",
                 "");
     }

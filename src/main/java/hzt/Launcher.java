@@ -42,14 +42,19 @@ import hzt.aoc.day17.Part1ConwayCubes;
 import hzt.aoc.day17.Part2ConwayCubes;
 import hzt.aoc.day18.Part1OperationOrder;
 import hzt.aoc.day18.Part2OperationOrder;
+import hzt.aoc.day19.Part1MonsterMessages;
+import hzt.aoc.day19.Part2MonsterMessages;
+import hzt.aoc.day20.Part1JurassicJigsaw;
+import hzt.aoc.day20.Part2JurassicJigsaw;
+import hzt.aoc.day21.Part1;
+import hzt.aoc.day21.Part2;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+
+import static java.lang.System.* ;
 
 public class Launcher {
 
@@ -69,53 +74,57 @@ public class Launcher {
             "__________________________________________________________________________________________________________          \n" +
             ANSI_RESET;
 
-    private final List<ChallengeDay> challengeDays = new ArrayList<>();
+    private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
 
     public Launcher() {
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
+        int counter = 1;
+        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
                 new Part1ReportRepair(), new Part2ReportRepair()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Password Philosophy", LocalDate.of(2020, 12, 2),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Password Philosophy", LocalDate.of(2020, 12, 2),
                 new Part1PasswordPhilosophy(), new Part2PasswordPhilosophy()));
-        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Toboggan Trajectory", LocalDate.of(2020, 12, 3),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Toboggan Trajectory", LocalDate.of(2020, 12, 3),
                 new TreesEncounteredPart1(), new TreesEncounteredPart2()));
-        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Passport Processing", LocalDate.of(2020, 12, 4),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Passport Processing", LocalDate.of(2020, 12, 4),
                 new PassportProcessingPart1(), new PassportProcessingPart2()));
-        challengeDays.add(new ChallengeDay(ANSI_RED, "Binary Boarding", LocalDate.of(2020, 12, 5),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Binary Boarding", LocalDate.of(2020, 12, 5),
                 new Part1BinaryBoarding(), new Part2BinaryBoarding()));
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Custom Customs", LocalDate.of(2020, 12, 6),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Custom Customs", LocalDate.of(2020, 12, 6),
                 new Part1CustomCustoms(), new Part2CustomCustoms()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Handy Haversacks", LocalDate.of(2020, 12, 7),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Handy Haversacks", LocalDate.of(2020, 12, 7),
                 new Part1HandyHaversacks(), new Part2HandyHaversacks()));
-        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Handheld Halting", LocalDate.of(2020, 12, 8),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Handheld Halting", LocalDate.of(2020, 12, 8),
                 new Part1HandheldHalting(), new Part2HandheldHalting()));
-        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Encoding Error", LocalDate.of(2020, 12, 9),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Encoding Error", LocalDate.of(2020, 12, 9),
                 new Part1EncodingError(), new Part2EncodingError()));
-        challengeDays.add(new ChallengeDay(ANSI_RED, "Adaptor Array", LocalDate.of(2020, 12, 10),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Adaptor Array", LocalDate.of(2020, 12, 10),
                 new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(),
                 new Part2AdaptorArrayWithCachingLongs(), new Part2AdaptorArrayWithoutCaching()));
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Seating System", LocalDate.of(2020, 12, 11),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Seating System", LocalDate.of(2020, 12, 11),
                 new Part1SeatingSystem(), new Part2SeatingSystem()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "Rain Risk", LocalDate.of(2020, 12, 12),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Rain Risk", LocalDate.of(2020, 12, 12),
                 new Part1RainRisk(), new Part2RainRisk()));
-        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Shuttle Search", LocalDate.of(2020, 12, 13),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Shuttle Search", LocalDate.of(2020, 12, 13),
                 new Part1ShuttleSearch(), new Part2ShuttleSearchOwnImpl(), new Part2ShuttleSearch()));
-        challengeDays.add(new ChallengeDay(ANSI_YELLOW, "Docking Data", LocalDate.of(2020, 12, 14),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Docking Data", LocalDate.of(2020, 12, 14),
                 new Part1DockingData(), new Part2DockingData()));
-        challengeDays.add(new ChallengeDay(ANSI_RED, "Rambunctious Recitation", LocalDate.of(2020, 12, 15),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Rambunctious Recitation", LocalDate.of(2020, 12, 15),
                 new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
-        challengeDays.add(new ChallengeDay(ANSI_BRIGHT_BLUE, "Ticket Translation", LocalDate.of(2020, 12, 16),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Ticket Translation", LocalDate.of(2020, 12, 16),
                 new Part1TicketTranslation(), new Part2TicketTranslation()));
-        challengeDays.add(new ChallengeDay(ANSI_GREEN, "ConwayCubes", LocalDate.of(2020, 12, 17),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "ConwayCubes", LocalDate.of(2020, 12, 17),
                 new Part1ConwayCubes(), new Part2ConwayCubes()));
-        challengeDays.add(new ChallengeDay(ANSI_CYAN, "Operation Order", LocalDate.of(2020, 12, 18),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Operation Order", LocalDate.of(2020, 12, 18),
                 new Part1OperationOrder(), new Part2OperationOrder()));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 19)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 20)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 21)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 22)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 23)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 24)));
-//        challengeDays.add(new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Monster Messages", LocalDate.of(2020, 12, 19),
+                new Part1MonsterMessages(), new Part2MonsterMessages()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Jurassic Jigsaw", LocalDate.of(2020, 12, 20),
+                new Part1JurassicJigsaw(), new Part2JurassicJigsaw()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 21),
+                new Part1(), new Part2()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 22)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 23)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 24)));
+        challengeDays.put(counter, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)));
     }
 
     public static void main(String[] args) {
@@ -123,25 +132,80 @@ public class Launcher {
     }
 
     private void start() {
+        String userInput = "";
+        long startTime = System.nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
-        challengeDays.forEach(ChallengeDay::solveChallenges);
-//        LOGGER.info(String.format("%n%s%s", ANSI_RESET, getSortedSolveTimes(challengeDays)));
-        LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
-                DOTTED_LINE, challengeDays.stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
-                DOTTED_LINE));
-
+        while (!userInput.equals(EXIT)) {
+            pressEnterToContinue();
+            out.print(menuAsString());
+            userInput = execute();
+        }
+        long runtime = System.nanoTime() - startTime;
+        out.printf("%s%nRuntime: %2.3f seconds%n%s%n", ANSI_GREEN, runtime / 1e9, DOTTED_LINE);
+        exit(0);
     }
 
-    private String getSortedSolveTimes(List<ChallengeDay> challengeDays) {
+    private void executeAllAndPrintSummary() {
+        challengeDays.values().forEach(ChallengeDay::solveChallenges);
+
+        LOGGER.info(sortedSolveTimesAsString(new ArrayList<>(challengeDays.values())));
+        LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
+                DOTTED_LINE, challengeDays.values().stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
+                DOTTED_LINE));
+    }
+
+    private String execute() {
+        String input = new Scanner(in).next();
+//        String input = "21";
+        if (input.equals(EXIT)) return EXIT;
+        else if (input.equals(ALL)) executeAllAndPrintSummary();
+        else executeByChallengeNumber(input);
+        return input;
+    }
+
+    private void executeByChallengeNumber(String input) {
+        try {
+            int key = Integer.parseInt(input);
+            if (challengeDays.containsKey(key)) {
+                challengeDays.get(key).solveChallenges();
+            } else out.println("The selected number is not in the challenge list...");
+        } catch (NumberFormatException e) {
+            out.println("You didn't choose a valid day number...");
+        }
+    }
+
+    private static final String EXIT = "e";
+    private static final String ALL = "a";
+
+    private String menuAsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%n"));
+        challengeDays.forEach((k, v) -> sb.append(String.format("Press '%2d' to execute day %2d %s.%n", k, k, v.getTitle())));
+        sb.append(String.format("Press '%s' to execute all challenges at once.%n", ALL));
+        sb.append(String.format("Press '%s' to exit the program.%nYour input: ", EXIT));
+        return sb.toString();
+    }
+
+    private String sortedSolveTimesAsString(List<ChallengeDay> challengeDays) {
         List<Pair<Challenge, ChallengeDay>> challenges = new ArrayList<>();
         challengeDays.forEach(day -> Arrays.asList(day.getChallenges()).forEach(challenge -> challenges.add(new Pair<>(challenge, day))));
         challenges.sort(Comparator.comparing(c -> c.getLeft().getSolveTime()));
+
         StringBuilder sb = new StringBuilder();
+        sb.append(ANSI_RESET);
+        sb.append(String.format("%nChallenges sorted by solve time:%n"));
         for (Pair<Challenge, ChallengeDay> p : challenges) {
-            sb.append(String.format("Day %2d Challenge: %50s, solve time: %8.3f milliseconds%n",
-                    p.getRight().getDayOfMonth(), p.getLeft().getNote(), p.getLeft().getSolveTime() / 1e6));
+            sb.append(String.format("Day %2d Challenge: %-50s, solve time: %8.3f milliseconds%n",
+                    p.getRight().getDayOfMonth(),
+                    p.getRight().getTitle() + " " + p.getLeft().getNote(),
+                    p.getLeft().getSolveTime() / 1e6));
         }
         return sb.toString();
+    }
+
+    private static void pressEnterToContinue() {
+        out.printf("%n%sPress Enter key to continue...%s", ANSI_GREEN, ANSI_RESET);
+        new Scanner(in).nextLine();
     }
 
 }
