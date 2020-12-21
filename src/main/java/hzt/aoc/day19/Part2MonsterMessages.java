@@ -10,7 +10,7 @@ public class Part2MonsterMessages extends Day19Challenge {
                 "How many messages completely match rule 0? (with loops) not working yet...");
     }
 
-
+    //TODO: Still has to be solved
     @Override
     protected long countMatches() {
         addRuleToRulesMap(rulesToSubRules, "8: 42 | 42 8");

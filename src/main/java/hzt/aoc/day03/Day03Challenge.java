@@ -20,52 +20,39 @@ public abstract class Day03Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        List<List<Character>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
-        LOGGER.trace(gridAsString(grid));
+        List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
+        LOGGER.trace(booleanGrid2DAsString(grid));
         return getMessage(calculateResult(grid));
     }
 
-    protected abstract long calculateResult(List<List<Character>> grid);
+    protected abstract long calculateResult(List<List<Boolean>> grid);
 
-    private String gridAsString(List<List<Character>> grid) {
-        StringBuilder sb = new StringBuilder();
-        for (List<Character> row : grid) {
-            sb.append("\n");
-            for (Character character : row) {
-                sb.append(character);
-            }
-        }
-        sb.append("\n");
-        return sb.toString();
-    }
-
-    int calculateNumberOfTreesEncountered(List<List<Character>> treeGrid, Point position, Point slope) {
+    int calculateNumberOfTreesEncountered(List<List<Boolean>> treeGrid, Point position, Point slope) {
         int numberOfTrees = 0;
         while (position.getY() < treeGrid.size()) {
             LOGGER.trace("x: " + position.x + ", y: " + position.y + ", Is tree: " + treeGrid.get(position.y).get(position.x));
-            if (treeGrid.get(position.y).get(position.x).equals(TREE)) {
-                numberOfTrees++;
-            }
+            boolean isTree = treeGrid.get(position.y).get(position.x);
+            if (isTree) numberOfTrees++;
             position.translate(slope.x, slope.y);
         }
         return numberOfTrees;
     }
 
-    private List<List<Character>> buildGrid(List<String> inputList) {
+    private List<List<Boolean>> buildGrid(List<String> inputList) {
         int patternLength = inputList.get(0).length();
         int height = inputList.size();
         double length = height * (Path.SLOPE7_1.getSlope().getX());
         int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
-        List<List<Character>> charGird = new ArrayList<>();
+        List<List<Boolean>> gird = new ArrayList<>();
         for (String patternRow : inputList) {
-            List<Character> newRow = new ArrayList<>();
+            List<Boolean> newRow = new ArrayList<>();
             char[] newRowArray = patternRow.repeat(timesRepeatedHorizontally).toCharArray();
-            for (char c : newRowArray) {
-                newRow.add(c);
+            for (Character c : newRowArray) {
+                newRow.add(c.equals(TREE));
             }
-            charGird.add(newRow);
+            gird.add(newRow);
         }
-        return charGird;
+        return gird;
     }
 
     public abstract String getMessage(long result);

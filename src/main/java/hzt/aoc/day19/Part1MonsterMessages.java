@@ -27,6 +27,7 @@ public class Part1MonsterMessages extends Day19Challenge {
     private boolean matches(List<Character> messageChars) {
         return matches(messageChars, START_RULE) && messageChars.isEmpty();
     }
+
     // requires a mutableList so that's why a list of chars is passed instead of a string
     private boolean matches(List<Character> messageChars, int rule) {
         if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars);

@@ -43,6 +43,19 @@ public abstract class Challenge {
         return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 
+    protected String booleanGrid2DAsString(List<List<Boolean>> grid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%n"));
+        for (List<Boolean> row : grid) {
+            for (boolean isActive : row) {
+                sb.append(isActive ? "1" : "0").append(", ");
+            }
+            sb.append(String.format("%n"));
+        }
+        sb.append(String.format("%n"));
+        return sb.toString();
+    }
+
     protected List<String> loadInputList() {
         return new IOController2().readInputFileByLine(inputFileName);
     }

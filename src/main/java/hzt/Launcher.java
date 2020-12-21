@@ -46,8 +46,8 @@ import hzt.aoc.day19.Part1MonsterMessages;
 import hzt.aoc.day19.Part2MonsterMessages;
 import hzt.aoc.day20.Part1JurassicJigsaw;
 import hzt.aoc.day20.Part2JurassicJigsaw;
-import hzt.aoc.day21.Part1;
-import hzt.aoc.day21.Part2;
+import hzt.aoc.day21.Part1AllergenAssessment;
+import hzt.aoc.day21.Part2AllergenAssessment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -119,8 +119,8 @@ public class Launcher {
                 new Part1MonsterMessages(), new Part2MonsterMessages()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Jurassic Jigsaw", LocalDate.of(2020, 12, 20),
                 new Part1JurassicJigsaw(), new Part2JurassicJigsaw()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 21),
-                new Part1(), new Part2()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Allergen Assessment", LocalDate.of(2020, 12, 21),
+                new Part1AllergenAssessment(), new Part2AllergenAssessment()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 22)));
         challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 23)));
         challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 24)));
@@ -132,14 +132,16 @@ public class Launcher {
     }
 
     private void start() {
-        String userInput = "";
+        String userInput = ALL;
         long startTime = System.nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
-        while (!userInput.equals(EXIT)) {
-            pressEnterToContinue();
-            out.print(menuAsString());
-            userInput = execute();
-        }
+//        while (!userInput.equals(EXIT)) {
+//            pressEnterToContinue();
+//            out.print(menuAsString());
+            //        String input = new Scanner(in).next();
+            String input = "5";
+            userInput = execute(input);
+//        }
         long runtime = System.nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", ANSI_GREEN, runtime / 1e9, DOTTED_LINE);
         exit(0);
@@ -154,9 +156,7 @@ public class Launcher {
                 DOTTED_LINE));
     }
 
-    private String execute() {
-        String input = new Scanner(in).next();
-//        String input = "21";
+    private String execute(String input) {
         if (input.equals(EXIT)) return EXIT;
         else if (input.equals(ALL)) executeAllAndPrintSummary();
         else executeByChallengeNumber(input);

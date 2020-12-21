@@ -92,18 +92,14 @@ public abstract class Day17Challenge extends Challenge {
         StringBuilder sb = new StringBuilder();
         int z = -(grid3d.size() - 1) / 2;
         for (List<List<Boolean>> gridXY : grid3d) {
-            sb.append(String.format("%nSlice at z = %d%n", z));
-            for (List<Boolean> rowX : gridXY) {
-                for (boolean isActive : rowX) {
-                    sb.append(isActive ? "11" : "..").append(", ");
-                }
-                sb.append(String.format("%n"));
-            }
-            sb.append(String.format("%n"));
+            sb.append(String.format("%nSlice at z = %d", z));
+            sb.append(booleanGrid2DAsString(gridXY));
             z++;
         }
         return sb.toString();
     }
+
+
 
     /*
      If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.

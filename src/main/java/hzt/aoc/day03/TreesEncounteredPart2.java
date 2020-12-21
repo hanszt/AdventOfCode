@@ -18,7 +18,7 @@ public class TreesEncounteredPart2 extends Day03Challenge {
     }
 
     @Override
-    protected long calculateResult(List<List<Character>> grid) {
+    protected long calculateResult(List<List<Boolean>> grid) {
         long product = 1;
         for (Path path : Path.values()) {
             int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point(0, 0), path.getSlope());
