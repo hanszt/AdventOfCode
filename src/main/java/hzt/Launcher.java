@@ -48,13 +48,15 @@ import hzt.aoc.day20.Part1JurassicJigsaw;
 import hzt.aoc.day20.Part2JurassicJigsaw;
 import hzt.aoc.day21.Part1AllergenAssessment;
 import hzt.aoc.day21.Part2AllergenAssessment;
+import hzt.aoc.day22.Part1CrabCombat;
+import hzt.aoc.day22.Part2CrabCombat;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.*;
 
-import static java.lang.System.* ;
+import static java.lang.System.*;
 
 public class Launcher {
 
@@ -77,6 +79,10 @@ public class Launcher {
     private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
 
     public Launcher() {
+        populateChallengeDaysMap(challengeDays);
+    }
+
+    private void populateChallengeDaysMap(Map<Integer, ChallengeDay> challengeDays) {
         int counter = 1;
         challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
                 new Part1ReportRepair(), new Part2ReportRepair()));
@@ -119,11 +125,12 @@ public class Launcher {
                 new Part1MonsterMessages(), new Part2MonsterMessages()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Jurassic Jigsaw", LocalDate.of(2020, 12, 20),
                 new Part1JurassicJigsaw(), new Part2JurassicJigsaw()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Allergen Assessment", LocalDate.of(2020, 12, 21),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Allergen Assessment", LocalDate.of(2020, 12, 21),
                 new Part1AllergenAssessment(), new Part2AllergenAssessment()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 22)));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 23)));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 24)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Crab Combat", LocalDate.of(2020, 12, 22),
+                new Part1CrabCombat(), new Part2CrabCombat()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "", LocalDate.of(2020, 12, 23)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "", LocalDate.of(2020, 12, 24)));
         challengeDays.put(counter, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)));
     }
 
@@ -132,16 +139,20 @@ public class Launcher {
     }
 
     private void start() {
+        new Part1CrabCombat().solveChallenge();
+        loop();
+    }
+
+    private void loop() {
         String userInput = ALL;
         long startTime = System.nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
-//        while (!userInput.equals(EXIT)) {
-//            pressEnterToContinue();
-//            out.print(menuAsString());
-            //        String input = new Scanner(in).next();
-            String input = "5";
+        while (!userInput.equals(EXIT)) {
+            pressEnterToContinue();
+            out.print(menuAsString());
+            String input = new Scanner(in).next();
             userInput = execute(input);
-//        }
+        }
         long runtime = System.nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", ANSI_GREEN, runtime / 1e9, DOTTED_LINE);
         exit(0);
@@ -159,19 +170,16 @@ public class Launcher {
     private String execute(String input) {
         if (input.equals(EXIT)) return EXIT;
         else if (input.equals(ALL)) executeAllAndPrintSummary();
-        else executeByChallengeNumber(input);
+        else if (input.matches("\\d+")) executeByChallengeNumber(input);
+        else out.println("You didn't enter a valid option...");
         return input;
     }
 
     private void executeByChallengeNumber(String input) {
-        try {
-            int key = Integer.parseInt(input);
-            if (challengeDays.containsKey(key)) {
-                challengeDays.get(key).solveChallenges();
-            } else out.println("The selected number is not in the challenge list...");
-        } catch (NumberFormatException e) {
-            out.println("You didn't choose a valid day number...");
-        }
+        int key = Integer.parseInt(input);
+        if (challengeDays.containsKey(key)) {
+            challengeDays.get(key).solveChallenges();
+        } else out.println("The selected number is not in the challenge list...");
     }
 
     private static final String EXIT = "e";
