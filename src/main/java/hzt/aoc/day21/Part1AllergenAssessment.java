@@ -1,10 +1,9 @@
 package hzt.aoc.day21;
 
-import hzt.aoc.Pair;
-
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
+// credits to Johan de Jong
 public class Part1AllergenAssessment extends Day21Challenge {
 
     public Part1AllergenAssessment() {
@@ -14,28 +13,29 @@ public class Part1AllergenAssessment extends Day21Challenge {
     }
 
 
-    //TODO: Still has to be solved
     @Override
-    protected long calculateAnswer(Map<Integer, Pair<List<String>, List<String>>> idsToIngredientsAndAllergens) {
-
-
-        for(Pair<List<String>, List<String>> lists : idsToIngredientsAndAllergens.values()) {
-            List<String> ingredients = lists.getLeft();
-            List<String> allergens = lists.getRight();
-            for(Pair<List<String>, List<String>> otherLists : idsToIngredientsAndAllergens.values()) {
-                List<String> otherIngredients = otherLists.getLeft();
-                List<String> otherAllergens = otherLists.getRight();
-            }
-            for (String ingredient : ingredients) {
-
-            }
-        }
-        return 0;
+    protected Object calculateAnswer(List<Food> foods) {
+        Set<String> allAllergens = extractAllAllergens(foods);
+        Set<String> potentialAllergenIngredients = extractPotentialAllergens(allAllergens, foods).getPotentialAllergenIngredients();
+        return countIngredientsWithoutAllergens(potentialAllergenIngredients, foods);
     }
 
+    private long countIngredientsWithoutAllergens(Set<String> potentialAllergenIngredients, List<Food> foods) {
+        long count = 0;
+        for (Food food : foods) {
+            for (String ingredient : food.getIngredients()) {
+                if (!potentialAllergenIngredients.contains(ingredient)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
     @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    String getMessage(Object global) {
+        return String.format("%s", global);
     }
 
 }

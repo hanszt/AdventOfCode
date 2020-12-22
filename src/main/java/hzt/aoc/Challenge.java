@@ -15,20 +15,20 @@ public abstract class Challenge {
     protected static final Logger LOGGER = LogManager.getLogger(Challenge.class);
 
     private String title;
-    private final String note;
+    private final String part;
     private final String description;
     private final String inputFileName;
     private long solveTime = 0;
 
     protected Challenge(String part, String description, String inputFileName) {
-        this.note = part;
+        this.part = part;
         this.description = description;
         this.inputFileName = inputFileName;
     }
 
     public void solveChallenge() {
         LOGGER.info(String.format("%n%s %s%nInput: %s%nChallenge: %s%n%s",
-                title, note, inputFileName, description, DOTTED_LINE));
+                title, part, inputFileName, description, DOTTED_LINE));
         List<String> inputList = loadInputList();
         long startTime = System.nanoTime();
         Object result = solve(inputList);
@@ -47,8 +47,21 @@ public abstract class Challenge {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
         for (List<Boolean> row : grid) {
-            for (boolean isActive : row) {
-                sb.append(isActive ? "1" : "0").append(", ");
+            for (boolean active : row) {
+                sb.append(active ? 1 : 0).append(", ");
+            }
+            sb.append(String.format("%n"));
+        }
+        sb.append(String.format("%n"));
+        return sb.toString();
+    }
+
+    protected String booleanGrid2DAsString(boolean[][] grid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%n"));
+        for (boolean[] row : grid) {
+            for (boolean active : row) {
+                sb.append(active ? 1 : 0).append(", ");
             }
             sb.append(String.format("%n"));
         }
@@ -66,12 +79,18 @@ public abstract class Challenge {
         LOGGER.info(String.format("%s%nAnswer:%n%s",DOTTED_LINE, result));
     }
 
+    public void logResult() {
+        List<String> inputList = loadInputList();
+        Object result = solve(inputList);
+        LOGGER.info(part + ": " + result);
+    }
+
     public long getSolveTime() {
         return solveTime;
     }
 
-    public String getNote() {
-        return note;
+    public String getPart() {
+        return part;
     }
 
     public Challenge setTitle(String title) {

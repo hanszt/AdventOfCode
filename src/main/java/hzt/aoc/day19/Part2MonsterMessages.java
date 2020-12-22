@@ -58,8 +58,8 @@ public class Part2MonsterMessages extends Day19Challenge {
     }
 
     @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    String getMessage(long answer) {
+        return String.format("%d", answer);
     }
 
 }

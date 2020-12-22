@@ -139,7 +139,8 @@ public class Launcher {
     }
 
     private void start() {
-        new Part1CrabCombat().solveChallenge();
+//        new Part1CrabCombat().solveChallenge();
+//        new Part2CrabCombat().logResult();
         loop();
     }
 
@@ -188,9 +189,9 @@ public class Launcher {
     private String menuAsString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
-        challengeDays.forEach((k, v) -> sb.append(String.format("Press '%2d' to execute day %2d %s.%n", k, k, v.getTitle())));
-        sb.append(String.format("Press '%s' to execute all challenges at once.%n", ALL));
-        sb.append(String.format("Press '%s' to exit the program.%nYour input: ", EXIT));
+        challengeDays.forEach((k, v) -> sb.append(String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", k, k, v.getTitle())));
+        sb.append(String.format("Enter '%s' and press 'Enter' to execute all challenges at once.%n", ALL));
+        sb.append(String.format("Enter '%s' and press 'Enter' to exit the program.%nYour input: ", EXIT));
         return sb.toString();
     }
 
@@ -205,7 +206,7 @@ public class Launcher {
         for (Pair<Challenge, ChallengeDay> p : challenges) {
             sb.append(String.format("Day %2d Challenge: %-50s, solve time: %8.3f milliseconds%n",
                     p.getRight().getDayOfMonth(),
-                    p.getRight().getTitle() + " " + p.getLeft().getNote(),
+                    p.getRight().getTitle() + " " + p.getLeft().getPart(),
                     p.getLeft().getSolveTime() / 1e6));
         }
         return sb.toString();

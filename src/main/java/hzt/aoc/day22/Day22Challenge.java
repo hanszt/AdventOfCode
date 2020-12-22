@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Day22Challenge extends Challenge {
 
     Day22Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201222-input-day22ref.txt");
+        super(challengeTitle, description, "20201222-input-day22.txt");
     }
 
     @Override

@@ -3,6 +3,7 @@ package hzt.aoc.day16;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // credits to turkey dev
 public class Part2TicketTranslation extends Day16Challenge {
@@ -30,25 +31,14 @@ public class Part2TicketTranslation extends Day16Challenge {
             }
         }
         LOGGER.trace(ourTicketValues);
+
         iterateUntilUniqueValueForeEachField(possibleMatches);
-        LOGGER.trace(possibleMatchesAsString(possibleMatches));
+        if (LOGGER.isTraceEnabled()) LOGGER.trace(booleanGrid2DAsString(possibleMatches));
         return getAnswer(possibleMatches, ourTicketValues);
     }
 
     private void iterateUntilUniqueValueForeEachField(boolean[][] possibleMatches) {
         while (!isDone(possibleMatches)) filterOutUniqueValues(possibleMatches);
-    }
-
-    private String possibleMatchesAsString(boolean[][] possibleMatches) {
-        StringBuilder sb = new StringBuilder();
-        for (boolean[] array : possibleMatches) {
-            for (boolean bool : array) {
-                sb.append(bool ? 1 : 0).append(" ");
-            }
-            sb.append(String.format("%n"));
-        }
-        sb.append(String.format("%n"));
-        return sb.toString();
     }
 
     public void filterOutUniqueValues(boolean[][] possibleMatches) {

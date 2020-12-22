@@ -31,6 +31,7 @@ public class Part1MonsterMessages extends Day19Challenge {
     // requires a mutableList so that's why a list of chars is passed instead of a string
     private boolean matches(List<Character> messageChars, int rule) {
         if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars);
+
         List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
         for (List<Integer> subRules : allSubRules) {
             List<Character> charsCopy = new ArrayList<>(messageChars);
@@ -57,8 +58,8 @@ public class Part1MonsterMessages extends Day19Challenge {
     }
 
     @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    String getMessage(long answer) {
+        return String.format("%d", answer);
     }
 
 }
