@@ -28,15 +28,15 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     }
 
     private long countHowManyHashesNotPartOfSeeMonster(List<String> fullPicture) {
-        List<String> pattern = createSeeMonster();
+        List<String> seeMonster = createSeeMonster();
         Tile fullPictureTile = new Tile(fullPicture);
         for (List<String> orientation : fullPictureTile.getOrientations()) {
             List<String> markedList = new ArrayList<>(orientation);
             boolean marked = false;
-            for (int y = 0; y <= orientation.size() - pattern.size(); y++) {
-                for (int x = 0; x <= orientation.get(0).length() - pattern.get(0).length(); x++) {
-                    if (isPatternAt(orientation, pattern, x, y)) {
-                        markPatternAt(markedList, pattern, x, y);
+            for (int y = 0; y <= orientation.size() - seeMonster.size(); y++) {
+                for (int x = 0; x <= orientation.get(0).length() - seeMonster.get(0).length(); x++) {
+                    if (isPatternAt(orientation, seeMonster, x, y)) {
+                        markPatternAt(markedList, seeMonster, x, y);
                         marked = true;
                     }
                 }

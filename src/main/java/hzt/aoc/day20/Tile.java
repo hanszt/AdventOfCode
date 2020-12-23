@@ -35,20 +35,16 @@ public class Tile {
         return sides;
     }
 
+    private static final int CORNERS = 4;
+
     public boolean isBorder(Map<Integer, Tile> tiles) {
-        Set<String> otherSet = otherTileBorders(tiles);
-        Set<String> set = new HashSet<>(tileSides());
-        return countCommonElements(set, otherSet) == 4;
+        Set<String> otherTiles = otherTileBorders(tiles);
+        Set<String> sideTiles = new HashSet<>(tileSides());
+        return countCommonElements(sideTiles, otherTiles) == CORNERS;
     }
 
-    private int countCommonElements(Set<String> a, Set<String> b) {
-        int count = 0;
-        for (String s : a) {
-            if (b.contains(s)) {
-                count++;
-            }
-        }
-        return count;
+    private long countCommonElements(Set<String> sideTiles, Set<String> otherTiles) {
+        return sideTiles.stream().filter(otherTiles::contains).count();
     }
 
     private Set<String> otherTileBorders(Map<Integer, Tile> tiles) {
