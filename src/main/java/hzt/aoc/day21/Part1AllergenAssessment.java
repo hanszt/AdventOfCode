@@ -1,7 +1,6 @@
 package hzt.aoc.day21;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 // credits to Johan de Jong
 public class Part1AllergenAssessment extends Day21Challenge {
@@ -29,6 +28,8 @@ public class Part1AllergenAssessment extends Day21Challenge {
                 }
             }
         }
+        NavigableMap<String, Integer> navigableMap = new TreeMap<>();
+        SortedMap<String, Integer> sortedMap = new TreeMap<>();
         return count;
     }
 

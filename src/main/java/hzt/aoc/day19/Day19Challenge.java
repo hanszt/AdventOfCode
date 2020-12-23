@@ -13,6 +13,7 @@ public abstract class Day19Challenge extends Challenge {
         super(challengeTitle, description, "20201219-input-day19.txt");
     }
 
+    final Map<Integer, String> rulesAsStringMap = new HashMap<>();
     final Map<Integer, List<List<Integer>>> rulesToSubRules = new HashMap<>();
     final Map<Integer, Character> endChars = new HashMap<>();
     final List<String> messages = new ArrayList<>();
@@ -27,15 +28,16 @@ public abstract class Day19Challenge extends Challenge {
         for (String line : inputList) {
             if (line.matches("[a-b]{2,}")) messages.add(line);
             else if (!line.isEmpty()) {
-                addRuleToRulesMap(rulesToSubRules, line);
+                addRuleToRulesMaps(line);
             }
         }
     }
 
-    void addRuleToRulesMap(Map<Integer, List<List<Integer>>> rulesToSubRules, String line) {
+    void addRuleToRulesMaps(String line) {
         String[] ruleNrToSubRules = line.split(":");
         int ruleNr = Integer.parseInt(ruleNrToSubRules[0]);
         String subRulesAsString = ruleNrToSubRules[1].strip();
+        rulesAsStringMap.put(ruleNr, subRulesAsString);
         if (subRulesAsString.contains("\"")) {
             endChars.put(ruleNr, subRulesAsString.replace("\"", "").charAt(0));
         } else {

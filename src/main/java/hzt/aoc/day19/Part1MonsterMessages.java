@@ -16,7 +16,6 @@ public class Part1MonsterMessages extends Day19Challenge {
     @Override
     protected long countMatches() {
         LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
-        // chars has to be empty to match the same length after going through matches method
         return messages.stream().map(this::asCharList).filter(this::matches).count();
     }
 
@@ -25,6 +24,7 @@ public class Part1MonsterMessages extends Day19Challenge {
     }
 
     private boolean matches(List<Character> messageChars) {
+        // chars has to be empty to match the same length after going through matches method
         return matches(messageChars, START_RULE) && messageChars.isEmpty();
     }
 

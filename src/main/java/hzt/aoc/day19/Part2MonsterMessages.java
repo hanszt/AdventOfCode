@@ -1,60 +1,49 @@
 package hzt.aoc.day19;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Pattern;
 
+// Credits to Johan de Jong
 public class Part2MonsterMessages extends Day19Challenge {
 
     public Part2MonsterMessages() {
         super("part 2",
-                "How many messages completely match rule 0? (with loops) not working yet...");
+                "How many messages completely match rule 0? (with loops)");
     }
 
-    //TODO: Still has to be solved
     @Override
     protected long countMatches() {
-        addRuleToRulesMap(rulesToSubRules, "8: 42 | 42 8");
-        addRuleToRulesMap(rulesToSubRules, "11: 42 31 | 42 11 31");
+        addRuleToRulesMaps("8: 42 | 42 8");
+        addRuleToRulesMaps("11: 42 31 | 42 11 31");
         LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
-        // chars has to be empty to match the same length after going through matches method
-        return messages.stream().map(this::asCharList).filter(chars -> matches(chars, START_RULE) && chars.isEmpty()).count();
+        String startRule = rulesAsStringMap.get(0);
+        String regex = ruleRegex2(startRule);
+        Pattern pattern = Pattern.compile(regex);
+        return messages.stream().filter(message -> pattern.matcher(message).matches()).count();
     }
 
-    private List<Character> asCharList(String message) {
-        List<Character> chars = new ArrayList<>();
-        for (char c : message.toCharArray()) {
-            chars.add(c);
-        }
-        return chars;
+    private String ruleRegex2(String rule) {
+        return ruleRegex2(rule, 0);
     }
 
-    // requires a mutableList so that's why a list of chars is passed instead of a string
-    private boolean matches(List<Character> messageChars, int rule) {
-        if (messageChars.isEmpty()) return false;
-        if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars);
-        List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
-        for (List<Integer> subRules : allSubRules) {
-            List<Character> charsCopy = new ArrayList<>(messageChars);
-            boolean matchesAll = true;
-            for (int curRule : subRules) {
-                if (!matches(charsCopy, curRule)) {
-                    matchesAll = false;
-                    break;
+    private String ruleRegex2(String rule, int depth) {
+        if (depth > 200) return "x";
+
+        if (rule.startsWith("\"")) {
+            return rule.substring(1, 2);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            String[] parts = rule.split(" ");
+            for (String part : parts) {
+                if ("|".equals(part)) {
+                    sb.append('|');
+                } else {
+                    int subRuleIndex = Integer.parseInt(part);
+                    String subRule = rulesAsStringMap.get(subRuleIndex);
+                    sb.append('(').append(ruleRegex2(subRule, ++depth)).append(')');
                 }
             }
-            if (matchesAll) {
-                while (messageChars.size() > charsCopy.size()) messageChars.remove(0);
-                return true;
-            }
+            return sb.toString();
         }
-        return false;
-    }
-
-    private boolean ruleIsEndRule(int rule, List<Character> messageChars) {
-        if (messageChars.get(0).equals(endChars.get(rule))) {
-            messageChars.remove(0);
-            return true;
-        } else return false;
     }
 
     @Override

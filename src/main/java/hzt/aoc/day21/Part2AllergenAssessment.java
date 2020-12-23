@@ -28,8 +28,8 @@ public class Part2AllergenAssessment extends Day21Challenge {
                 if (entry.getValue().size() == 1) {
                     String ingredient = entry.getValue().get(0);
                     uniqueAllergenToIngredientMap.put(entry.getKey(), ingredient);
-                    for (Map.Entry<String, List<String>> entry2 : allergenToIngredientsMap.entrySet()) {
-                        entry2.getValue().remove(ingredient);
+                    for (List<String> ingredients : allergenToIngredientsMap.values()) {
+                        ingredients.remove(ingredient);
                     }
                     break;
                 }

@@ -50,6 +50,8 @@ import hzt.aoc.day21.Part1AllergenAssessment;
 import hzt.aoc.day21.Part2AllergenAssessment;
 import hzt.aoc.day22.Part1CrabCombat;
 import hzt.aoc.day22.Part2CrabCombat;
+import hzt.aoc.day23.Part1CrabCups;
+import hzt.aoc.day23.Part2CrabCups;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -58,7 +60,7 @@ import java.util.*;
 
 import static java.lang.System.*;
 
-public class Launcher {
+public class Launcher implements Runnable {
 
     public static final String DOTTED_LINE = "___________________________________________________________________";
     private static final Logger LOGGER = LogManager.getLogger(Launcher.class);
@@ -117,7 +119,7 @@ public class Launcher {
                 new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Ticket Translation", LocalDate.of(2020, 12, 16),
                 new Part1TicketTranslation(), new Part2TicketTranslation()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "ConwayCubes", LocalDate.of(2020, 12, 17),
+        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Conway Cubes", LocalDate.of(2020, 12, 17),
                 new Part1ConwayCubes(), new Part2ConwayCubes()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Operation Order", LocalDate.of(2020, 12, 18),
                 new Part1OperationOrder(), new Part2OperationOrder()));
@@ -129,9 +131,12 @@ public class Launcher {
                 new Part1AllergenAssessment(), new Part2AllergenAssessment()));
         challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Crab Combat", LocalDate.of(2020, 12, 22),
                 new Part1CrabCombat(), new Part2CrabCombat()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "", LocalDate.of(2020, 12, 23)));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "", LocalDate.of(2020, 12, 24)));
-        challengeDays.put(counter, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Crab Cups", LocalDate.of(2020, 12, 23),
+                new Part1CrabCups(), new Part2CrabCups()));
+        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "", LocalDate.of(2020, 12, 24)
+                ));
+        challengeDays.put(counter, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)
+        ));
     }
 
     public static void main(String[] args) {
@@ -139,12 +144,11 @@ public class Launcher {
     }
 
     private void start() {
-//        new Part1CrabCombat().solveChallenge();
-//        new Part2CrabCombat().logResult();
-        loop();
+      run();
     }
 
-    private void loop() {
+    @Override
+    public void run() {
         String userInput = ALL;
         long startTime = System.nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
@@ -182,16 +186,16 @@ public class Launcher {
             challengeDays.get(key).solveChallenges();
         } else out.println("The selected number is not in the challenge list...");
     }
-
     private static final String EXIT = "e";
+
     private static final String ALL = "a";
 
     private String menuAsString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
         challengeDays.forEach((k, v) -> sb.append(String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", k, k, v.getTitle())));
-        sb.append(String.format("Enter '%s' and press 'Enter' to execute all challenges at once.%n", ALL));
-        sb.append(String.format("Enter '%s' and press 'Enter' to exit the program.%nYour input: ", EXIT));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%nYour input: ", EXIT));
         return sb.toString();
     }
 
@@ -216,5 +220,4 @@ public class Launcher {
         out.printf("%n%sPress Enter key to continue...%s", ANSI_GREEN, ANSI_RESET);
         new Scanner(in).nextLine();
     }
-
 }

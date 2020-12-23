@@ -9,7 +9,7 @@ import java.util.List;
 import static hzt.aoc.day11.Day11Challenge.FLOOR;
 import static hzt.aoc.day11.Day11Challenge.OCCUPIED_SEAT;
 
-class Part2DockingDataSeatingSystemTest {
+class Part2CrabCupsDockingDataSeatingSystemTest {
 
     @Test
     void isOccupiedAfterUpdate() {

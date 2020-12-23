@@ -1,5 +1,6 @@
 package hzt.aoc.day21;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class Food {
@@ -13,11 +14,11 @@ public class Food {
     }
 
     public Set<String> getIngredients() {
-        return ingredients;
+        return Collections.unmodifiableSet(ingredients);
     }
 
     public Set<String> getAllergens() {
-        return allergens;
+        return Collections.unmodifiableSet(allergens);
     }
 
     @Override
