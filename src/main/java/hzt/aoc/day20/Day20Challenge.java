@@ -6,36 +6,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class Day20Challenge extends Challenge {
 
     Day20Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201220-input-day20ref.txt");
+        super(challengeTitle, description, "20201220-input-day20.txt");
     }
 
     @Override
     protected String solve(List<String> inputList) {
-        final Map<Integer, List<List<Boolean>>> tileIdsToGrids = new HashMap<>();
-        List<List<Boolean>> grid = new ArrayList<>();
+        final Map<Integer, Tile> tileIdsToGrids = parseInput(inputList);
+        return getMessage(calculateAnswer(tileIdsToGrids));
+    }
+
+    private Map<Integer, Tile> parseInput(List<String> inputList) {
+        final Map<Integer, Tile> tileIdsToGrids = new HashMap<>();
+        List<String> tileContent = new ArrayList<>();
         int tileId = 0;
         for (String line : inputList) {
             if (line.contains("Tile")) {
                 tileId = Integer.parseInt(line.replace("Tile ", "").replace(":", "").strip());
-                grid = new ArrayList<>();
+                tileContent = new ArrayList<>();
             } else if (!line.isEmpty()) {
-                List<Boolean> row = line.chars().mapToObj(c -> (char) c).map(c -> c == '#').collect(Collectors.toList());
-                grid.add(row);
+                tileContent.add(line);
             }
-            if (line.isEmpty()) {
-                tileIdsToGrids.put(tileId, grid);
+            if (line.isBlank()) {
+                tileIdsToGrids.put(tileId, new Tile(tileContent));
             }
         }
-        tileIdsToGrids.forEach((k, v) -> LOGGER.info(k + "->" + booleanGrid2DAsString(v)));
-        return getMessage(calculateAnswer(tileIdsToGrids));
+        tileIdsToGrids.forEach((k, v) -> LOGGER.trace(k + "->" + v));
+        LOGGER.trace(tileIdsToGrids.size());
+        return tileIdsToGrids;
     }
 
-    protected abstract long calculateAnswer(Map<Integer, List<List<Boolean>>> tileIdsToGrids);
+    protected abstract long calculateAnswer(Map<Integer, Tile> tileIdsToGrids);
 
 
     abstract String getMessage(long value);

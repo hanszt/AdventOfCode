@@ -64,19 +64,19 @@ public class Launcher implements Runnable {
 
     public static final String DOTTED_LINE = "___________________________________________________________________";
     private static final Logger LOGGER = LogManager.getLogger(Launcher.class);
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String ANSI_CYAN = "\u001B[36m";
-    private static final String ANSI_BRIGHT_BLUE = "\u001B[94m";
-    private static final String TITTLE = ANSI_RED +
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BRIGHT_BLUE = "\u001B[94m";
+    private static final String TITTLE = RED +
             "   __    ____  _  _  ____  _  _  ____    _____  ____     ___  _____  ____  ____    ___   ___  ___   ___  /\\        \n" +
             "  /__\\  (  _ \\( \\/ )( ___)( \\( )(_  _)  (  _  )( ___)   / __)(  _  )(  _ \\( ___)  (__ \\ / _ \\(__ \\ / _ \\ )(\n" +
             " /(__)\\  )(_) )\\  /  )__)  )  (   )(     )(_)(  )__)   ( (__  )(_)(  )(_) ))__)    / _/( (_) )/ _/( (_) )\\/      \n" +
             "(__)(__)(____/  \\/  (____)(_)\\_) (__)   (_____)(__)     \\___)(_____)(____/(____)  (____)\\___/(____)\\___/ ()    \n" +
             "__________________________________________________________________________________________________________          \n" +
-            ANSI_RESET;
+            RESET;
 
     private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
 
@@ -84,58 +84,62 @@ public class Launcher implements Runnable {
         populateChallengeDaysMap(challengeDays);
     }
 
+    private LocalDate dateOfDay(int day) {
+        return LocalDate.of(2020, 12, day);
+    }
+
     private void populateChallengeDaysMap(Map<Integer, ChallengeDay> challengeDays) {
-        int counter = 1;
-        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Report Repair", LocalDate.of(2020, 12, 1),
+        int day = 1;
+        challengeDays.put(day++, new ChallengeDay("Report Repair", BRIGHT_BLUE, dateOfDay(day),
                 new Part1ReportRepair(), new Part2ReportRepair()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Password Philosophy", LocalDate.of(2020, 12, 2),
+        challengeDays.put(day++, new ChallengeDay("Password Philosophy", GREEN, dateOfDay(day),
                 new Part1PasswordPhilosophy(), new Part2PasswordPhilosophy()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Toboggan Trajectory", LocalDate.of(2020, 12, 3),
+        challengeDays.put(day++, new ChallengeDay("Toboggan Trajectory", CYAN, dateOfDay(day),
                 new TreesEncounteredPart1(), new TreesEncounteredPart2()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Passport Processing", LocalDate.of(2020, 12, 4),
+        challengeDays.put(day++, new ChallengeDay("Passport Processing", YELLOW,dateOfDay(day),
                 new PassportProcessingPart1(), new PassportProcessingPart2()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Binary Boarding", LocalDate.of(2020, 12, 5),
+        challengeDays.put(day++, new ChallengeDay("Binary Boarding", RED, dateOfDay(day),
                 new Part1BinaryBoarding(), new Part2BinaryBoarding()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Custom Customs", LocalDate.of(2020, 12, 6),
+        challengeDays.put(day++, new ChallengeDay("Custom Customs", BRIGHT_BLUE,dateOfDay(day),
                 new Part1CustomCustoms(), new Part2CustomCustoms()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Handy Haversacks", LocalDate.of(2020, 12, 7),
+        challengeDays.put(day++, new ChallengeDay("Handy Haversacks", GREEN,dateOfDay(day),
                 new Part1HandyHaversacks(), new Part2HandyHaversacks()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Handheld Halting", LocalDate.of(2020, 12, 8),
+        challengeDays.put(day++, new ChallengeDay("Handheld Halting", CYAN, dateOfDay(day),
                 new Part1HandheldHalting(), new Part2HandheldHalting()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Encoding Error", LocalDate.of(2020, 12, 9),
+        challengeDays.put(day++, new ChallengeDay("Encoding Error", YELLOW, dateOfDay(day),
                 new Part1EncodingError(), new Part2EncodingError()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Adaptor Array", LocalDate.of(2020, 12, 10),
+        challengeDays.put(day++, new ChallengeDay("Adaptor Array", RED, dateOfDay(day),
                 new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(),
                 new Part2AdaptorArrayWithCachingLongs(), new Part2AdaptorArrayWithoutCaching()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Seating System", LocalDate.of(2020, 12, 11),
+        challengeDays.put(day++, new ChallengeDay("Seating System", BRIGHT_BLUE, dateOfDay(day),
                 new Part1SeatingSystem(), new Part2SeatingSystem()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Rain Risk", LocalDate.of(2020, 12, 12),
+        challengeDays.put(day++, new ChallengeDay("Rain Risk", GREEN,dateOfDay(day),
                 new Part1RainRisk(), new Part2RainRisk()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Shuttle Search", LocalDate.of(2020, 12, 13),
+        challengeDays.put(day++, new ChallengeDay("Shuttle Search", CYAN, dateOfDay(day),
                 new Part1ShuttleSearch(), new Part2ShuttleSearchOwnImpl(), new Part2ShuttleSearch()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Docking Data", LocalDate.of(2020, 12, 14),
+        challengeDays.put(day++, new ChallengeDay("Docking Data", YELLOW, dateOfDay(day),
                 new Part1DockingData(), new Part2DockingData()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Rambunctious Recitation", LocalDate.of(2020, 12, 15),
+        challengeDays.put(day++, new ChallengeDay("Rambunctious Recitation", RED, dateOfDay(day),
                 new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Ticket Translation", LocalDate.of(2020, 12, 16),
+        challengeDays.put(day++, new ChallengeDay("Ticket Translation", BRIGHT_BLUE, dateOfDay(day),
                 new Part1TicketTranslation(), new Part2TicketTranslation()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Conway Cubes", LocalDate.of(2020, 12, 17),
+        challengeDays.put(day++, new ChallengeDay("Conway Cubes", GREEN, dateOfDay(day),
                 new Part1ConwayCubes(), new Part2ConwayCubes()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Operation Order", LocalDate.of(2020, 12, 18),
+        challengeDays.put(day++, new ChallengeDay("Operation Order", CYAN,dateOfDay(day),
                 new Part1OperationOrder(), new Part2OperationOrder()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "Monster Messages", LocalDate.of(2020, 12, 19),
+        challengeDays.put(day++, new ChallengeDay("Monster Messages", YELLOW, dateOfDay(day),
                 new Part1MonsterMessages(), new Part2MonsterMessages()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_RED, "Jurassic Jigsaw", LocalDate.of(2020, 12, 20),
+        challengeDays.put(day++, new ChallengeDay("Jurassic Jigsaw", RED, dateOfDay(day),
                 new Part1JurassicJigsaw(), new Part2JurassicJigsaw()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_BRIGHT_BLUE, "Allergen Assessment", LocalDate.of(2020, 12, 21),
+        challengeDays.put(day++, new ChallengeDay("Allergen Assessment", BRIGHT_BLUE, dateOfDay(day),
                 new Part1AllergenAssessment(), new Part2AllergenAssessment()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_GREEN, "Crab Combat", LocalDate.of(2020, 12, 22),
+        challengeDays.put(day++, new ChallengeDay("Crab Combat", GREEN, dateOfDay(day),
                 new Part1CrabCombat(), new Part2CrabCombat()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_CYAN, "Crab Cups", LocalDate.of(2020, 12, 23),
+        challengeDays.put(day++, new ChallengeDay("Crab Cups", CYAN, dateOfDay(day),
                 new Part1CrabCups(), new Part2CrabCups()));
-        challengeDays.put(counter++, new ChallengeDay(ANSI_YELLOW, "", LocalDate.of(2020, 12, 24)
+        challengeDays.put(day++, new ChallengeDay("", YELLOW, dateOfDay(day)
                 ));
-        challengeDays.put(counter, new ChallengeDay(ANSI_RED, "", LocalDate.of(2020, 12, 25)
+        challengeDays.put(day, new ChallengeDay("", RED, dateOfDay(day)
         ));
     }
 
@@ -159,7 +163,7 @@ public class Launcher implements Runnable {
             userInput = execute(input);
         }
         long runtime = System.nanoTime() - startTime;
-        out.printf("%s%nRuntime: %2.3f seconds%n%s%n", ANSI_GREEN, runtime / 1e9, DOTTED_LINE);
+        out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
         exit(0);
     }
 
@@ -205,7 +209,7 @@ public class Launcher implements Runnable {
         challenges.sort(Comparator.comparing(c -> c.getLeft().getSolveTime()));
 
         StringBuilder sb = new StringBuilder();
-        sb.append(ANSI_RESET);
+        sb.append(RESET);
         sb.append(String.format("%nChallenges sorted by solve time:%n"));
         for (Pair<Challenge, ChallengeDay> p : challenges) {
             sb.append(String.format("Day %2d Challenge: %-50s, solve time: %8.3f milliseconds%n",
@@ -217,7 +221,7 @@ public class Launcher implements Runnable {
     }
 
     private static void pressEnterToContinue() {
-        out.printf("%n%sPress Enter key to continue...%s", ANSI_GREEN, ANSI_RESET);
+        out.printf("%n%sPress Enter key to continue...%s", GREEN, RESET);
         new Scanner(in).nextLine();
     }
 }

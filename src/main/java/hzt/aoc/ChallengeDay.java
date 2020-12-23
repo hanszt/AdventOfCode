@@ -18,9 +18,9 @@ public class ChallengeDay {
     private final LocalDate date;
     private final Challenge[] challenges;
 
-    public ChallengeDay(String textColor, String title, LocalDate date, Challenge... challenges) {
-        this.textColor = textColor;
+    public ChallengeDay(String title, String textColor, LocalDate date, Challenge... challenges) {
         this.title = title;
+        this.textColor = textColor;
         this.date = date;
         this.challenges = challenges;
         for(Challenge c : challenges) c.setTitle(title);
