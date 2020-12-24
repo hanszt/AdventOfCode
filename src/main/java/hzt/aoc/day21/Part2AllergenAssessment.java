@@ -2,7 +2,6 @@ package hzt.aoc.day21;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 // credits to Johan de Jong
@@ -16,8 +15,8 @@ public class Part2AllergenAssessment extends Day21Challenge {
 
     @Override
     protected String calculateAnswer(List<Food> foods) {
-        Set<String> allAllergens = extractAllAllergens(foods);
-        Map<String, List<String>> allergenToIngredientsMap = extractPotentialAllergens(allAllergens, foods).getAllergenToIngredientsMap();
+        var allAllergens = extractAllAllergens(foods);
+        var allergenToIngredientsMap = extractPotentialAllergens(allAllergens, foods).getAllergenToIngredientsMap();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }
 

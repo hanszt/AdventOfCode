@@ -52,14 +52,27 @@ import hzt.aoc.day22.Part1CrabCombat;
 import hzt.aoc.day22.Part2CrabCombat;
 import hzt.aoc.day23.Part1CrabCups;
 import hzt.aoc.day23.Part2CrabCups;
+import hzt.aoc.day24.Part1LobbyLayout;
+import hzt.aoc.day24.Part2LobbyLayout;
+import hzt.aoc.day25.Part1;
+import hzt.aoc.day25.Part2;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.System.*;
 
+/**
+ *
+ * This is a project to participate in the Advent of code 2020.
+ * This event was helt between 01-12-2020 and 25-12-2020
+ * @author Hans Zuidervaart,
+ *
+ */
 public class Launcher implements Runnable {
 
     public static final String DOTTED_LINE = "___________________________________________________________________";
@@ -89,58 +102,58 @@ public class Launcher implements Runnable {
     }
 
     private void populateChallengeDaysMap(Map<Integer, ChallengeDay> challengeDays) {
-        int day = 1;
-        challengeDays.put(day++, new ChallengeDay("Report Repair", BRIGHT_BLUE, dateOfDay(day),
+        int day = 0;
+        challengeDays.put(++day, new ChallengeDay("Report Repair", BRIGHT_BLUE, dateOfDay(day),
                 new Part1ReportRepair(), new Part2ReportRepair()));
-        challengeDays.put(day++, new ChallengeDay("Password Philosophy", GREEN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Password Philosophy", GREEN, dateOfDay(day),
                 new Part1PasswordPhilosophy(), new Part2PasswordPhilosophy()));
-        challengeDays.put(day++, new ChallengeDay("Toboggan Trajectory", CYAN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Toboggan Trajectory", CYAN, dateOfDay(day),
                 new TreesEncounteredPart1(), new TreesEncounteredPart2()));
-        challengeDays.put(day++, new ChallengeDay("Passport Processing", YELLOW,dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Passport Processing", YELLOW, dateOfDay(day),
                 new PassportProcessingPart1(), new PassportProcessingPart2()));
-        challengeDays.put(day++, new ChallengeDay("Binary Boarding", RED, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Binary Boarding", RED, dateOfDay(day),
                 new Part1BinaryBoarding(), new Part2BinaryBoarding()));
-        challengeDays.put(day++, new ChallengeDay("Custom Customs", BRIGHT_BLUE,dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Custom Customs", BRIGHT_BLUE, dateOfDay(day),
                 new Part1CustomCustoms(), new Part2CustomCustoms()));
-        challengeDays.put(day++, new ChallengeDay("Handy Haversacks", GREEN,dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Handy Haversacks", GREEN, dateOfDay(day),
                 new Part1HandyHaversacks(), new Part2HandyHaversacks()));
-        challengeDays.put(day++, new ChallengeDay("Handheld Halting", CYAN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Handheld Halting", CYAN, dateOfDay(day),
                 new Part1HandheldHalting(), new Part2HandheldHalting()));
-        challengeDays.put(day++, new ChallengeDay("Encoding Error", YELLOW, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Encoding Error", YELLOW, dateOfDay(day),
                 new Part1EncodingError(), new Part2EncodingError()));
-        challengeDays.put(day++, new ChallengeDay("Adaptor Array", RED, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Adaptor Array", RED, dateOfDay(day),
                 new Part1AdaptorArray(), new Part2AdaptorArrayWithCaching(),
                 new Part2AdaptorArrayWithCachingLongs(), new Part2AdaptorArrayWithoutCaching()));
-        challengeDays.put(day++, new ChallengeDay("Seating System", BRIGHT_BLUE, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Seating System", BRIGHT_BLUE, dateOfDay(day),
                 new Part1SeatingSystem(), new Part2SeatingSystem()));
-        challengeDays.put(day++, new ChallengeDay("Rain Risk", GREEN,dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Rain Risk", GREEN, dateOfDay(day),
                 new Part1RainRisk(), new Part2RainRisk()));
-        challengeDays.put(day++, new ChallengeDay("Shuttle Search", CYAN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Shuttle Search", CYAN, dateOfDay(day),
                 new Part1ShuttleSearch(), new Part2ShuttleSearchOwnImpl(), new Part2ShuttleSearch()));
-        challengeDays.put(day++, new ChallengeDay("Docking Data", YELLOW, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Docking Data", YELLOW, dateOfDay(day),
                 new Part1DockingData(), new Part2DockingData()));
-        challengeDays.put(day++, new ChallengeDay("Rambunctious Recitation", RED, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Rambunctious Recitation", RED, dateOfDay(day),
                 new Part1RambunctiousRecitation(), new Part2RambunctiousRecitation()));
-        challengeDays.put(day++, new ChallengeDay("Ticket Translation", BRIGHT_BLUE, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Ticket Translation", BRIGHT_BLUE, dateOfDay(day),
                 new Part1TicketTranslation(), new Part2TicketTranslation()));
-        challengeDays.put(day++, new ChallengeDay("Conway Cubes", GREEN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Conway Cubes", GREEN, dateOfDay(day),
                 new Part1ConwayCubes(), new Part2ConwayCubes()));
-        challengeDays.put(day++, new ChallengeDay("Operation Order", CYAN,dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Operation Order", CYAN, dateOfDay(day),
                 new Part1OperationOrder(), new Part2OperationOrder()));
-        challengeDays.put(day++, new ChallengeDay("Monster Messages", YELLOW, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Monster Messages", YELLOW, dateOfDay(day),
                 new Part1MonsterMessages(), new Part2MonsterMessages()));
-        challengeDays.put(day++, new ChallengeDay("Jurassic Jigsaw", RED, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Jurassic Jigsaw", RED, dateOfDay(day),
                 new Part1JurassicJigsaw(), new Part2JurassicJigsaw()));
-        challengeDays.put(day++, new ChallengeDay("Allergen Assessment", BRIGHT_BLUE, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Allergen Assessment", BRIGHT_BLUE, dateOfDay(day),
                 new Part1AllergenAssessment(), new Part2AllergenAssessment()));
-        challengeDays.put(day++, new ChallengeDay("Crab Combat", GREEN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Crab Combat", GREEN, dateOfDay(day),
                 new Part1CrabCombat(), new Part2CrabCombat()));
-        challengeDays.put(day++, new ChallengeDay("Crab Cups", CYAN, dateOfDay(day),
+        challengeDays.put(++day, new ChallengeDay("Crab Cups", CYAN, dateOfDay(day),
                 new Part1CrabCups(), new Part2CrabCups()));
-        challengeDays.put(day++, new ChallengeDay("", YELLOW, dateOfDay(day)
-                ));
-        challengeDays.put(day, new ChallengeDay("", RED, dateOfDay(day)
-        ));
+        challengeDays.put(++day, new ChallengeDay("Lobby Layout", YELLOW, dateOfDay(day),
+                new Part1LobbyLayout(), new Part2LobbyLayout()));
+        challengeDays.put(++day, new ChallengeDay("", RED, dateOfDay(day),
+                new Part1(), new Part2()));
     }
 
     public static void main(String[] args) {
@@ -148,7 +161,8 @@ public class Launcher implements Runnable {
     }
 
     private void start() {
-      run();
+        new Part2LobbyLayout().solveChallenge();
+        run();
     }
 
     @Override
@@ -176,20 +190,23 @@ public class Launcher implements Runnable {
                 DOTTED_LINE));
     }
 
+    private static final String NUMBER_REGEX = "\\d+";
+
     private String execute(String input) {
         if (input.equals(EXIT)) return EXIT;
         else if (input.equals(ALL)) executeAllAndPrintSummary();
-        else if (input.matches("\\d+")) executeByChallengeNumber(input);
+        else if (input.matches(NUMBER_REGEX)) executeByChallengeNumber(input);
         else out.println("You didn't enter a valid option...");
         return input;
     }
 
     private void executeByChallengeNumber(String input) {
-        int key = Integer.parseInt(input);
-        if (challengeDays.containsKey(key)) {
-            challengeDays.get(key).solveChallenges();
+        int dayNr = Integer.parseInt(input);
+        if (challengeDays.containsKey(dayNr)) {
+            challengeDays.get(dayNr).solveChallenges();
         } else out.println("The selected number is not in the challenge list...");
     }
+
     private static final String EXIT = "e";
 
     private static final String ALL = "a";
@@ -197,16 +214,21 @@ public class Launcher implements Runnable {
     private String menuAsString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
-        challengeDays.forEach((k, v) -> sb.append(String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", k, k, v.getTitle())));
+        challengeDays.forEach((dayNr, day) -> sb.append(menuOption(dayNr, day.getTitle())));
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
         sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%nYour input: ", EXIT));
         return sb.toString();
     }
 
+    private String menuOption(int dayNr, String title) {
+        return String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", dayNr, dayNr, title);
+    }
+
     private String sortedSolveTimesAsString(List<ChallengeDay> challengeDays) {
-        List<Pair<Challenge, ChallengeDay>> challenges = new ArrayList<>();
-        challengeDays.forEach(day -> Arrays.asList(day.getChallenges()).forEach(challenge -> challenges.add(new Pair<>(challenge, day))));
-        challenges.sort(Comparator.comparing(c -> c.getLeft().getSolveTime()));
+        List<Pair<Challenge, ChallengeDay>> challenges = challengeDays.stream()
+                .map(day -> day.challengesAsStream().map(c -> new Pair<>(c, day)))
+                .flatMap(Stream::distinct)
+                .sorted(Comparator.comparing(pair -> pair.getLeft().getSolveTime())).collect(Collectors.toList());
 
         StringBuilder sb = new StringBuilder();
         sb.append(RESET);

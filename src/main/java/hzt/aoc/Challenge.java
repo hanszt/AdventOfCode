@@ -43,6 +43,19 @@ public abstract class Challenge {
         return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 
+    protected String listOfStringListsAsString(List<List<String>> listOfStringLists) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%n"));
+        for (List<String> row : listOfStringLists) {
+            for (String s  : row) {
+                sb.append(s).append(", ");
+            }
+            sb.append(String.format("%n"));
+        }
+        sb.append(String.format("%n"));
+        return sb.toString();
+    }
+
     protected String booleanGrid2DAsString(List<List<Boolean>> grid) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));

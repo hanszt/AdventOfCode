@@ -28,8 +28,6 @@ public class Part1AllergenAssessment extends Day21Challenge {
                 }
             }
         }
-        NavigableMap<String, Integer> navigableMap = new TreeMap<>();
-        SortedMap<String, Integer> sortedMap = new TreeMap<>();
         return count;
     }
 

@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static hzt.Launcher.DOTTED_LINE;
 
@@ -42,8 +44,8 @@ public class ChallengeDay {
         return title;
     }
 
-    public Challenge[] getChallenges() {
-        return challenges;
+    public Stream<Challenge> challengesAsStream() {
+        return Stream.of(challenges);
     }
 
     public int getDayOfMonth() {
