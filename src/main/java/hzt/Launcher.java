@@ -54,8 +54,8 @@ import hzt.aoc.day23.Part1CrabCups;
 import hzt.aoc.day23.Part2CrabCups;
 import hzt.aoc.day24.Part1LobbyLayout;
 import hzt.aoc.day24.Part2LobbyLayout;
-import hzt.aoc.day25.Part1;
-import hzt.aoc.day25.Part2;
+import hzt.aoc.day25.Part1ComboBreaker;
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -67,11 +67,10 @@ import java.util.stream.Stream;
 import static java.lang.System.*;
 
 /**
- *
  * This is a project to participate in the Advent of code 2020.
- * This event was helt between 01-12-2020 and 25-12-2020
- * @author Hans Zuidervaart,
+ * This event was held between 01-12-2020 and 25-12-2020
  *
+ * @author Hans Zuidervaart,
  */
 public class Launcher implements Runnable {
 
@@ -152,8 +151,8 @@ public class Launcher implements Runnable {
                 new Part1CrabCups(), new Part2CrabCups()));
         challengeDays.put(++day, new ChallengeDay("Lobby Layout", YELLOW, dateOfDay(day),
                 new Part1LobbyLayout(), new Part2LobbyLayout()));
-        challengeDays.put(++day, new ChallengeDay("", RED, dateOfDay(day),
-                new Part1(), new Part2()));
+        challengeDays.put(++day, new ChallengeDay("Combo Breaker", RED, dateOfDay(day),
+                new Part1ComboBreaker()));
     }
 
     public static void main(String[] args) {
@@ -161,43 +160,48 @@ public class Launcher implements Runnable {
     }
 
     private void start() {
-        new Part2LobbyLayout().solveChallenge();
         run();
     }
 
     @Override
     public void run() {
         String userInput = ALL;
-        long startTime = System.nanoTime();
+        long startTime = nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
         while (!userInput.equals(EXIT)) {
             pressEnterToContinue();
             out.print(menuAsString());
-            String input = new Scanner(in).next();
-            userInput = execute(input);
+            userInput = execute(new Scanner(in).next());
         }
-        long runtime = System.nanoTime() - startTime;
+        long runtime = nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
         exit(0);
     }
 
     private void executeAllAndPrintSummary() {
         challengeDays.values().forEach(ChallengeDay::solveChallenges);
-
+        long totalSolveTime = challengeDays.values().stream()
+                .map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow();
         LOGGER.info(sortedSolveTimesAsString(new ArrayList<>(challengeDays.values())));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
-                DOTTED_LINE, challengeDays.values().stream().map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow() / 1e9,
-                DOTTED_LINE));
+                DOTTED_LINE, totalSolveTime / 1e9, DOTTED_LINE));
     }
 
-    private static final String NUMBER_REGEX = "\\d+";
+    private static final String NUMBER_LENGTH_ONE_OR_MORE = "\\d+";
 
     private String execute(String input) {
         if (input.equals(EXIT)) return EXIT;
         else if (input.equals(ALL)) executeAllAndPrintSummary();
-        else if (input.matches(NUMBER_REGEX)) executeByChallengeNumber(input);
+        else if (input.equals(TRACE)) setChallengeLoggerToLevel(Level.TRACE);
+        else if (input.equals(INFO)) setChallengeLoggerToLevel(Level.INFO);
+        else if (input.matches(NUMBER_LENGTH_ONE_OR_MORE)) executeByChallengeNumber(input);
         else out.println("You didn't enter a valid option...");
         return input;
+    }
+
+    private void setChallengeLoggerToLevel(Level level) {
+        Challenge.LOGGER.setLevel(level);
+        out.println("Challenge Logger level set to " + level.toString());
     }
 
     private void executeByChallengeNumber(String input) {
@@ -208,15 +212,19 @@ public class Launcher implements Runnable {
     }
 
     private static final String EXIT = "e";
-
     private static final String ALL = "a";
+    private static final String TRACE = "t";
+    private static final String INFO = "i";
 
     private String menuAsString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
         challengeDays.forEach((dayNr, day) -> sb.append(menuOption(dayNr, day.getTitle())));
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
-        sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%nYour input: ", EXIT));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%n", EXIT));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to set the logging level to 'INFO'.%n", INFO));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to set the logging level to 'TRACE'.%n", TRACE));
+        sb.append("Your input: ");
         return sb.toString();
     }
 

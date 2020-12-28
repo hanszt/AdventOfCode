@@ -1,16 +1,9 @@
 package hzt.aoc.day03;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.util.List;
 
 public class TreesEncounteredPart2 extends Day03Challenge {
-
-
-    private static final Logger LOGGER = LogManager.getLogger(TreesEncounteredPart2.class);
-
 
     public TreesEncounteredPart2() {
         super("part 2",

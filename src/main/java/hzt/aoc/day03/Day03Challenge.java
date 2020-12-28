@@ -1,8 +1,6 @@
 package hzt.aoc.day03;
 
 import hzt.aoc.Challenge;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,7 +9,6 @@ import java.util.List;
 
 public abstract class Day03Challenge extends Challenge {
 
-    private static final Logger LOGGER = LogManager.getLogger(Day03Challenge.class);
     private static final Character TREE = '#';
 
     protected Day03Challenge(String part, String description) {

@@ -9,8 +9,8 @@ public class Part2CrabCups extends Day23Challenge {
 
     public Part2CrabCups() {
         super("part 2",
-                "you are quite surprised when the crab starts arranging many cups in a circle on your raft - one million (1000000) in total." +
-                        "the crab is going to do ten million (10000000) moves!" +
+                "You are quite surprised when the crab starts arranging many cups in a circle on your raft - one million (1000000) in total. " +
+                        "The crab is going to do ten million (10000000) moves! " +
                         "Determine which two cups will end up immediately clockwise of cup 1. What do you get if you multiply their labels together?");
     }
 

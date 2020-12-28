@@ -7,7 +7,6 @@ import java.util.List;
 public class Part2CustomCustoms extends Day06Challenge {
 
     public Part2CustomCustoms() {
-
         super("part 2", "For each group, " +
                 "count the number of questions to which everyone answered 'yes'. What is the sum of those counts?");
     }

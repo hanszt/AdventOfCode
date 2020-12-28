@@ -24,7 +24,7 @@ public abstract class Day22Challenge extends Challenge {
         try {
             int player = 0;
             for (String line : inputList) {
-                if (!line.isEmpty() && line.matches("\\d+")) {
+                if (!line.isEmpty() && line.matches(NUMBER_LENGTH_ONE_OR_MORE.pattern())) {
                     if (player == 1) player1Cards.addLast(Integer.parseInt(line));
                     if (player == 2) player2Cards.addLast(Integer.parseInt(line));
                 }

@@ -2,9 +2,9 @@ package hzt.aoc.day24;
 
 import hzt.aoc.Challenge;
 
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static hzt.aoc.day24.Tile.*;
@@ -40,6 +40,26 @@ public abstract class Day24Challenge extends Challenge {
         }
         LOGGER.trace(listOfStringListsAsString(instructions));
         return getMessage(calculateResult(instructions));
+    }
+
+    Map<Point, Tile> buildFloorByInstructions(List<List<String>> instructionsList) {
+        Map<Point, Tile> tileMap = new HashMap<>();
+        Tile centerTile = new Tile(new Point(0, 0));
+        tileMap.put(centerTile.getPosition(), centerTile);
+        for (List<String> instructions : instructionsList) {
+            Tile curTile = centerTile;
+            for (String instruction : instructions) {
+                curTile = curTile.getNeighborByInstruction(instruction, tileMap);
+                tileMap.put(curTile.getPosition(), curTile);
+            }
+            curTile.flip();
+        }
+        tileMap.values().forEach(LOGGER::trace);
+        return tileMap;
+    }
+
+    long countTilesWithBlackSideUp(Collection<Tile> tiles) {
+        return tiles.stream().filter(Tile::isBlackUp).count();
     }
 
     protected abstract long calculateResult(List<List<String>> instructions);

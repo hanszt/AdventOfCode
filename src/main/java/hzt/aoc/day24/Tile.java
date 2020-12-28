@@ -1,9 +1,8 @@
 package hzt.aoc.day24;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.List;
+import java.util.*;
 
 public class Tile {
 
@@ -34,8 +33,9 @@ public class Tile {
 
     private final Point position;
     private boolean blackUp;
+    private int nrOfBlackNeighbors;
 
-    private final HashMap<String, Tile> instructionsToNeighborsMap = new HashMap<>();
+    private final Map<Point, Tile> instructionsToNeighborsMap = new HashMap<>();
 
     public Tile(Point position) {
         this.position = position;
@@ -46,16 +46,49 @@ public class Tile {
         blackUp = !blackUp;
     }
 
-    public Tile getNeighborByInstruction(String direction, Map<Point, Tile> allTiles) {
-        Point delta = INSTRUCTION_TO_DIR.get(direction);
+    public Tile getNeighborByInstruction(String instruction, Map<Point, Tile> allTiles) {
+        Point delta = INSTRUCTION_TO_DIR.get(instruction);
         Point newPosition = new Point(this.position.x + delta.x, this.position.y + delta.y);
         Tile neighbor;
-        if (instructionsToNeighborsMap.get(direction) != null) neighbor = instructionsToNeighborsMap.get(direction);
+        if (instructionsToNeighborsMap.get(delta) != null) neighbor = instructionsToNeighborsMap.get(delta);
         else if (allTiles.containsKey(newPosition)) neighbor = allTiles.get(newPosition);
         else neighbor = new Tile(newPosition);
-        neighbor.instructionsToNeighborsMap.put(OPPOSITE_DIR.get(direction), this);
-        this.instructionsToNeighborsMap.put(direction, neighbor);
+        neighbor.instructionsToNeighborsMap.put(INSTRUCTION_TO_DIR.get(OPPOSITE_DIR.get(instruction)), this);
+        this.instructionsToNeighborsMap.put(INSTRUCTION_TO_DIR.get(instruction), neighbor);
         return neighbor;
+    }
+
+    void countBlackNeighbors() {
+        nrOfBlackNeighbors = 0;
+        for (Tile neighbor : instructionsToNeighborsMap.values()) {
+            if (neighbor.isBlackUp()) nrOfBlackNeighbors++;
+        }
+    }
+
+    void countBlackNeighbors(Map<Point, Tile> allTiles) {
+        nrOfBlackNeighbors = 0;
+        for (Point delta : INSTRUCTION_TO_DIR.values()) {
+            Point neighborPosition = new Point(this.position.x + delta.x, this.position.y + delta.y);
+            if (allTiles.containsKey(neighborPosition)) {
+                Tile neighbor = allTiles.get(neighborPosition);
+                if (neighbor.isBlackUp()) nrOfBlackNeighbors++;
+            }
+        }
+    }
+
+    //    Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
+    //    Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
+    void executeRule() {
+        if (blackUp && (nrOfBlackNeighbors == 0 || nrOfBlackNeighbors > 2)) flip();
+        if (!blackUp && nrOfBlackNeighbors == 2) flip();
+    }
+
+    List<Tile> neighbors() {
+        List<Tile> neighbors = new ArrayList<>();
+        for (Point delta : INSTRUCTION_TO_DIR.values()) {
+            neighbors.add(new Tile(new Point(position.x + delta.x, position.y + delta.y)));
+        }
+        return neighbors;
     }
 
     public boolean isBlackUp() {
@@ -85,14 +118,16 @@ public class Tile {
         return sb.toString();
     }
 
-    private String neighborAsString(Map.Entry<String, Tile> e) {
+    private String neighborAsString(Map.Entry<Point, Tile> e) {
         Point p = e.getValue().position;
-        return String.format("%2s->position='(x=%3d, y=%3d)', ", e.getKey(), p.x, p.y);
+        Point delta = e.getKey();
+        return String.format("delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
+                delta.x, delta.y, p.x, p.y, e.getValue().blackUp);
     }
 
     @Override
     public String toString() {
-        return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, Neighbors={%s}}",
-                position.x, position.y, blackUp, neighborsAsString());
+        return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, nrOfBlackNeighbors=%d, Neighbors={%s}}",
+                position.x, position.y, blackUp, nrOfBlackNeighbors, neighborsAsString());
     }
 }

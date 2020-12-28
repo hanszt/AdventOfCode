@@ -20,10 +20,14 @@ public abstract class Day21Challenge extends Challenge {
 
     protected abstract Object calculateAnswer(List<Food> idsToIngredientsAndAllergens);
 
+    private static final String ONE_OR_MORE_SPACES = "\\s+";
+
     private Food parseLine(String line) {
         String[] ingredientsToAllergens = line.split("contains");
-        String[] ingredientsAsArray = ingredientsToAllergens[0].replace("(", "").strip().split("\\s+");
-        String[] allergensAsArray = ingredientsToAllergens[1].replace(")", "").replace(" ", "").strip().split(",");
+        String[] ingredientsAsArray = ingredientsToAllergens[0]
+                .replace("(", "").strip().split(ONE_OR_MORE_SPACES);
+        String[] allergensAsArray = ingredientsToAllergens[1].replace(")", "")
+                .replace(" ", "").strip().split(",");
         return new Food(Set.of(ingredientsAsArray), Set.of(allergensAsArray));
     }
 

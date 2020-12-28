@@ -1,18 +1,22 @@
 package hzt.aoc;
 
 import hzt.aoc.io.IOController2;
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static hzt.Launcher.DOTTED_LINE;
 
 public abstract class Challenge {
 
-    protected static final Logger LOGGER = LogManager.getLogger(Challenge.class);
+    public static final Logger LOGGER = LogManager.getLogger(Challenge.class);
+    protected static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
+    protected static final Pattern NOT_DIGIT_LENGTH_ONE_OR_MORE = Pattern.compile("\\D+");
 
     private String title;
     private final String part;
@@ -90,12 +94,6 @@ public abstract class Challenge {
 
     protected void logResult(Object result) {
         LOGGER.info(String.format("%s%nAnswer:%n%s",DOTTED_LINE, result));
-    }
-
-    public void logResult() {
-        List<String> inputList = loadInputList();
-        Object result = solve(inputList);
-        LOGGER.info(part + ": " + result);
     }
 
     public long getSolveTime() {

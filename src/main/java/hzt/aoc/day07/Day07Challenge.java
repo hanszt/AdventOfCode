@@ -5,6 +5,7 @@ import hzt.aoc.Challenge;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class Day07Challenge extends Challenge {
@@ -33,9 +34,10 @@ public abstract class Day07Challenge extends Challenge {
         if (!content.equals("no other bags.")) {
             String[] rulesAsStrings = content.split(", ");
             for (String string : rulesAsStrings) {
-                String stringAmount = string.replaceAll("\\D+", ""); // replace non digits
+                String stringAmount = string.replaceAll(NOT_DIGIT_LENGTH_ONE_OR_MORE.pattern(), "");
                 int amount = Integer.parseInt(stringAmount);
-                String bagColor = string.replaceAll("\\d+", "").split(" bag")[0].strip(); // strip white spaces from trailing edges
+                String bagColor = string.replaceAll(NUMBER_LENGTH_ONE_OR_MORE.pattern(), "")
+                        .split(" bag")[0].strip(); // strip white spaces from trailing edges
                 currentBag.addColorToAmount(bagColor, amount);
             }
         }

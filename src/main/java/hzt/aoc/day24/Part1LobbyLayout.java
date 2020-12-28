@@ -15,23 +15,8 @@ public class Part1LobbyLayout extends Day24Challenge {
 
     @Override
     protected long calculateResult(List<List<String>> instructionsList) {
-        Map<Point, Tile> tileMap = new HashMap<>();
-        Tile centerTile = new Tile(new Point(0, 0));
-        tileMap.put(centerTile.getPosition(), centerTile);
-        for (List<String> instructions : instructionsList) {
-            Tile curTile = centerTile;
-            for (String instruction : instructions) {
-                curTile = curTile.getNeighborByInstruction(instruction, tileMap);
-                tileMap.put(curTile.getPosition(), curTile);
-            }
-            curTile.flip();
-        }
-        tileMap.values().forEach(LOGGER::trace);
+        Map<Point, Tile> tileMap = buildFloorByInstructions(instructionsList);
         return countTilesWithBlackSideUp(tileMap.values());
-    }
-
-    private long countTilesWithBlackSideUp(Collection<Tile> tiles) {
-        return tiles.stream().filter(Tile::isBlackUp).count();
     }
 
     @Override

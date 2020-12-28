@@ -2,8 +2,6 @@ package hzt.aoc.day04;
 
 import hzt.aoc.Challenge;
 import hzt.aoc.day04.model.Passport;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +9,6 @@ import java.util.List;
 
 public abstract class Day04Challenge extends Challenge {
 
-    private static final Logger LOGGER = LogManager.getLogger(Day04Challenge.class);
     private static final String BIRTH_YEAR = "byr";
     private static final String ISSUE_YEAR = "iyr";
     private static final String EXPIRATION_YEAR = "eyr";
