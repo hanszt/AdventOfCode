@@ -18,7 +18,7 @@ public class Part1AdaptorArray extends Day10Challenge {
     }
 
     @Override
-    String getMessage(Number number) {
+    protected String getMessage(String number) {
         return String.format("The number of 1-jolt differences multiplied by the number of 3-jolt differences is: %s", number);
     }
 

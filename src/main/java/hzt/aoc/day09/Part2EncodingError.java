@@ -41,7 +41,7 @@ public class Part2EncodingError extends Day09Challenge {
     }
 
     @Override
-    String getMessage(long sum) {
-        return String.format("%d%n", sum);
+    protected String getMessage(String sum) {
+        return String.format("%s%n", sum);
     }
 }

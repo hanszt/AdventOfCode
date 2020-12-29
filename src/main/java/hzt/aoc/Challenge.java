@@ -1,10 +1,13 @@
 package hzt.aoc;
 
 import hzt.aoc.io.IOController2;
-import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -23,6 +26,8 @@ public abstract class Challenge {
     private final String description;
     private final String inputFileName;
     private long solveTime = 0;
+    private ZonedDateTime startTimeSolve;
+    private String answer;
 
     protected Challenge(String part, String description, String inputFileName) {
         this.part = part;
@@ -35,11 +40,15 @@ public abstract class Challenge {
                 title, part, inputFileName, description, DOTTED_LINE));
         List<String> inputList = loadInputList();
         long startTime = System.nanoTime();
-        Object result = solve(inputList);
-        long endTime = System.nanoTime();
-        solveTime = endTime - startTime;
-        logResult(result);
-        String message = String.format("Solved in %5.5f ms%n", solveTime / 1e6);
+        if (answer == null) {
+            startTimeSolve = ZonedDateTime.now();
+            answer = solve(inputList);
+            long endTime = System.nanoTime();
+            solveTime = endTime - startTime;
+        }
+        logResult(answer);
+        String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
+                startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
         LOGGER.info(message + DOTTED_LINE);
     }
 
@@ -51,7 +60,7 @@ public abstract class Challenge {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
         for (List<String> row : listOfStringLists) {
-            for (String s  : row) {
+            for (String s : row) {
                 sb.append(s).append(", ");
             }
             sb.append(String.format("%n"));
@@ -90,10 +99,14 @@ public abstract class Challenge {
         return new IOController2().readInputFileByLine(inputFileName);
     }
 
-    protected abstract Object solve(List<String> inputList);
+    protected abstract String solve(List<String> inputList);
 
-    protected void logResult(Object result) {
-        LOGGER.info(String.format("%s%nAnswer:%n%s",DOTTED_LINE, result));
+    protected String getMessage(String result) {
+        return result;
+    }
+
+    protected void logResult(String result) {
+        LOGGER.info(String.format("%s%nAnswer:%n%s", DOTTED_LINE, getMessage(result)));
     }
 
     public long getSolveTime() {
@@ -107,5 +120,13 @@ public abstract class Challenge {
     public Challenge setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public void clearAnswer() {
+        answer = null;
+    }
+
+    public String getAnswer() {
+        return answer;
     }
 }

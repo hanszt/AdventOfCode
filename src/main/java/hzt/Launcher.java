@@ -192,15 +192,22 @@ public class Launcher implements Runnable {
     private String execute(String input) {
         if (input.equals(EXIT)) return EXIT;
         else if (input.equals(ALL)) executeAllAndPrintSummary();
-        else if (input.equals(TRACE)) setChallengeLoggerToLevel(Level.TRACE);
+        else if (input.equals(CLEAR)) clearAnswers();
         else if (input.equals(INFO)) setChallengeLoggerToLevel(Level.INFO);
+        else if (input.equals(TRACE)) setChallengeLoggerToLevel(Level.TRACE);
         else if (input.matches(NUMBER_LENGTH_ONE_OR_MORE)) executeByChallengeNumber(input);
         else out.println("You didn't enter a valid option...");
         return input;
     }
 
+    private void clearAnswers() {
+        challengeDays.values().forEach(day -> day.challengesAsStream().forEach(Challenge::clearAnswer));
+        out.println("Answers cleared");
+    }
+
     private void setChallengeLoggerToLevel(Level level) {
         Challenge.LOGGER.setLevel(level);
+        clearAnswers();
         out.println("Challenge Logger level set to " + level.toString());
     }
 
@@ -213,6 +220,7 @@ public class Launcher implements Runnable {
 
     private static final String EXIT = "e";
     private static final String ALL = "a";
+    private static final String CLEAR = "c";
     private static final String TRACE = "t";
     private static final String INFO = "i";
 
@@ -221,9 +229,10 @@ public class Launcher implements Runnable {
         sb.append(String.format("%n"));
         challengeDays.forEach((dayNr, day) -> sb.append(menuOption(dayNr, day.getTitle())));
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
-        sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%n", EXIT));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to clear answers.%n", CLEAR));
         sb.append(String.format("Enter '%s'  and press 'Enter' to set the logging level to 'INFO'.%n", INFO));
         sb.append(String.format("Enter '%s'  and press 'Enter' to set the logging level to 'TRACE'.%n", TRACE));
+        sb.append(String.format("Enter '%s'  and press 'Enter' to exit the program.%n", EXIT));
         sb.append("Your input: ");
         return sb.toString();
     }
@@ -242,9 +251,10 @@ public class Launcher implements Runnable {
         sb.append(RESET);
         sb.append(String.format("%nChallenges sorted by solve time:%n"));
         for (Pair<Challenge, ChallengeDay> p : challenges) {
-            sb.append(String.format("Day %2d Challenge: %-50s, solve time: %8.3f milliseconds%n",
+            sb.append(String.format("Day %2d Challenge: %-50s, answer: %-50s, solve time: %8.3f milliseconds%n",
                     p.getRight().getDayOfMonth(),
                     p.getRight().getTitle() + " " + p.getLeft().getPart(),
+                    p.getLeft().getAnswer(),
                     p.getLeft().getSolveTime() / 1e6));
         }
         return sb.toString();

@@ -15,10 +15,10 @@ public abstract class Day21Challenge extends Challenge {
     @Override
     protected String solve(List<String> inputList) {
         List<Food> foods = inputList.stream().map(this::parseLine).collect(Collectors.toList());
-        return getMessage(calculateAnswer(foods));
+        return calculateAnswer(foods);
     }
 
-    protected abstract Object calculateAnswer(List<Food> idsToIngredientsAndAllergens);
+    protected abstract String calculateAnswer(List<Food> idsToIngredientsAndAllergens);
 
     private static final String ONE_OR_MORE_SPACES = "\\s+";
 
@@ -31,12 +31,12 @@ public abstract class Day21Challenge extends Challenge {
         return new Food(Set.of(ingredientsAsArray), Set.of(allergensAsArray));
     }
 
-    Result extractPotentialAllergens(Set<String> allAllergens, List<Food> foods) {
-        Set<String> potentialAllergenIngredients = new HashSet<>();
-        Map<String, List<String>> allergenToIngredientsMap = new HashMap<>();
+    Result extractAllergens(final Set<String> allAllergens, final List<Food> foods) {
+        final Set<String> potentialAllergenIngredients = new HashSet<>();
+        final Map<String, List<String>> allergenToIngredientsMap = new HashMap<>();
         for (String allergen : allAllergens) {
-            List<Food> foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
-            Set<String> allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
+            final List<Food> foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
+            final Set<String> allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
             for (String ingredient : allPossibleIngredients) {
                 boolean inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.getIngredients().contains(ingredient));
                 if (inAllFoods) {
@@ -65,8 +65,6 @@ public abstract class Day21Challenge extends Challenge {
                 .flatMap(line -> line.getAllergens().stream())
                 .collect(Collectors.toSet());
     }
-
-    abstract String getMessage(Object value);
 
     static class Result {
 

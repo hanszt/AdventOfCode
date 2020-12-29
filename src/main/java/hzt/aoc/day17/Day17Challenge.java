@@ -18,7 +18,7 @@ public abstract class Day17Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        return getMessage(solveByGrid(inputList));
+        return String.valueOf(solveByGrid(inputList));
     }
 
     protected abstract long solveByGrid(List<String> inputList);
@@ -114,7 +114,8 @@ public abstract class Day17Challenge extends Challenge {
         return curVal + 1 < gridDimension ? curVal + 1 : curVal;
     }
 
-    private String getMessage(long global) {
-        return String.format("%d cubes are left in the active state after %d cycles", global, NUMBER_OF_CYCLES);
+    @Override
+    protected String getMessage(String global) {
+        return String.format("%s cubes are left in the active state after %d cycles", global, NUMBER_OF_CYCLES);
     }
 }

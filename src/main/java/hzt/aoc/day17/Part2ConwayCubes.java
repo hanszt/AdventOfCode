@@ -99,7 +99,7 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
     }
 
     private boolean isActiveNeighbor(Point4D checked, Point4D cur, List<List<List<List<Boolean>>>> curGrid4d) {
-        if (!cur.valueEquals(checked)) {
+        if (!cur.equals(checked)) {
             return curGrid4d.get(checked.getW()).get(checked.getZ()).get(checked.getY()).get(checked.getX());
         } else return false;
     }

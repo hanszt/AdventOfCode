@@ -16,8 +16,9 @@ public class Part1HandheldHalting extends Day08Challenge {
         return testInstructions(instructions).getGlobal();
     }
 
-    public String getMessage(int global) {
-        return String.format("The value of the global variable before second execution: %d%n", global);
+    @Override
+    protected String getMessage(String global) {
+        return String.format("The value of the global variable before second execution: %s%n", global);
     }
 
 }

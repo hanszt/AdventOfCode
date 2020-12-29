@@ -40,7 +40,7 @@ public class Part2CrabCups extends Day23Challenge {
         return run(first, target, labelToNodeMap);
     }
 
-    private  LinkedNode<Integer> firstNode(List<Integer> cupLabels) {
+    private LinkedNode<Integer> firstNode(List<Integer> cupLabels) {
         int label = cupLabels.get(0);
         return new LinkedNode<>(label);
     }
@@ -72,7 +72,7 @@ public class Part2CrabCups extends Day23Challenge {
         return num1 * num2;
     }
 
-    int determineTargetCupLabel(LinkedNode<Integer> current, LinkedNode<Integer> removed, Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
+    private int determineTargetCupLabel(LinkedNode<Integer> current, LinkedNode<Integer> removed, Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
         int destinationCupLabel = current.getValue().equals(TARGET_VAL) ? indexToLabelNodeMap.size() : current.getValue() - 1;
         while (inRange(removed, destinationCupLabel)) {
             destinationCupLabel--;
@@ -81,10 +81,11 @@ public class Part2CrabCups extends Day23Challenge {
         return destinationCupLabel;
     }
 
-    private boolean inRange(LinkedNode<Integer> removed, int destinationCupLabel) {
-        return removed.getValue() == destinationCupLabel
-                || removed.getNext().getValue() == destinationCupLabel
-                || removed.getNext().getNext().getValue() == destinationCupLabel;
+    private boolean inRange(LinkedNode<Integer> removed, int destination) {
+        int current = removed.getValue();
+        int next = removed.getNext().getValue();
+        int secondNext = removed.getNext().getNext().getValue();
+        return current == destination || next == destination || secondNext == destination;
     }
 
     @Override

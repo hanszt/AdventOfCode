@@ -19,7 +19,7 @@ public abstract class Day03Challenge extends Challenge {
     protected String solve(List<String> inputList) {
         List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
         LOGGER.trace(booleanGrid2DAsString(grid));
-        return getMessage(calculateResult(grid));
+        return String.valueOf(calculateResult(grid));
     }
 
     protected abstract long calculateResult(List<List<Boolean>> grid);
@@ -51,8 +51,6 @@ public abstract class Day03Challenge extends Challenge {
         }
         return gird;
     }
-
-    public abstract String getMessage(long result);
 
     enum Path {
         SLOPE3_1(new Point(3, 1)),

@@ -1,14 +1,18 @@
 package hzt.aoc.day20;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 // Credits to Johan de Jong
 public class Tile {
 
+    private Point position;
     private final List<String> content;
     private final List<List<String>> orientations;
 
     public Tile(List<String> content) {
+        this.position = position;
         this.content = content;
         this.orientations = calculateOrientations();
     }
@@ -149,6 +153,14 @@ public class Tile {
 
     public List<List<String>> getOrientations() {
         return orientations;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
     }
 
     @Override

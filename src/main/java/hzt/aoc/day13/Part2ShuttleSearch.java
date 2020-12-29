@@ -1,16 +1,11 @@
 package hzt.aoc.day13;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Part2ShuttleSearch extends Day13Challenge {
-
-    private static final Logger LOGGER = LogManager.getLogger(Part2ShuttleSearch.class);
 
     public Part2ShuttleSearch() {
         super("part 2",
@@ -19,12 +14,12 @@ public class Part2ShuttleSearch extends Day13Challenge {
     }
 
     @Override
-    protected Object solve(List<String> lines) {
+    protected String solve(List<String> lines) {
         List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
                 .map(x -> "x".equals(x) ? "-1" : x)
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-        return getMessage(second(busIdsWithBlanks));
+        return String.valueOf(second(busIdsWithBlanks));
     }
 
     // Chinese remainder theorem implementation
@@ -100,10 +95,5 @@ public class Part2ShuttleSearch extends Day13Challenge {
             this.minIndex = minIndex;
             this.modulo = modulo;
         }
-    }
-
-    @Override
-    String getMessage(Number global) {
-        return String.format("%s", global);
     }
 }

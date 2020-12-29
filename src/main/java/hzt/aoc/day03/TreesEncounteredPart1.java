@@ -16,8 +16,8 @@ public class TreesEncounteredPart1 extends Day03Challenge {
     }
 
     @Override
-    public String getMessage(long result) {
-        return String.format("The number of trees crossed is: %d%n", result);
+    protected String getMessage(String result) {
+        return String.format("The number of trees crossed is: %s%n", result);
     }
 
 }

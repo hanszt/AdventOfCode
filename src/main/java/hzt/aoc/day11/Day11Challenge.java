@@ -12,7 +12,8 @@ public abstract class Day11Challenge extends Challenge {
         super(challengeTitle, description, inputFileName);
     }
 
-    String getMessage(long value) {
-        return String.format("The number of seats occupied after equilibrium: %d%n", value);
+    @Override
+    protected String getMessage(String value) {
+        return String.format("The number of seats occupied after equilibrium: %s%n", value);
     }
 }

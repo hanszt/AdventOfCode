@@ -2,10 +2,7 @@ package hzt.aoc.day01;
 
 import hzt.aoc.Challenge;
 
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Day01Challenge extends Challenge {
@@ -16,11 +13,15 @@ public abstract class Day01Challenge extends Challenge {
         super(challenge, description, "20201201-input-day1.txt");
     }
 
+    private final List<Integer[]> integersThatSumTo2020List = new ArrayList<>();
+
     @Override
     protected String solve(List<String> inputList) {
         Set<Integer> integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toSet());
-        List<Integer[]> integersThatSumTo2020List = findIntegersListThatSumTo2020(new TreeSet<>(integers));
-        return getMessage(integersThatSumTo2020List);
+        integersThatSumTo2020List.clear();
+        integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(new TreeSet<>(integers)));
+        LOGGER.trace(getMessage(integersThatSumTo2020List));
+        return String.valueOf(calculateProduct(integersThatSumTo2020List.get(0)));
     }
 
     protected abstract List<Integer[]> findIntegersListThatSumTo2020(SortedSet<Integer> integers);
@@ -41,6 +42,19 @@ public abstract class Day01Challenge extends Challenge {
             sb.append(result);
         }
         return sb.toString();
+    }
+
+    private long calculateProduct(Integer[] entries) {
+        long product = 1;
+        for (Integer integer : entries) {
+            product *= integer;
+        }
+        return product;
+    }
+
+    @Override
+    protected String getMessage(String message) {
+        return getMessage(integersThatSumTo2020List);
     }
 
 }

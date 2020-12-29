@@ -17,7 +17,7 @@ public class Part1CustomCustoms extends Day06Challenge {
     }
 
     @Override
-    protected String getMessage(int result) {
-        return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %d%n", result);
+    protected String getMessage(String result) {
+        return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %s%n", result);
     }
 }

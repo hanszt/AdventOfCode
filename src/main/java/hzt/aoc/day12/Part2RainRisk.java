@@ -12,7 +12,7 @@ public class Part2RainRisk extends Day12Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         Point wayPoint = new Point(10, 1);
         Point ship = new Point(0, 0);
         for (String line : inputList) {

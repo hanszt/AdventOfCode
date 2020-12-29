@@ -36,7 +36,7 @@ public class Part2RambunctiousRecitation extends Day15Challenge {
     }
 
     @Override
-    String getMessage(long global) {
-        return String.format("The %dth number spoken is: %d", THRESHOLD, global);
+    protected String getMessage(String global) {
+        return String.format("The %dth number spoken is: %s", THRESHOLD, global);
     }
 }

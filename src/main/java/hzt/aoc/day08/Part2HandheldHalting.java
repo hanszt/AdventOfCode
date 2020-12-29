@@ -28,7 +28,7 @@ public class Part2HandheldHalting extends Day08Challenge {
     }
 
     @Override
-    public String getMessage(int global) {
-        return String.format("The value of the global variable after correct termination: %d%n", global);
+    protected String getMessage(String global) {
+        return String.format("The value of the global variable after correct termination: %s%n", global);
     }
 }

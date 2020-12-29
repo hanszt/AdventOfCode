@@ -21,11 +21,14 @@ public abstract class Day04Challenge extends Challenge {
         super(challengeTitle, description, "20201204-input-day4.txt");
     }
 
+    private long passportListSize;
+
     @Override
     protected String solve(List<String> inputList) {
         List<Passport> passports = getPasswords(inputList);
+        passportListSize = passports.size();
         long validPasswords = calculateResult(passports);
-        return getMessage(validPasswords, passports);
+        return String.valueOf(validPasswords);
     }
 
     private List<Passport> getPasswords(List<String> lines) {
@@ -89,8 +92,8 @@ public abstract class Day04Challenge extends Challenge {
 
     protected abstract long calculateResult(List<Passport> passports);
 
-    public String getMessage(long validPassports, List<Passport> passports) {
-        return String.format("The number of valid passports is: %d of %d%n", validPassports, passports.size());
+    public String getMessage(String validPassports) {
+        return String.format("The number of valid passports is: %s of %d%n", validPassports, passportListSize);
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// credits to TurkeyDev
 public class Part2AdaptorArrayWithCaching extends Day10Challenge {
 
     public Part2AdaptorArrayWithCaching() {
@@ -42,7 +43,7 @@ public class Part2AdaptorArrayWithCaching extends Day10Challenge {
     }
 
     @Override
-    String getMessage(Number number) {
+    protected String getMessage(String number) {
         return String.format("The number of distinct ways to connect your adaptor is: %s%n", number);
     }
 }

@@ -16,7 +16,7 @@ public class Part2AllergenAssessment extends Day21Challenge {
     @Override
     protected String calculateAnswer(List<Food> foods) {
         var allAllergens = extractAllAllergens(foods);
-        var allergenToIngredientsMap = extractPotentialAllergens(allAllergens, foods).getAllergenToIngredientsMap();
+        var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }
 
@@ -38,7 +38,7 @@ public class Part2AllergenAssessment extends Day21Challenge {
     }
 
     @Override
-    String getMessage(Object global) {
+    protected String getMessage(String global) {
         return String.format("%s", global);
     }
 }

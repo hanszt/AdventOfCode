@@ -23,7 +23,7 @@ public abstract class Day10Challenge extends Challenge {
         List<Integer> list = inputList.stream().filter(s -> !s.isEmpty()).map(Integer::parseInt).sorted().collect(Collectors.toList());
         list.add(0, 0); // add socket jolt value
         list.add(list.get(list.size() - 1) + MAX_STEP_APART); // add built in phone adaptor jolt value
-        return getMessage(solveByList(list));
+        return String.valueOf(solveByList(list));
     }
 
     protected abstract Number solveByList(List<Integer> list);
@@ -40,5 +40,4 @@ public abstract class Day10Challenge extends Challenge {
         return oneDifference * threeDifference;
     }
 
-    abstract String getMessage(Number value);
 }

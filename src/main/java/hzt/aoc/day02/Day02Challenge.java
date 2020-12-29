@@ -12,10 +12,13 @@ public abstract class Day02Challenge extends Challenge {
         super(part, description, "20201202-input-day2.txt");
     }
 
+    private long inputListSize;
+
     @Override
     protected String solve(List<String> inputList) {
+        inputListSize = inputList.size();
         long validPasswords = inputList.stream().filter(this::passwordIsValid).count();
-        return getMessage(inputList, validPasswords);
+        return String.valueOf(validPasswords);
     }
 
     boolean passwordIsValid(String line) {
@@ -35,8 +38,8 @@ public abstract class Day02Challenge extends Challenge {
         return new Policy(Integer.parseInt(lowerAndUpper[0]), Integer.parseInt(lowerAndUpper[1]), character);
     }
 
-    public String getMessage(List<String> inputList, long validPasswords) {
-        return String.format("%d of the %d passwords are valid%n", validPasswords, inputList.size());
+   protected String getMessage(String validPasswords) {
+        return String.format("%s of the %d passwords are valid%n", validPasswords, inputListSize);
 
     }
 }

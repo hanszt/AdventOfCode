@@ -33,7 +33,7 @@ public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
     }
 
     @Override
-    String getMessage(Number number) {
-        return String.format("The number of distinct ways to connect your adaptor is: %s%n", number);
+    protected String getMessage(String number) {
+        return String.format("The number of distinct ways to connect your adaptor is (Only works for small input set): %s%n", number);
     }
 }

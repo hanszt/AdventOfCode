@@ -1,8 +1,8 @@
 package hzt.aoc.day20;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 // Credits to Johan de Jong
 public class Part2JurassicJigsaw extends Day20Challenge {
@@ -13,15 +13,18 @@ public class Part2JurassicJigsaw extends Day20Challenge {
                         "that are not part of a sea monster. How many # are not part of a sea monster?");
     }
 
+    private int sideLength;
+
     @Override
     protected long calculateAnswer(Map<Integer, Tile> tileIdsToGrids) {
+        sideLength = (int) Math.sqrt(tileIdsToGrids.size());
         int pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
         long result = 0;
         Set<Integer> placedIds = new HashSet<>();
-        Tile[][] placedTile = new Tile[pictureSideLength][pictureSideLength];
-        boolean complete = placeNextTile(placedIds, placedTile, 0, 0, tileIdsToGrids);
+        Tile[][] placedTiles = new Tile[pictureSideLength][pictureSideLength];
+        boolean complete = placeNextTile(placedIds, placedTiles, new Point(0, 0), tileIdsToGrids);
         if (complete) {
-            List<String> fullPicture = buildFullPicture(placedTile, pictureSideLength);
+            List<String> fullPicture = buildFullPicture(placedTiles, pictureSideLength);
             result = countHowManyHashesNotPartOfSeeMonster(fullPicture);
         }
         return result;
@@ -106,43 +109,48 @@ public class Part2JurassicJigsaw extends Day20Challenge {
         return count;
     }
 
-    private boolean placeNextTile(Set<Integer> placedIds, Tile[][] placed, int x, int y, Map<Integer, Tile> tiles) {
-        int sideLength = (int) Math.sqrt(tiles.size());
+    private boolean placeNextTile(Set<Integer> placedIds, Tile[][] placed, Point curPosition, Map<Integer, Tile> tiles) {
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
             if (!placedIds.contains(entry.getKey())) {
-                Tile tile = entry.getValue();
+                Tile curTile = entry.getValue();
+                curTile.setPosition(curPosition);
                 placedIds.add(entry.getKey());
-                for (List<String> orientation : tile.getOrientations()) {
-                    placed[y][x] = new Tile(orientation);
-                    if (canPlaceTile(placed, x, y)) {
-                       Point next = updateNextPoint(x, y, sideLength);
-                        if (next.y == sideLength) return true;
-                        if (placeNextTile(placedIds, placed, next.x, next.y, tiles)) return true;
-                    }
-                    placed[y][x] = null;
-                }
+                if (orientationFits(placed, curTile, placedIds, tiles)) return true;
                 placedIds.remove(entry.getKey());
             }
         }
         return false;
     }
 
-    private Point updateNextPoint(int x, int y, int sideLength) {
-        int nx = x + 1;
-        int ny = y;
-        if (nx == sideLength) {
-            nx = 0;
-            ny++;
+    private boolean orientationFits(Tile[][] placed, Tile curTile, Set<Integer> placedIds, Map<Integer, Tile> tiles) {
+        for (List<String> orientation : curTile.getOrientations()) {
+            Point cur = curTile.getPosition();
+            placed[cur.y][cur.x] = new Tile(orientation);
+            if (canPlaceTile(placed, cur)) {
+                Point next = nextPosition(cur);
+                boolean allTilesPlaced = next.y == sideLength;
+                if (allTilesPlaced || placeNextTile(placedIds, placed, next, tiles)) return true;
+            }
         }
-        return new Point(nx, ny);
+        return false;
     }
 
-    private boolean canPlaceTile(Tile[][] placed, int x, int y) {
-        if (x > 0 && !placed[y][x - 1].getRight().equals(placed[y][x].getLeft())) {
+    private Point nextPosition(Point point) {
+        int nextX = point.x + 1;
+        int nextY = point.y;
+        if (nextX == sideLength) {
+            nextX = 0;
+            nextY++;
+        }
+        return new Point(nextX, nextY);
+    }
+
+    private boolean canPlaceTile(Tile[][] placed, Point p) {
+        if (p.x > 0 && !placed[p.y][p.x - 1].getRight().equals(placed[p.y][p.x].getLeft())) {
             return false;
         }
-        if (y > 0) {
-            return placed[y - 1][x].getBottom().equals(placed[y][x].getTop());
+        if (p.y > 0) {
+            return placed[p.y - 1][p.x].getBottom().equals(placed[p.y][p.x].getTop());
         }
         return true;
     }

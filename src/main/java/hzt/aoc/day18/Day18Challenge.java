@@ -33,7 +33,7 @@ public abstract class Day18Challenge extends Challenge {
     }
 
     private long solveEquation(List<String> elementList) {
-        String subResult;
+        String result;
         while (elementList.contains("(")) {
             int indexOpenBracket = 0;
             List<String> newList = new ArrayList<>(elementList);
@@ -43,17 +43,18 @@ public abstract class Day18Challenge extends Challenge {
                 } else if (elementList.get(i).equals(")")) {
                     List<String> subList = elementList.subList(indexOpenBracket + 1, i);
                     LOGGER.trace(subList);
-                    subResult = evaluateBetweenParentheses(subList);
-                    replaceEquationBySubResult(newList, subResult, indexOpenBracket, subList.size() + 1);
+                    result = evaluateBetweenParentheses(subList);
+                    replaceEquationBySubResult(newList, result, indexOpenBracket, subList.size() + 1);
                     newList.remove(indexOpenBracket + 1);
-                    LOGGER.trace(subResult);
+                    LOGGER.trace(result);
                     break;
                 }
             }
             elementList = newList;
         }
-        subResult = evaluateBetweenParentheses(elementList);
-        return Long.parseLong(subResult);
+        result = evaluateBetweenParentheses(elementList);
+        LOGGER.trace(result);
+        return Long.parseLong(result);
     }
 
     void replaceEquationBySubResult(List<String> newList, String subResult, int index, int equationLength) {

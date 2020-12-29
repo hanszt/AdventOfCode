@@ -65,7 +65,7 @@ public class Part1ConwayCubes extends Day17Challenge {
     }
 
     private boolean isActiveNeighbor(Point checked, Point cur, List<List<List<Boolean>>> curGrid3d) {
-        if (!cur.valueEquals(checked)) return curGrid3d.get(checked.getZ()).get(checked.getY()).get(checked.getX());
+        if (!cur.equals(checked)) return curGrid3d.get(checked.getZ()).get(checked.getY()).get(checked.getX());
         else return false;
     }
 

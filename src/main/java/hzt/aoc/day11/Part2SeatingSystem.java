@@ -22,7 +22,7 @@ public class Part2SeatingSystem extends Day11Challenge {
     private int height;
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         width = inputList.get(0).length();
         height = inputList.size();
         state = new char[height][width];
@@ -32,7 +32,7 @@ public class Part2SeatingSystem extends Day11Challenge {
                 state[y][x] = s.charAt(x);
             }
         }
-        return getMessage(iterate(this::adjacentOccupiedLine));
+        return String.valueOf(iterate(this::adjacentOccupiedLine));
     }
 
     private int iterate(IntBinaryOperator adjacentOccupiedFunction) {
@@ -108,7 +108,7 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     @Override
-    String getMessage(long value) {
-        return String.format("The number of seats occupied after equilibrium: %d%n", value);
+    protected String getMessage(String value) {
+        return String.format("The number of seats occupied after equilibrium: %s%n", value);
     }
 }

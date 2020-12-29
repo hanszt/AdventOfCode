@@ -1,5 +1,7 @@
 package hzt.aoc.day17;
 
+import java.util.Objects;
+
 public class Point {
 
     private final int x;
@@ -12,8 +14,19 @@ public class Point {
         this.z = z;
     }
 
-    public boolean valueEquals(Point other) {
-        return this.x == other.x && this.y == other.y && this.z == other.z;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point)) return false;
+        Point point = (Point) o;
+        return x == point.x &&
+                y == point.y &&
+                z == point.z;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 
     public int getX() {

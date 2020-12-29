@@ -16,10 +16,8 @@ public abstract class Day06Challenge extends Challenge {
     protected String solve(List<String> inputByLineList) {
         List<Group> groups = getGroups(inputByLineList);
         int result = calculateResult(groups);
-        return getMessage(result);
+        return String.valueOf(result);
     }
-
-    protected abstract String getMessage(int result);
 
     protected List<Group> getGroups(List<String> inputByLineList) {
         List<Group> groups = new ArrayList<>();

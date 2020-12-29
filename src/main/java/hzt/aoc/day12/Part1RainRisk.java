@@ -11,7 +11,7 @@ public class Part1RainRisk extends Day12Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         Point position = new Point(0, 0);
         Point orientation = new Point(1, 0);
         for (String line : inputList) {

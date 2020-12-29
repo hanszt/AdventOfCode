@@ -13,14 +13,14 @@ public class Part1SeatingSystem extends Day11Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         int occupied = 0;
         int prevOccupied = -1;
         while (occupied != prevOccupied) {
             prevOccupied = occupied;
             occupied = checkOccupiedAndUpdateList(inputList);
         }
-        return getMessage(occupied);
+        return String.valueOf(occupied);
     }
 
     private int checkOccupiedAndUpdateList(List<String> inputList) {

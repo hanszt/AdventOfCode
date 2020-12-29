@@ -14,7 +14,7 @@ public class Part1ShuttleSearch extends Day13Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         int earliestTimestamp = Integer.parseInt(inputList.get(0));
         List<Integer> integers = Arrays.stream(inputList.get(1).split(","))
                 .filter(s -> !s.matches("x"))
@@ -29,11 +29,7 @@ public class Part1ShuttleSearch extends Day13Challenge {
                 busNumberBelongingToSmallest = entry.getKey();
             }
         }
-        return getMessage(timeToWaitForEarliestBus * busNumberBelongingToSmallest);
+        return String.valueOf(timeToWaitForEarliestBus * busNumberBelongingToSmallest);
     }
 
-    @Override
-    String getMessage(Number global) {
-        return String.format("%s", global);
-    }
 }

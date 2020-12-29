@@ -17,7 +17,7 @@ public abstract class Day15Challenge extends Challenge {
     @Override
     protected String solve(List<String> inputList) {
         List<Integer> numbers = commaSeparatedStringToIntegerList(inputList.get(0));
-        return getMessage(getNthNumberSpoken(numbers));
+        return String.valueOf(getNthNumberSpoken(numbers));
     }
 
     long logTime(int counter, int step, int offset, int lastNumberSpoken, long start) {
@@ -31,6 +31,4 @@ public abstract class Day15Challenge extends Challenge {
 
     protected abstract int getNthNumberSpoken(List<Integer> numbers);
 
-
-    abstract String getMessage(long value);
 }

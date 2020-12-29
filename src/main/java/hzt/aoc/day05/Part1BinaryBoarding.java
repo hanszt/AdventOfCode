@@ -17,8 +17,8 @@ public class Part1BinaryBoarding extends Day05Challenge {
     }
 
     @Override
-    public String getMessage(int result) {
-        return String.format("The highest seat ID is: %d%n", result);
+    protected String getMessage(String result) {
+        return String.format("The highest seat ID is: %s%n", result);
     }
 
 }

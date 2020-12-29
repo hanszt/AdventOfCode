@@ -43,7 +43,7 @@ public class Part2BinaryBoarding extends Day05Challenge {
     }
 
     @Override
-    public String getMessage(int mySeatId) {
-        return String.format("The id of my seat is: %d%n", mySeatId);
+    protected String getMessage(String mySeatId) {
+        return String.format("The id of my seat is: %s%n", mySeatId);
     }
 }

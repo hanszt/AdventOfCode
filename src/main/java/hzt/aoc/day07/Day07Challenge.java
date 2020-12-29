@@ -5,7 +5,6 @@ import hzt.aoc.Challenge;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class Day07Challenge extends Challenge {
@@ -22,7 +21,7 @@ public abstract class Day07Challenge extends Challenge {
                 .map(this::extractBagFromLine)
                 .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
         long numberOfBags = solveByRules(bagColorsToRule);
-        return getMessage(numberOfBags);
+        return String.valueOf(numberOfBags);
     }
 
     protected abstract long solveByRules(Map<String, Bag> bags);
@@ -43,8 +42,6 @@ public abstract class Day07Challenge extends Challenge {
         }
         return currentBag;
     }
-
-    abstract String getMessage(long numberOfBags);
 
     static class Bag {
 

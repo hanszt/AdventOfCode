@@ -12,7 +12,4 @@ public abstract class Day13Challenge extends Challenge {
         super(challengeTitle, description, inputFileName);
     }
 
-
-
-    abstract String getMessage(Number value);
 }

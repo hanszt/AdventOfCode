@@ -24,7 +24,7 @@ public abstract class Day05Challenge extends Challenge {
     protected String solve(List<String> inputList) {
         List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
         int result = calculateResult(seats);
-        return getMessage(result);
+        return String.valueOf(result);
     }
 
     protected abstract int calculateResult(List<Seat> seats);
@@ -63,7 +63,5 @@ public abstract class Day05Challenge extends Challenge {
     int findHighestSeatID(List<Integer> boardingPassIds) {
         return boardingPassIds.stream().reduce(Integer::max).orElse(0);
     }
-
-    public abstract String getMessage(int result);
 
 }

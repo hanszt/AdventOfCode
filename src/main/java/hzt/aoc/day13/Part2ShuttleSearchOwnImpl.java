@@ -13,7 +13,7 @@ public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         List<String> busNrList = Arrays.asList(inputList.get(1).split(","));
         int highestIndex = busNrList.size() - 1;
         Map<Integer, Integer> listPositionsToBusNrs = new TreeMap<>();
@@ -34,11 +34,11 @@ public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
             if (!matches.contains(false)) break;
             earliestTimestamp = earliestTimestamp.add(BigInteger.ONE);
         }
-        return getMessage(earliestTimestamp.subtract(BigInteger.valueOf(highestIndex)));
+        return String.valueOf(earliestTimestamp.subtract(BigInteger.valueOf(highestIndex)));
     }
 
     @Override
-    String getMessage(Number global) {
+    protected String getMessage(String global) {
         return String.format("%s (only works for small inputs)", global);
     }
 }

@@ -16,9 +16,9 @@ public abstract class Day09Challenge extends Challenge {
     }
 
     @Override
-    protected Object solve(List<String> inputList) {
+    protected String solve(List<String> inputList) {
         List<Long> numbers = inputList.stream().map(Long::parseLong).collect(Collectors.toList());
-        return getMessage(solveByXmasList(numbers));
+        return String.valueOf(solveByXmasList(numbers));
     }
 
     protected abstract long solveByXmasList(List<Long> integers);
@@ -48,7 +48,5 @@ public abstract class Day09Challenge extends Challenge {
         }
         return false;
     }
-
-    abstract Object getMessage(long value);
 
 }

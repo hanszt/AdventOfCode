@@ -19,9 +19,9 @@ public class Part1HandyHaversacks extends Day07Challenge {
         return bag.childBagColorsToAmounts.keySet().stream()
                 .anyMatch(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
     }
-
-    String getMessage(long numberOfBags) {
-        return String.format("The number of bags containing a %s bag at least once: %d%n", SHINY_GOLD, numberOfBags);
+@Override
+    protected String getMessage(String numberOfBags) {
+        return String.format("The number of bags containing a %s bag at least once: %s%n", SHINY_GOLD, numberOfBags);
     }
 
 }

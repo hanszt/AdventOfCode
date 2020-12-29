@@ -20,8 +20,8 @@ public class Part1EncodingError extends Day09Challenge {
 
 
     @Override
-    String getMessage(long number) {
-        return String.format("The first number that is not the sum of two of the 25 numbers before it is: %d%n", number);
+    protected String getMessage(String number) {
+        return String.format("The first number that is not the sum of two of the 25 numbers before it is: %s%n", number);
     }
 
 }

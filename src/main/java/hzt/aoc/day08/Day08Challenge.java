@@ -20,7 +20,7 @@ public abstract class Day08Challenge extends Challenge {
         Instruction.setNext(0);
         List<Instruction> instructions = inputList.stream().map(this::instruction).collect(toList());
         int global = solveByInstructions(instructions);
-        return getMessage(global);
+        return String.valueOf(global);
     }
 
     protected abstract int solveByInstructions(List<Instruction> instructions);
@@ -58,8 +58,6 @@ public abstract class Day08Challenge extends Challenge {
         int argument = Integer.parseInt(stringArgument);
         return new Instruction(descriptor, argument);
     }
-
-    public abstract String getMessage(int global);
 
     static class Result {
 

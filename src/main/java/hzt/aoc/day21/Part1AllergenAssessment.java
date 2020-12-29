@@ -13,10 +13,12 @@ public class Part1AllergenAssessment extends Day21Challenge {
 
 
     @Override
-    protected Object calculateAnswer(List<Food> foods) {
+    protected String calculateAnswer(List<Food> foods) {
         Set<String> allAllergens = extractAllAllergens(foods);
-        Set<String> potentialAllergenIngredients = extractPotentialAllergens(allAllergens, foods).getPotentialAllergenIngredients();
-        return countIngredientsWithoutAllergens(potentialAllergenIngredients, foods);
+        Set<String> potentialAllergenIngredients = extractAllergens(allAllergens, foods)
+                .getPotentialAllergenIngredients();
+
+        return String.valueOf(countIngredientsWithoutAllergens(potentialAllergenIngredients, foods));
     }
 
     private long countIngredientsWithoutAllergens(Set<String> potentialAllergenIngredients, List<Food> foods) {
@@ -33,7 +35,7 @@ public class Part1AllergenAssessment extends Day21Challenge {
 
 
     @Override
-    String getMessage(Object global) {
+    protected String getMessage(String global) {
         return String.format("%s", global);
     }
 

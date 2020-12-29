@@ -22,7 +22,7 @@ public class Part2HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    public String getMessage(long numberOfBags) {
-        return String.format("The number of individual bags required inside the %s bag: %d%n", SHINY_GOLD, numberOfBags);
+    public String getMessage(String numberOfBags) {
+        return String.format("The number of individual bags required inside the %s bag: %s%n", SHINY_GOLD, numberOfBags);
     }
 }
