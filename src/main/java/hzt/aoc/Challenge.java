@@ -40,16 +40,18 @@ public abstract class Challenge {
                 title, part, inputFileName, description, DOTTED_LINE));
         List<String> inputList = loadInputList();
         long startTime = System.nanoTime();
-        if (answer == null) {
-            startTimeSolve = ZonedDateTime.now();
-            answer = solve(inputList);
-            long endTime = System.nanoTime();
-            solveTime = endTime - startTime;
+        if (!inputList.isEmpty()) {
+            if (answer == null) {
+                startTimeSolve = ZonedDateTime.now();
+                answer = solve(inputList);
+                long endTime = System.nanoTime();
+                solveTime = endTime - startTime;
+            }
+            logResult(answer);
+            String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
+                    startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
+            LOGGER.info(message + DOTTED_LINE);
         }
-        logResult(answer);
-        String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
-                startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
-        LOGGER.info(message + DOTTED_LINE);
     }
 
     protected List<Integer> commaSeparatedStringToIntegerList(String s) {

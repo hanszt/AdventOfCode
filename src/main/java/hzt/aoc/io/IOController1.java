@@ -23,7 +23,7 @@ public class IOController1 implements IIOController {
                 LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
                 io.printStackTrace();
             }
-        } else LOGGER.error("Url is null...");
+        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
         return Collections.emptyList();
     }
 

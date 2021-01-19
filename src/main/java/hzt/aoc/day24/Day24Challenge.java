@@ -12,7 +12,7 @@ import static hzt.aoc.day24.Tile.*;
 public abstract class Day24Challenge extends Challenge {
 
     Day24Challenge(String part, String description) {
-        super(part, description, "20201224-input-day24.txt");
+        super(part, description, "20201224-input-day24ref.txt");
     }
 
     static final Set<String> INSTRUCTION_SET = Set.of(EAST, SOUTH_EAST, SOUTH_WEST, WEST, NORTH_WEST, NORTH_EAST);

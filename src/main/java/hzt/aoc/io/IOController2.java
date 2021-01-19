@@ -25,7 +25,7 @@ public class IOController2 implements IIOController {
             } catch (FileNotFoundException e) {
                 LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
             }
-        } else LOGGER.error("Url is null...");
+        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
         return inputList;
     }
 

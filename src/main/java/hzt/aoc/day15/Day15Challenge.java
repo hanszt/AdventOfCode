@@ -11,7 +11,7 @@ public abstract class Day15Challenge extends Challenge {
     static final Logger LOGGER = LogManager.getLogger(Day15Challenge.class);
 
     Day15Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201215-input-day15.txt");
+        super(challengeTitle, description, "20201215-input-day15ref.txt");
     }
 
     @Override
