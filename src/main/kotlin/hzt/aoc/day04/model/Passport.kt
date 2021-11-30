@@ -1,7 +1,6 @@
 package hzt.aoc.day04.model
 
 import org.apache.log4j.LogManager
-import java.util.*
 
 class Passport {
 
@@ -54,8 +53,8 @@ class Passport {
                     hairColorValid, eyeColorValid, passportIdValid
                 )
             )
-            (passportIdValid && eyeColorValid && hairColorValid
-                    && heightValid && expirationYearValid && issueYearValid && birthYearValid)
+            val personCharsValid = eyeColorValid && hairColorValid && heightValid && birthYearValid
+            (personCharsValid && passportIdValid && expirationYearValid && issueYearValid)
         } else false
     }
 
@@ -71,7 +70,6 @@ class Passport {
             hairColorValid=$hairColorValid
             eyeColorValid=$eyeColorValid
             passportIdValid=$passportIdValid
-            
             """.trimIndent()
     }
 
@@ -83,11 +81,11 @@ class Passport {
             LOGGER.trace("value is number=$valueIsNumber Value=$value")
             if (valueIsNumber) {
                 val heightValue = value.toInt()
-                if (unit == "cm") {
-                    heightValue in 150..193
-                } else if (unit == "in") {
-                    heightValue in 59..76
-                } else false
+                when (unit) {
+                    "cm" -> heightValue in 150..193
+                    "in" -> heightValue in 59..76
+                    else -> false
+                }
             } else false
         } else false
     }
@@ -153,8 +151,7 @@ class Passport {
         private const val HIGHEST_ISSUE_YEAR = 2020
         private const val LOWEST_EXPIRATION_YEAR = 2020
         private const val HIGHEST_EXPIRATION_YEAR = 2030
-        private val VALID_EYE_COLORS: Set<String> =
-            HashSet(listOf("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth"))
+        private val VALID_EYE_COLORS: Set<String> = setOf("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth")
         private const val UNIT_LENGTH = 2
         private const val MINIMUM_HEIGHT_STRING_LENGTH = 3
     }

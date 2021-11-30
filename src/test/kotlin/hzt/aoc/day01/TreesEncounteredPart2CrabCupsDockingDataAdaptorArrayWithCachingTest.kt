@@ -1,10 +1,9 @@
-package hzt.aoc.day01;
+package hzt.aoc.day01
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test
 
-class TreesEncounteredPart2CrabCupsDockingDataAdaptorArrayWithCachingTest {
-
+internal class TreesEncounteredPart2CrabCupsDockingDataAdaptorArrayWithCachingTest {
     @Test
-    void findIntegersListThatSumTo2020() {
+    fun findIntegersListThatSumTo2020() {
     }
 }

@@ -1,10 +1,9 @@
-package hzt.aoc.day02;
+package hzt.aoc.day02
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test
 
-class PasswordValidDay1Test {
-
+internal class PasswordValidDay1Test {
     @Test
-    void countNumberOfValidPasswords() {
+    fun countNumberOfValidPasswords() {
     }
 }
