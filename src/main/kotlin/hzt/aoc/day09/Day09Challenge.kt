@@ -1,12 +1,11 @@
 package hzt.aoc.day09
 
 import hzt.aoc.Challenge
-import java.util.stream.Collectors
 
 abstract class Day09Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201209-input-day9.txt") {
     override fun solve(inputList: List<String>): String {
-        val numbers = inputList.stream().map { s: String -> s.toLong() }.collect(Collectors.toList())
+        val numbers = inputList.asSequence().map(String::toLong).toList()
         return solveByXmasList(numbers).toString()
     }
 

@@ -19,12 +19,10 @@ open class Part1ConwayCubes : Day17Challenge {
         return countActive3D(grid3d)
     }
 
-    fun countActive3D(grid3d: List<List<MutableList<Boolean>>>): Long {
-        return grid3d.stream()
-            .flatMap<List<Boolean>> { obj: List<MutableList<Boolean>> -> obj.stream() }
-            .flatMap { obj: List<Boolean> -> obj.stream() }
-            .filter { b: Boolean -> b }.count()
-    }
+    fun countActive3D(grid3d: List<List<MutableList<Boolean>>>): Long = grid3d.asSequence()
+        .flatMap { it.asSequence() }
+        .flatMap { it.asSequence() }
+        .filter { it }.count().toLong()
 
     private fun updateGrid(grid3d: MutableList<MutableList<MutableList<Boolean>>>):
             MutableList<MutableList<MutableList<Boolean>>> {
@@ -45,7 +43,7 @@ open class Part1ConwayCubes : Day17Challenge {
         return newGrid3d
     }
 
-    fun countActiveNeighbors(cur: Point, curGrid3d: List<List<MutableList<Boolean>>>): Int {
+    fun countActiveNeighbors(cur: Point, curGrid3d: List<List<List<Boolean>>>): Int {
         var activeNeighbors = 0
         for (z in (cur.z - 1).coerceAtLeast(0)..upperBound(cur.z, curGrid3d.size)) {
             for (y in (cur.y - 1).coerceAtLeast(0)..upperBound(cur.y, curGrid3d[0].size)) {
@@ -57,7 +55,7 @@ open class Part1ConwayCubes : Day17Challenge {
         return activeNeighbors
     }
 
-    private fun isActiveNeighbor(checked: Point, cur: Point, curGrid3d: List<List<MutableList<Boolean>>>): Boolean {
+    private fun isActiveNeighbor(checked: Point, cur: Point, curGrid3d: List<List<List<Boolean>>>): Boolean {
         return cur != checked && curGrid3d[checked.z][checked.y][checked.x]
     }
 }

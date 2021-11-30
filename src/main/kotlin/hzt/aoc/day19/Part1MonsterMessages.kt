@@ -1,7 +1,5 @@
 package hzt.aoc.day19
 
-import java.util.stream.Collectors
-
 // credits to Turkey dev
 // We used the principle of bnf's here
 class Part1MonsterMessages : Day19Challenge(
@@ -10,16 +8,14 @@ class Part1MonsterMessages : Day19Challenge(
 ) {
     override fun countMatches(): Long {
         LOGGER.trace(parsedInputAsString(rulesToSubRules, messages))
-        return messages.stream()
+        return messages.asSequence()
             .map(::asCharList)
             .filter(this::matches)
-            .count()
+            .count().toLong()
     }
 
     private fun asCharList(message: String): MutableList<Char> {
-        return message.chars()
-            .mapToObj(Int::toChar)
-            .collect(Collectors.toList())
+        return message.asSequence().toMutableList()
     }
 
     private fun matches(messageChars: MutableList<Char>): Boolean {

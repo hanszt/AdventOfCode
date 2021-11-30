@@ -2,7 +2,6 @@ package hzt.aoc.day18
 
 import hzt.aoc.Challenge
 import java.util.*
-import kotlin.streams.toList
 
 abstract class Day18Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201218-input-day18.txt") {
@@ -12,14 +11,12 @@ abstract class Day18Challenge internal constructor(challengeTitle: String, descr
     }
 
     override fun solve(inputList: List<String>): String {
-        val sumAnswers = inputList.stream().map { equationAString: String -> calculateAnswer(equationAString) }
-            .reduce { a: Long, b: Long -> java.lang.Long.sum(a, b) }.orElse(0L)
+        val sumAnswers = inputList.sumOf { calculateAnswer(it) }
         return getMessage(sumAnswers)
     }
 
     private fun parseEquation(equationAString: String): List<String> {
-        return equationAString.replace("\\s".toRegex(), "")
-            .chars().mapToObj(Int::toChar)
+        return equationAString.replace("\\s".toRegex(), "").asSequence()
             .map(Char::toString)
             .toList()
     }

@@ -2,14 +2,13 @@ package hzt.aoc.day01
 
 import hzt.aoc.Challenge
 import java.util.*
-import java.util.stream.Collectors
 
 abstract class Day01Challenge protected constructor(challenge: String, description: String) :
     Challenge(challenge, description, "20201201-input-day1.txt") {
     private val integersThatSumTo2020List: MutableList<Array<Int>> = ArrayList()
 
     override fun solve(inputList: List<String>): String {
-        val integers = inputList.stream().map { s: String -> s.toInt() }.collect(Collectors.toSet())
+        val integers = inputList.map(String::toInt).toSet()
         integersThatSumTo2020List.clear()
         integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(TreeSet(integers)))
         LOGGER.trace(getMessage(integersThatSumTo2020List))
@@ -45,9 +44,7 @@ abstract class Day01Challenge protected constructor(challenge: String, descripti
         return product
     }
 
-    override fun getMessage(result: String): String {
-        return getMessage(integersThatSumTo2020List)
-    }
+    override fun getMessage(result: String): String = getMessage(integersThatSumTo2020List)
 
     companion object {
         const val SUM_TO_BE_FOUND = 2020

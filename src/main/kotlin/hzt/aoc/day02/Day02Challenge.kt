@@ -9,8 +9,7 @@ abstract class Day02Challenge protected constructor(part: String, description: S
 
     override fun solve(inputList: List<String>): String {
         inputListSize = inputList.size.toLong()
-        val validPasswords = inputList.stream().filter { line: String -> passwordIsValid(line) }.count()
-        return validPasswords.toString()
+        return inputList.count(::passwordIsValid).toString()
     }
 
     private fun passwordIsValid(line: String): Boolean {

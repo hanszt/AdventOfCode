@@ -2,18 +2,19 @@ package hzt.aoc.day05
 
 import hzt.aoc.Challenge
 import hzt.aoc.day05.model.Seat
-import java.util.stream.Collectors
 
 abstract class Day05Challenge protected constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201205-input-day5.txt") {
+
     override fun solve(inputList: List<String>): String {
-        val seats = inputList.stream().map { string: String -> extractSeat(string) }.collect(Collectors.toList())
+        val seats = inputList.map(::toSeat)
         val result = calculateResult(seats)
         return result.toString()
     }
 
     protected abstract fun calculateResult(seats: List<Seat>): Int
-    fun extractSeat(string: String): Seat {
+
+    fun toSeat(string: String): Seat {
         var lowerBoundRows = 0
         var upperBoundRows = NUMBER_OF_ROWS
         var lowerBoundCols = 0
@@ -36,17 +37,11 @@ abstract class Day05Challenge protected constructor(challengeTitle: String, desc
         return Seat(string, lowerBoundRows, lowerBoundCols)
     }
 
-    private fun newLowerBound(lower: Int, upper: Int): Int {
-        return lower + (upper - lower) / 2
-    }
+    private fun newLowerBound(lower: Int, upper: Int): Int = lower + (upper - lower) / 2
 
-    private fun newUpperBound(lower: Int, upper: Int): Int {
-        return upper - (upper - lower) / 2
-    }
+    private fun newUpperBound(lower: Int, upper: Int): Int = upper - (upper - lower) / 2
 
-    fun findHighestSeatID(boardingPassIds: List<Int>): Int {
-        return boardingPassIds.stream().reduce { a: Int, b: Int -> Integer.max(a, b) }.orElse(0)
-    }
+    fun findHighestSeatID(boardingPassIds: List<Int>): Int = boardingPassIds.maxOf { it }
 
     companion object {
         const val NUMBER_OF_ROWS = 128

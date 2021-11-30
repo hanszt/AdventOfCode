@@ -6,9 +6,7 @@ import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.regex.Pattern
-import java.util.stream.Collectors
 
 abstract class Challenge protected constructor(
     val part: String,
@@ -48,9 +46,9 @@ abstract class Challenge protected constructor(
     }
 
     protected fun commaSeparatedStringToIntegerList(s: String): MutableList<Int> {
-        return Arrays.stream(s.split(",".toRegex()).toTypedArray())
+        return sequenceOf(*s.split(",".toRegex()).toTypedArray())
             .map(String::toInt)
-            .collect(Collectors.toList())
+            .toMutableList()
     }
 
     protected fun listOfStringListsAsString(listOfStringLists: List<List<String>>): String {

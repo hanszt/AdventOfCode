@@ -30,11 +30,7 @@ class Part2TicketTranslation : Day16Challenge(
         }
         LOGGER.trace(yourTicketValues)
         iterateUntilUniqueValueForeEachField(possibleMatches)
-        if (LOGGER.isTraceEnabled) LOGGER.trace(
-            booleanGrid2DAsString(
-                possibleMatches
-            )
-        )
+        if (LOGGER.isTraceEnabled) LOGGER.trace(booleanGrid2DAsString(possibleMatches))
         return getAnswer(possibleMatches, yourTicketValues)
     }
 
@@ -62,25 +58,14 @@ class Part2TicketTranslation : Day16Challenge(
         }
     }
 
-    private fun isDone(possibleMatches: Array<BooleanArray>): Boolean {
-        for (possibleMatch in possibleMatches) {
-            var matches = 0
-            for (match in possibleMatch) {
-                if (match) matches++
-            }
-            if (matches > 1) return false
-        }
-        return true
-    }
+    private fun isDone(possibleMatches: Array<BooleanArray>): Boolean = possibleMatches
+        .map { matches -> matches.count { it } }
+        .none { it > 1 }
 
     private fun findValidTickets(fields: List<Field>, nearbyTickets: List<List<Int>>): List<List<Int>> {
         val validTickets: MutableList<List<Int>> = ArrayList()
         for (nearbyTicket in nearbyTickets) {
-            val containsOnlyValidValues = nearbyTicket.stream().allMatch { value: Int ->
-                fieldsContainValue(
-                    value, fields
-                )
-            }
+            val containsOnlyValidValues = nearbyTicket.all { fieldsContainValue(it, fields) }
             if (containsOnlyValidValues) validTickets.add(nearbyTicket)
         }
         return validTickets
@@ -100,9 +85,7 @@ class Part2TicketTranslation : Day16Challenge(
         return answer
     }
 
-    override fun getMessage(value: Long): String {
-        return String.format("%d", value)
-    }
+    override fun getMessage(value: Long): String = String.format("%d", value)
 
     companion object {
         private const val FIRST_SIX_FIELDS = 6

@@ -1,14 +1,11 @@
 package hzt.aoc.day17
 
 import hzt.aoc.Challenge
-import java.util.stream.Collectors
-import java.util.stream.IntStream
 
 abstract class Day17Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201217-input-day17.txt") {
-    override fun solve(inputList: List<String>): String {
-        return solveByGrid(inputList).toString()
-    }
+
+    override fun solve(inputList: List<String>): String = solveByGrid(inputList).toString()
 
     protected abstract fun solveByGrid(inputList: List<String>): Long
     fun getInitGrid3D(inputList: List<String>): MutableList<MutableList<MutableList<Boolean>>> {
@@ -55,11 +52,9 @@ abstract class Day17Challenge internal constructor(challengeTitle: String, descr
         grid3d.add(createInActiveXYPlane(newWidth, newHeight))
     }
 
-    private fun createInActiveRow(width: Int): MutableList<Boolean> {
-        return IntStream.range(0, width)
-            .mapToObj { false }
-            .collect(Collectors.toList())
-    }
+    private fun createInActiveRow(width: Int): MutableList<Boolean> = (0 until width)
+        .map { false }
+        .toMutableList()
 
     private fun createInActiveXYPlane(width: Int, height: Int): MutableList<MutableList<Boolean>> {
         val inActiveGridXY: MutableList<MutableList<Boolean>> = ArrayList()
@@ -94,17 +89,13 @@ abstract class Day17Challenge internal constructor(challengeTitle: String, descr
      If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
      If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
  */
-    fun applyRules(active: Boolean, activeNeighbors: Int): Boolean {
-        return (active && (activeNeighbors in 2..3)) || (!active && activeNeighbors == 3)
-    }
+    fun applyRules(active: Boolean, activeNeighbors: Int): Boolean =
+        (active && (activeNeighbors in 2..3)) || (!active && activeNeighbors == 3)
 
-    fun upperBound(curVal: Int, gridDimension: Int): Int {
-        return if (curVal + 1 < gridDimension) curVal + 1 else curVal
-    }
+    fun upperBound(curVal: Int, gridDimension: Int): Int = if (curVal + 1 < gridDimension) curVal + 1 else curVal
 
-    override fun getMessage(result: String): String {
-        return String.format("%s cubes are left in the active state after %d cycles", result, NUMBER_OF_CYCLES)
-    }
+    override fun getMessage(result: String): String =
+        String.format("%s cubes are left in the active state after %d cycles", result, NUMBER_OF_CYCLES)
 
     companion object {
         const val NUMBER_OF_CYCLES = 6

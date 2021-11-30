@@ -1,19 +1,71 @@
 package hzt.aoc.day20
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 internal class TileTest {
+
+    private val expected = """
+            #### 
+            #   #
+            #### 
+            #    
+            #    
+            
+            #####
+              # #
+              # #
+              # #
+               # 
+            
+                #
+                #
+             ####
+            #   #
+             ####
+            
+             #   
+            # #  
+            # #  
+            # #  
+            #####
+            
+             ####
+            #   #
+             ####
+                #
+                #
+            
+               # 
+              # #
+              # #
+              # #
+            #####
+            
+            #    
+            #    
+            #### 
+            #   #
+            #### 
+            
+            #####
+            # #  
+            # #  
+            # #  
+             #    
+        """.trimIndent().trim()
+
     @Test
     fun testOrientationsWithP() {
-        val list: MutableList<String> = ArrayList()
-        list.add("#### ")
-        list.add("#   #")
-        list.add("#### ")
-        list.add("#    ")
-        list.add("#    ")
-        val tile = Tile(list)
-        println(tile.orientationsAsString())
-        Assertions.assertTrue(true)
+        val pattern = listOf(
+            "#### ",
+            "#   #",
+            "#### ",
+            "#    ",
+            "#    "
+        )
+        val orientations = Tile(pattern).orientationsAsString().trimIndent().trim()
+        println(orientations)
+        assertEquals(expected, orientations)
     }
 }

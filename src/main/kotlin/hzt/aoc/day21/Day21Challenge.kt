@@ -2,21 +2,19 @@ package hzt.aoc.day21
 
 import hzt.aoc.Challenge
 import java.util.*
-import java.util.stream.Collectors
 
 // credits to Johan de Jong
 abstract class Day21Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201221-input-day21.txt") {
-    override fun solve(inputList: List<String>): String {
-        val foods = inputList.stream().map { line: String -> parseLine(line) }.collect(Collectors.toList())
-        return calculateAnswer(foods)
-    }
+
+    override fun solve(inputList: List<String>): String = calculateAnswer(inputList.map(::toParsedLine))
 
     protected abstract fun calculateAnswer(foods: List<Food>): String
-    private fun parseLine(line: String): Food {
+    private fun toParsedLine(line: String): Food {
         val ingredientsToAllergens = line.split("contains".toRegex()).toTypedArray()
         val ingredientsAsArray = ingredientsToAllergens[0]
-            .replace("(", "").trim().split(ONE_OR_MORE_SPACES.toRegex()).toTypedArray()
+            .replace("(", "").trim()
+            .split(ONE_OR_MORE_SPACES.toRegex()).toTypedArray()
         val allergensAsArray = ingredientsToAllergens[1].replace(")", "")
             .replace(" ", "").trim().split(",".toRegex()).toTypedArray()
         return Food(mutableSetOf(*ingredientsAsArray), mutableSetOf(*allergensAsArray))
@@ -30,7 +28,7 @@ abstract class Day21Challenge internal constructor(challengeTitle: String, descr
             val allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen)
             for (ingredient in allPossibleIngredients) {
                 val inAllFoods =
-                    foodsWithAllergen.stream().allMatch { food: Food -> food.getIngredients().contains(ingredient) }
+                    foodsWithAllergen.all { it.getIngredients().contains(ingredient) }
                 if (inAllFoods) {
                     potentialAllergenIngredients.add(ingredient)
                     allergenToIngredientsMap.computeIfAbsent(allergen) { ArrayList() }
@@ -41,37 +39,28 @@ abstract class Day21Challenge internal constructor(challengeTitle: String, descr
         return Result(potentialAllergenIngredients, allergenToIngredientsMap)
     }
 
-    private fun extractFoodsWithAllergen(allergen: String, foods: List<Food>): List<Food> {
-        return foods.stream()
-            .filter { it.getAllergens().contains(allergen) }
-            .collect(Collectors.toList())
-    }
+    private fun extractFoodsWithAllergen(allergen: String, foods: List<Food>): List<Food> = foods.asSequence()
+        .filter { it.getAllergens().contains(allergen) }
+        .toList()
 
-    private fun allPossibleIngredientsContainingAllergen(foodsWithAllergen: List<Food>): Set<String> {
-        return foodsWithAllergen.stream()
-            .flatMap { it.getIngredients().stream() }
-            .collect(Collectors.toSet())
-    }
+    private fun allPossibleIngredientsContainingAllergen(foodsWithAllergen: List<Food>): Set<String> =
+        foodsWithAllergen.asSequence()
+            .flatMap { it.getIngredients().asSequence() }
+            .toSet()
 
-    fun extractAllAllergens(foods: List<Food>): Set<String> {
-        return foods.stream()
-            .flatMap { it.getAllergens().stream() }
-            .collect(Collectors.toSet())
-    }
+    fun extractAllAllergens(foods: List<Food>): Set<String> = foods.asSequence()
+        .flatMap { it.getAllergens().asSequence() }
+        .toSet()
 
     class Result(
         private val potentialAllergenIngredients: Set<String>,
         private val allergenToIngredientsMap: Map<String, MutableList<String>>
     ) {
-        fun getPotentialAllergenIngredients(): Set<String> {
-            return Collections.unmodifiableSet(potentialAllergenIngredients)
-        }
+        fun getPotentialAllergenIngredients(): Set<String> = Collections.unmodifiableSet(potentialAllergenIngredients)
 
-        fun getAllergenToIngredientsMap(): Map<String, MutableList<String>> {
-            return Collections.unmodifiableMap(
-                allergenToIngredientsMap
-            )
-        }
+        fun getAllergenToIngredientsMap(): Map<String, MutableList<String>> = Collections.unmodifiableMap(
+            allergenToIngredientsMap
+        )
     }
 
     companion object {

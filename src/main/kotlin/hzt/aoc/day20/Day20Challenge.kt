@@ -24,7 +24,7 @@ abstract class Day20Challenge internal constructor(challengeTitle: String, descr
                 tileIdsToGrids[tileId] = Tile(tileContent)
             }
         }
-        tileIdsToGrids.forEach { (k: Int, v: Tile) -> LOGGER.trace("$k->$v") }
+        tileIdsToGrids.forEach { (id, tile) -> LOGGER.trace("$id->$tile") }
         LOGGER.trace(tileIdsToGrids.size)
         return tileIdsToGrids
     }

@@ -1,7 +1,6 @@
 package hzt.aoc.day13
 
-import java.util.*
-import java.util.stream.Collectors
+import kotlin.math.abs
 
 class Part2ShuttleSearch : Day13Challenge(
     "part 2",
@@ -9,10 +8,10 @@ class Part2ShuttleSearch : Day13Challenge(
             "offsets matching their positions in the list"
 ) {
     override fun solve(inputList: List<String>): String {
-        val busIdsWithBlanks = Arrays.stream(inputList[1].split(",".toRegex()).toTypedArray())
-            .map { x: String -> if ("x" == x) "-1" else x }
-            .map { s: String -> s.toInt() }
-            .collect(Collectors.toList())
+        val busIdsWithBlanks = sequenceOf(*inputList[1].split(",".toRegex()).toTypedArray())
+            .map { if (it == "x") "-1" else it }
+            .map(String::toInt)
+            .toList()
         return second(busIdsWithBlanks).toString()
     }
 
@@ -26,20 +25,18 @@ class Part2ShuttleSearch : Day13Challenge(
             }
         }
         val moduloProduct = equations
-            .stream()
-            .map { equation: Equation -> equation.modulo }
-            .reduce(1L) { a: Long, b: Long -> a * b }
+            .map(Equation::modulo)
+            .reduce { a, b -> a * b }
+
         for (equation in equations) {
             equation.n = moduloProduct / equation.modulo
             equation.w = euclideanGeneralTheorem(equation.n, equation.modulo)
             if (equation.w < 0) equation.w += equation.modulo
         }
-        var solution = equations
-            .stream()
-            .map { equation: Equation -> equation.minIndex * equation.n * equation.w }
-            .reduce(0L) { a: Long, b: Long -> java.lang.Long.sum(a, b) }
-        solution = properModulo(solution, moduloProduct)
-        return solution
+        val solution = equations.asSequence()
+            .map { it.minIndex * it.n * it.w }
+            .sum()
+        return properModulo(solution, moduloProduct)
     }
 
     private fun euclideanGeneralTheorem(a1: Long, b1: Long): Long {
@@ -66,13 +63,9 @@ class Part2ShuttleSearch : Day13Challenge(
     }
 
     private fun properModulo(a: Long, b: Long): Long {
-        var b = b
-        b = Math.abs(b)
-        return if (a < 0) {
-            b - -a % b
-        } else {
-            a % b
-        }
+        var bMut = b
+        bMut = abs(bMut)
+        return if (a < 0) bMut - -a % bMut else a % bMut
     }
 
     internal class Equation(var minIndex: Long, var modulo: Long) {

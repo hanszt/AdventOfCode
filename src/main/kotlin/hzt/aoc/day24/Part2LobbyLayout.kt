@@ -1,7 +1,5 @@
 package hzt.aoc.day24
 
-import java.util.stream.Collectors
-
 // Credits to Johan de Jong
 class Part2LobbyLayout : Day24Challenge(
     "part 2",
@@ -9,7 +7,9 @@ class Part2LobbyLayout : Day24Challenge(
 ) {
     override fun calculateResult(instructions: List<List<String>>): Long {
         val tileMap = buildFloorByInstructions(instructions)
-        val blackTiles = tileMap.values.stream().filter { obj: Tile -> obj.isBlackUp }.collect(Collectors.toSet())
+        val blackTiles = tileMap.values.asSequence()
+            .filter(Tile::isBlackUp)
+            .toMutableSet()
         for (day in 0 until DAYS_OF_EXHIBIT) {
             simulate(blackTiles)
         }
@@ -29,11 +29,10 @@ class Part2LobbyLayout : Day24Challenge(
         }
     }
 
-    private fun countBlackNeighbours(originalBlack: Set<Tile>, startTile: Tile): Long {
-        return startTile.neighbors().stream()
+    private fun countBlackNeighbours(originalBlack: Set<Tile>, startTile: Tile): Long =
+        startTile.neighbors().asSequence()
             .filter { originalBlack.contains(it) }
-            .count()
-    }
+            .count().toLong()
 
     private fun determineActiveSet(blackTiles: Set<Tile>): Set<Tile> {
         val active: MutableSet<Tile> = HashSet(blackTiles)
@@ -43,9 +42,7 @@ class Part2LobbyLayout : Day24Challenge(
         return active
     }
 
-    override fun getMessage(value: Long): String {
-        return String.format("%d", value)
-    }
+    override fun getMessage(value: Long): String = String.format("%d", value)
 
     companion object {
         private const val DAYS_OF_EXHIBIT = 100

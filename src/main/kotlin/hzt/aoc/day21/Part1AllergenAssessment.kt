@@ -13,22 +13,8 @@ class Part1AllergenAssessment : Day21Challenge(
         return countIngredientsWithoutAllergens(potentialAllergenIngredients, foods).toString()
     }
 
-    private fun countIngredientsWithoutAllergens(
-        potentialAllergenIngredients: Set<String>,
-        foods: List<Food>
-    ): Long {
-        var count: Long = 0
-        for (food in foods) {
-            for (ingredient in food.getIngredients()) {
-                if (!potentialAllergenIngredients.contains(ingredient)) {
-                    count++
-                }
-            }
-        }
-        return count
-    }
+    private fun countIngredientsWithoutAllergens(potentialAllergenIngredients: Set<String>, foods: List<Food>): Long =
+        foods.flatMap { it.getIngredients() }.count { potentialAllergenIngredients.contains(it).not() }.toLong()
 
-    override fun getMessage(result: String): String {
-        return String.format("%s", result)
-    }
+    override fun getMessage(result: String): String = String.format("%s", result)
 }

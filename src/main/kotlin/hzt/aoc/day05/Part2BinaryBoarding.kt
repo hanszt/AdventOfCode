@@ -1,17 +1,17 @@
 package hzt.aoc.day05
 
 import hzt.aoc.day05.model.Seat
-import java.util.stream.Collectors
 
 class Part2BinaryBoarding :
     Day05Challenge("part 2", "What is your seat Id See ChallengeDay5.md part 2 for the assignment. ") {
+
     override fun calculateResult(seats: List<Seat>): Int {
         var mySeatId = 0
         // flight completely full
         val possibleSeatIds: MutableSet<Int> = HashSet()
-        val seatIds = seats.stream()
+        val seatIds = seats.asSequence()
             .map { it.getSeatID(NUMBER_OF_COLUMNS) }
-            .collect(Collectors.toList())
+            .toList()
         // Every seat id must be unique
         for (seatId in seatIds) {
             // Seats with id one less and one more than myId are in my list

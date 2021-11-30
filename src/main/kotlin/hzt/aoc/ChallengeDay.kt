@@ -2,11 +2,9 @@ package hzt.aoc
 
 import hzt.Launcher
 import org.apache.log4j.LogManager
-import java.lang.Long.*
+import java.lang.Long.sum
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.stream.Stream
 
 class ChallengeDay(
     val title: String,
@@ -34,14 +32,11 @@ class ChallengeDay(
     }
 
     val solveTime: Long
-        get() = Arrays.stream(challenges)
+        get() = sequenceOf(*challenges)
             .map(Challenge::solveTime)
             .reduce(::sum)
-            .orElse(0L)
 
-    fun challengesAsStream(): Stream<Challenge> {
-        return Stream.of(*challenges)
-    }
+    fun challengesAsSequence(): Sequence<Challenge> = sequenceOf(*challenges)
 
     val dayOfMonth: Int
         get() = date.dayOfMonth

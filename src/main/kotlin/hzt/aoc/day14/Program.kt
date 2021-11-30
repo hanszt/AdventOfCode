@@ -1,23 +1,20 @@
 package hzt.aoc.day14
 
-import hzt.aoc.Pair
 import java.util.*
-import java.util.stream.Collectors
 
 class Program(private val bitMask: String) : Iterable<Pair<Int, Int>> {
     private val integerAsBinaryStringsToMemorySpotList: MutableList<Pair<Int, Int>> = ArrayList()
+
     fun put(value: Int, memSpot: Int) {
         integerAsBinaryStringsToMemorySpotList.add(Pair(value, memSpot))
     }
 
-    override fun iterator(): Iterator<Pair<Int, Int>> {
-        return integerAsBinaryStringsToMemorySpotList.iterator()
-    }
+    override fun iterator(): Iterator<Pair<Int, Int>> = integerAsBinaryStringsToMemorySpotList.iterator()
 
     fun getValueStoredAfterBitMaskApplication(value: Int): Long {
         val binaryString36 = convertIntToBinaryString(value)
         val array = binaryString36.toCharArray()
-        for (i in 0 until binaryString36.length) {
+        for (i in binaryString36.indices) {
             if (bitMask[i] != 'X') array[i] = bitMask[i]
         }
         return String(array).toLong(2)
@@ -28,11 +25,11 @@ class Program(private val bitMask: String) : Iterable<Pair<Int, Int>> {
         var possibleMemoryLocations: MutableSet<CharArray> = HashSet()
         val array = binaryString.toCharArray()
         possibleMemoryLocations.add(array)
-        for (i in 0 until binaryString.length) {
+        for (i in binaryString.indices) {
             if (bitMask[i] == 'X') {
                 val copy: MutableSet<CharArray> = HashSet(possibleMemoryLocations)
                 for (charArray in possibleMemoryLocations) {
-                    val newArray = Arrays.copyOf(charArray, charArray.size)
+                    val newArray = charArray.copyOf(charArray.size)
                     charArray[i] = '0'
                     newArray[i] = '1'
                     copy.add(newArray)
@@ -44,11 +41,7 @@ class Program(private val bitMask: String) : Iterable<Pair<Int, Int>> {
                 }
             }
         }
-        return possibleMemoryLocations.stream().map { e: CharArray ->
-            String(
-                e
-            ).toLong(2)
-        }.collect(Collectors.toSet())
+        return possibleMemoryLocations.map { String(it).toLong(2) }.toSet()
     }
 
     private fun convertIntToBinaryString(integer: Int): String {
@@ -56,12 +49,10 @@ class Program(private val bitMask: String) : Iterable<Pair<Int, Int>> {
         return "0".repeat(BITMASK_LENGTH - binaryString.length) + binaryString
     }
 
-    override fun toString(): String {
-        return "Program{" +
-                "bitMask='" + bitMask + '\'' +
-                ", integersAsBinaryStringsToMemorySpot=" + integerAsBinaryStringsToMemorySpotList +
-                '}'
-    }
+    override fun toString(): String = "Program{" +
+            "bitMask='" + bitMask + '\'' +
+            ", integersAsBinaryStringsToMemorySpot=" + integerAsBinaryStringsToMemorySpotList +
+            '}'
 
     companion object {
         private const val BITMASK_LENGTH = 36

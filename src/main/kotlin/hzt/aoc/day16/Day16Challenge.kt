@@ -1,8 +1,6 @@
 package hzt.aoc.day16
 
 import hzt.aoc.Challenge
-import hzt.aoc.Pair
-import java.util.stream.Collectors
 
 abstract class Day16Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201216-input-day16.txt") {
@@ -47,14 +45,13 @@ abstract class Day16Challenge internal constructor(challengeTitle: String, descr
     }
 
     protected fun findValidTicketValues(fields: List<Field>, nearbyTicketValues: List<List<Int>>): List<Int> {
-        return nearbyTicketValues.stream().flatMap { obj: List<Int> -> obj.stream() }
-            .filter { value: Int -> fieldsContainValue(value, fields) }
-            .collect(Collectors.toList())
+        return nearbyTicketValues.asSequence()
+            .flatMap(List<Int>::asSequence)
+            .filter { fieldsContainValue(it, fields) }
+            .toList()
     }
 
-    fun fieldsContainValue(value: Int, fields: List<Field>): Boolean {
-        return fields.stream().anyMatch { field: Field -> field.containsValueInRanges(value) }
-    }
+    fun fieldsContainValue(value: Int, fields: List<Field>): Boolean = fields.any { it.containsValueInRanges(value) }
 
     abstract fun getMessage(value: Long): String
 }

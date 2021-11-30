@@ -5,8 +5,8 @@ class Part1CrabCups : Day23Challenge(
     "Using your labeling, simulate 100 moves. What are the labels on the cups after cup 1"
 ) {
     override fun calculateAnswer(cups: MutableList<Int>): Long {
-        val lowestCupLabel = cups.stream().reduce { a: Int, b: Int -> Integer.min(a, b) }.orElseThrow()
-        val highestCupLabel = cups.stream().reduce { a: Int, b: Int -> Integer.max(a, b) }.orElseThrow()
+        val lowestCupLabel = cups.minOf { it }
+        val highestCupLabel = cups.maxOf { it }
         var indexCurrent = 0
         for (i in 0 until NR_OF_MOVES) {
             indexCurrent = makeMove(cups, indexCurrent, lowestCupLabel, highestCupLabel)

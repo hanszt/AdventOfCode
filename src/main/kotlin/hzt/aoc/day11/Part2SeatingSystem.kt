@@ -26,7 +26,7 @@ class Part2SeatingSystem : Day11Challenge(
                 state[y][x] = s[x]
             }
         }
-        return iterate { x: Int, y: Int -> this.adjacentOccupiedLine(x, y) }.toString()
+        return iterate(this::adjacentOccupiedLine).toString()
     }
 
     private fun iterate(adjacentOccupiedFunction: IntBinaryOperator): Int {

@@ -7,6 +7,7 @@ class Part2MonsterMessages : Day19Challenge(
     "part 2",
     "How many messages completely match rule 0 (with loops)"
 ) {
+
     override fun countMatches(): Long {
         addRuleToRulesMaps("8: 42 | 42 8")
         addRuleToRulesMaps("11: 42 31 | 42 11 31")
@@ -14,7 +15,7 @@ class Part2MonsterMessages : Day19Challenge(
         val startRule = rulesAsStringMap[0]
         val regex = ruleRegex2(startRule ?: "")
         val pattern = Pattern.compile(regex)
-        return messages.stream().filter { message: String -> pattern.matcher(message).matches() }.count()
+        return messages.count { pattern.matcher(it).matches() }.toLong()
     }
 
     private fun ruleRegex2(rule: String, depth: Int = 0): String {

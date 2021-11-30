@@ -2,8 +2,6 @@ package hzt.aoc.day24
 
 import hzt.aoc.Challenge
 import java.awt.Point
-import java.util.function.Consumer
-import java.util.stream.Collectors
 
 abstract class Day24Challenge internal constructor(part: String, description: String) :
     Challenge(part, description, "20201224-input-day24ref.txt") {
@@ -19,11 +17,10 @@ abstract class Day24Challenge internal constructor(part: String, description: St
             val array = parsedLine.split(COMMA_OR_COMMA_WITH_SPACE.toRegex()).toTypedArray()
             for (string in array) {
                 if (string.length != 2 || !INSTRUCTION_SET.contains(string)) {
-                    instruction.addAll(string.chars()
-                        .mapToObj(Int::toChar)
+                    instruction.addAll(string.asSequence()
                         .map(Char::toString)
                         .map(String::trim)
-                        .collect(Collectors.toList()))
+                        .toList())
                 } else if (string.isNotBlank()) {
                     instruction.add(string.trim())
                 }
@@ -46,12 +43,12 @@ abstract class Day24Challenge internal constructor(part: String, description: St
             }
             curTile?.flip()
         }
-        tileMap.values.forEach(Consumer { message: Tile -> LOGGER.trace(message) })
+        tileMap.values.forEach { LOGGER.trace(it) }
         return tileMap
     }
 
     fun countTilesWithBlackSideUp(tiles: Collection<Tile>): Long {
-        return tiles.stream().filter { obj: Tile -> obj.isBlackUp }.count()
+        return tiles.count(Tile::isBlackUp).toLong()
     }
 
     protected abstract fun calculateResult(instructions: List<List<String>>): Long

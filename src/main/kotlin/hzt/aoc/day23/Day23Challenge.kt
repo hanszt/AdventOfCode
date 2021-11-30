@@ -1,14 +1,13 @@
 package hzt.aoc.day23
 
 import hzt.aoc.Challenge
-import java.util.stream.Collectors
-import java.util.ArrayList
 
 abstract class Day23Challenge internal constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201223-input-day23.txt") {
     override fun solve(inputList: List<String>): String {
-        val integers = inputList[0].chars().map { codePoint: Int -> Character.getNumericValue(codePoint) }
-            .boxed().collect(Collectors.toList())
+        val integers = inputList[0].asSequence()
+            .map { Character.getNumericValue(it) }
+            .toMutableList()
         return getMessage(calculateAnswer(integers))
     }
 

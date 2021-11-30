@@ -1,7 +1,5 @@
 package hzt.aoc.day08
 
-import java.util.function.Consumer
-
 class Part2HandheldHalting : Day08Challenge(
     "part 2",
     "Fix the program so that it terminates normally by changing exactly one jmp (to nop) or nop (to jmp). " +
@@ -9,7 +7,7 @@ class Part2HandheldHalting : Day08Challenge(
 ) {
     override fun solveByInstructions(instructions: List<Instruction>): Int {
         for (instruction in instructions) {
-            instructions.forEach(Consumer { it.isVisited = false })
+            instructions.forEach { it.isVisited = false }
             swapJumpAndNoOperation(instruction)
             val result = testInstructions(instructions)
             if (result.lastInstruction?.nr == instructions.size) return result.global

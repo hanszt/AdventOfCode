@@ -2,7 +2,6 @@ package hzt
 
 import hzt.aoc.Challenge
 import hzt.aoc.ChallengeDay
-import hzt.aoc.Pair
 import hzt.aoc.day01.Part1ReportRepair
 import hzt.aoc.day01.Part2ReportRepair
 import hzt.aoc.day02.Part1PasswordPhilosophy
@@ -59,8 +58,6 @@ import org.apache.log4j.Level
 import org.apache.log4j.LogManager
 import java.time.LocalDate
 import java.util.*
-import java.util.function.Consumer
-import java.util.stream.Collectors
 import kotlin.system.exitProcess
 
 /**
@@ -71,9 +68,8 @@ import kotlin.system.exitProcess
  */
 class Launcher : Runnable {
     private val challengeDays: MutableMap<Int, ChallengeDay> = HashMap()
-    private fun dateOfDay(day: Int): LocalDate {
-        return LocalDate.of(2020, 12, day)
-    }
+
+    private fun dateOfDay(day: Int): LocalDate = LocalDate.of(2020, 12, day)
 
     private fun populateChallengeDaysMap(challengeDays: MutableMap<Int, ChallengeDay>) {
         var day = 0
@@ -180,9 +176,7 @@ class Launcher : Runnable {
         )
     }
 
-    private fun start() {
-        run()
-    }
+    private fun start() = run()
 
     override fun run() {
         var userInput = ALL
@@ -199,10 +193,10 @@ class Launcher : Runnable {
     }
 
     private fun executeAllAndPrintSummary() {
-        challengeDays.values.forEach(Consumer { obj: ChallengeDay -> obj.solveChallenges() })
-        val totalSolveTime = challengeDays.values.stream()
-            .map { obj: ChallengeDay -> obj.solveTime }.reduce { a: Long, b: Long -> java.lang.Long.sum(a, b) }
-            .orElseThrow()
+        challengeDays.values.forEach(ChallengeDay::solveChallenges)
+        val totalSolveTime = challengeDays.values.asSequence()
+            .map(ChallengeDay::solveTime)
+            .sum()
         LOGGER.info(sortedSolveTimesAsString(ArrayList(challengeDays.values)))
         LOGGER.info(
             String.format(
@@ -215,15 +209,15 @@ class Launcher : Runnable {
     private fun execute(input: String): String {
         if (input == EXIT) return EXIT else if (input == ALL) executeAllAndPrintSummary() else if (input == CLEAR) clearAnswers() else if (input == INFO) setChallengeLoggerToLevel(
             Level.INFO
-        ) else if (input == TRACE) setChallengeLoggerToLevel(Level.TRACE) else if (input.matches(NUMBER_LENGTH_ONE_OR_MORE)
+        ) else if (input == TRACE) setChallengeLoggerToLevel(Level.TRACE) else if (input.matches(
+                NUMBER_LENGTH_ONE_OR_MORE
+            )
         ) executeByChallengeNumber(input) else println("You didn't enter a valid option...")
         return input
     }
 
     private fun clearAnswers() {
-        challengeDays.values.forEach { day ->
-            day.challengesAsStream().forEach { it.clearAnswer() }
-        }
+        challengeDays.values.forEach { day -> day.challengesAsSequence().forEach { it.clearAnswer() } }
         println("Answers cleared")
     }
 
@@ -243,7 +237,7 @@ class Launcher : Runnable {
     private fun menuAsString(): String {
         val sb = StringBuilder()
         sb.append(String.format("%n"))
-        challengeDays.forEach { (dayNr: Int, day: ChallengeDay) -> sb.append(menuOption(dayNr, day.title)) }
+        challengeDays.forEach { (dayNr, day) -> sb.append(menuOption(dayNr, day.title)) }
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL))
         sb.append(String.format("Enter '%s'  and press 'Enter' to clear answers.%n", CLEAR))
         sb.append(String.format("Enter '%s'  and press 'Enter' to set the logging level to 'INFO'.%n", INFO))
@@ -253,16 +247,15 @@ class Launcher : Runnable {
         return sb.toString()
     }
 
-    private fun menuOption(dayNr: Int, title: String): String {
-        return String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", dayNr, dayNr, title)
-    }
+    private fun menuOption(dayNr: Int, title: String): String =
+        String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", dayNr, dayNr, title)
 
     private fun sortedSolveTimesAsString(challengeDays: List<ChallengeDay>): String {
-        val challenges = challengeDays.stream()
-            .map { it.challengesAsStream().map { c -> Pair(c, it) } }
+        val challenges = challengeDays.asSequence()
+            .map { it.challengesAsSequence().map { c -> Pair(c, it) } }
             .flatMap { it.distinct() }
-            .sorted(Comparator.comparing { it.left.solveTime })
-            .collect(Collectors.toList())
+            .sortedBy { it.first.solveTime }
+            .toList()
         val sb = StringBuilder()
         sb.append(RESET)
         sb.append(String.format("%nChallenges sorted by solve time:%n"))
@@ -270,10 +263,10 @@ class Launcher : Runnable {
             sb.append(
                 String.format(
                     "Day %2d Challenge: %-50s, answer: %-50s, solve time: %8.3f milliseconds%n",
-                    p.right.dayOfMonth,
-                    p.right.title + " " + p.left.part,
-                    p.left.answer,
-                    p.left.solveTime / 1e6
+                    p.second.dayOfMonth,
+                    p.second.title + " " + p.first.part,
+                    p.first.answer,
+                    p.first.solveTime / 1e6
                 )
             )
         }
@@ -298,9 +291,7 @@ class Launcher : Runnable {
                 RESET
 
         @JvmStatic
-        fun main(args: Array<String>) {
-            Launcher().start()
-        }
+        fun main(args: Array<String>) = Launcher().start()
 
         private val NUMBER_LENGTH_ONE_OR_MORE: Regex = Regex("\\d+")
         private const val EXIT = "e"
@@ -308,6 +299,7 @@ class Launcher : Runnable {
         private const val CLEAR = "c"
         private const val TRACE = "t"
         private const val INFO = "i"
+
         private fun pressEnterToContinue() {
             System.out.printf("%n%sPress Enter key to continue...%s", GREEN, RESET)
             Scanner(System.`in`).nextLine()

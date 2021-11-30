@@ -1,7 +1,6 @@
 package hzt.aoc.day10
 
 import hzt.aoc.Challenge
-import java.util.stream.Collectors
 
 abstract class Day10Challenge : Challenge {
     internal constructor(challengeTitle: String, description: String) : super(
@@ -17,8 +16,11 @@ abstract class Day10Challenge : Challenge {
     )
 
     override fun solve(inputList: List<String>): String {
-        val list = inputList.stream().filter { s: String -> !s.isEmpty() }.map { s: String -> s.toInt() }
-            .sorted().collect(Collectors.toList())
+        val list = inputList.asSequence()
+            .filter(String::isNotEmpty)
+            .map(String::toInt)
+            .sorted()
+            .toMutableList()
         list.add(0, 0) // add socket jolt value
         list.add(list[list.size - 1] + MAX_STEP_APART) // add built in phone adaptor jolt value
         return solveByList(list).toString()

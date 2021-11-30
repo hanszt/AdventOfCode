@@ -1,15 +1,14 @@
 package hzt.aoc.day07
 
 import hzt.aoc.Challenge
-import java.util.stream.Collectors
 
 abstract class Day07Challenge protected constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201207-input-day7.txt") {
 
     override fun solve(inputList: List<String>): String {
-        val bagColorsToRule = inputList.stream()
+        val bagColorsToRule = inputList.asSequence()
             .map(::extractBagFromLine)
-            .collect(Collectors.toMap(Bag::bagColor) { it })
+            .associateBy(Bag::bagColor) { it }
         val numberOfBags = solveByRules(bagColorsToRule)
         return numberOfBags.toString()
     }

@@ -2,17 +2,16 @@ package hzt.aoc.day08
 
 import hzt.aoc.Challenge
 import hzt.aoc.day08.Instruction.Companion.setNext
-import java.util.stream.Collectors
 
 abstract class Day08Challenge protected constructor(challengeTitle: String, description: String) :
     Challenge(challengeTitle, description, "20201208-input-day8.txt") {
 
     override fun solve(inputList: List<String>): String {
         setNext(0)
-        val instructions = inputList.stream().map { string: String -> instruction(string) }
-            .collect(Collectors.toList())
-        val global = solveByInstructions(instructions)
-        return global.toString()
+        val instructions = inputList.asSequence()
+            .map(::toInstruction)
+            .toList()
+        return solveByInstructions(instructions).toString()
     }
 
     protected abstract fun solveByInstructions(instructions: List<Instruction>): Int
@@ -37,7 +36,7 @@ abstract class Day08Challenge protected constructor(challengeTitle: String, desc
         return Result(lastInstruction, global)
     }
 
-    private fun instruction(string: String): Instruction {
+    private fun toInstruction(string: String): Instruction {
         val strings = string.split("\\s".toRegex()).toTypedArray()
         val descriptor = strings[0]
         val stringArgument = strings[1]

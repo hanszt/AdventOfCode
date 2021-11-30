@@ -6,6 +6,7 @@ import java.io.FileNotFoundException
 import java.util.*
 
 class IOController2 : IIOController {
+
     override fun readInputFileByLine(path: String): MutableList<String> {
         val url = javaClass.getResource(IIOController.RELATIVE_PATH + path)
         val inputList: MutableList<String> = ArrayList()
@@ -23,8 +24,8 @@ class IOController2 : IIOController {
         return inputList
     }
 
-    override fun readInputFileByWord(fileName: String): List<String> {
-        val url = javaClass.getResource(IIOController.RELATIVE_PATH + fileName)
+    override fun readInputFileByWord(path: String): List<String> {
+        val url = javaClass.getResource(IIOController.RELATIVE_PATH + path)
         val inputList: MutableList<String> = ArrayList()
         if (url != null) {
             try {

@@ -8,16 +8,13 @@ class Part2DockingData : Day14Challenge(
         val memoryAddressesToValues: MutableMap<Long, Long> = HashMap()
         for (p in programs) {
             for (pair in p) {
-                for (it in p.getMemoryLocationsAfterBitMaskApplication(pair.right)) {
-                    memoryAddressesToValues[it] = pair.left.toLong()
+                for (it in p.getMemoryLocationsAfterBitMaskApplication(pair.second)) {
+                    memoryAddressesToValues[it] = pair.first.toLong()
                 }
             }
         }
-        return memoryAddressesToValues.values.stream().reduce { a: Long, b: Long -> java.lang.Long.sum(a, b) }
-            .orElse(0L)
+        return memoryAddressesToValues.values.sum()
     }
 
-    override fun getMessage(value: Long): String {
-        return String.format("%d", value)
-    }
+    override fun getMessage(value: Long): String = String.format("%d", value)
 }

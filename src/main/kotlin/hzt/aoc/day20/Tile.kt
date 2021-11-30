@@ -1,15 +1,14 @@
 package hzt.aoc.day20
 
 import java.awt.Point
-import java.util.function.Consumer
 
 // Credits to Johan de Jong
 class Tile(content: List<String>) {
-    
+
     var position: Point = Point()
     private val content: List<String>
     val orientations: List<List<String>>
-    
+
     private fun tileSides(): List<String> {
         val sidesWithoutFlip: MutableList<String> = ArrayList()
         sidesWithoutFlip.add(content[0])
@@ -35,14 +34,11 @@ class Tile(content: List<String>) {
     fun isBorder(tiles: Map<Int, Tile>): Boolean {
         val otherTiles = otherTileBorders(tiles)
         val sideTiles: Set<String> = HashSet(tileSides())
-        return countCommonElements(sideTiles, otherTiles) == CORNERS.toLong()
+        return countCommonElements(sideTiles, otherTiles) == CORNERS
     }
 
-    private fun countCommonElements(sideTiles: Set<String>, otherTiles: Set<String>): Long {
-        return sideTiles.stream()
-            .filter(otherTiles::contains)
-            .count()
-    }
+    private fun countCommonElements(sideTiles: Set<String>, otherTiles: Set<String>) =
+        sideTiles.count(otherTiles::contains)
 
     private fun otherTileBorders(tiles: Map<Int, Tile>): Set<String> {
         val otherSet: MutableSet<String> = HashSet()
@@ -86,7 +82,8 @@ class Tile(content: List<String>) {
         for (x in original.indices) {
             val sb = StringBuilder()
             for (y in original.indices.reversed()) {
-                sb.append(original[y][x])
+                val c: Char = original[y][x]
+                sb.append(c)
             }
             result.add(sb.toString())
         }
@@ -96,14 +93,14 @@ class Tile(content: List<String>) {
     private fun asString(content: List<String>): String {
         val sb = StringBuilder()
         sb.append(String.format("%n"))
-        content.forEach(Consumer { s: String -> sb.append(s).append(String.format("%n")) })
+        content.forEach { sb.append(it).append(String.format("%n")) }
         return sb.toString()
     }
 
     fun orientationsAsString(): String {
         val sb = StringBuilder()
         sb.append(String.format("%n"))
-        orientations.forEach(Consumer { o: List<String> -> sb.append(asString(o)) })
+        orientations.forEach { sb.append(asString(it)) }
         return sb.toString()
     }
 

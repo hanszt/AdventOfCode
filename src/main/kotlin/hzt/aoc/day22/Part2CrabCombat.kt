@@ -1,7 +1,6 @@
 package hzt.aoc.day22
 
 import java.util.*
-import java.util.function.Consumer
 
 // Credits to Johan de Jong
 class Part2CrabCombat : Day22Challenge(
@@ -55,11 +54,11 @@ class Part2CrabCombat : Day22Challenge(
 
     private fun configurationAsString(playerCards: Deque<Int>): String {
         val sb = StringBuilder()
-        playerCards.forEach(Consumer { obj: Int -> sb.append(obj) })
+        playerCards.forEach(sb::append)
         return sb.toString()
     }
 
-    override fun getMessage(global: Long): String {
-        return String.format("%d", global)
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
 }
