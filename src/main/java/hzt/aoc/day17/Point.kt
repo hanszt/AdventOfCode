@@ -1,43 +1,16 @@
-package hzt.aoc.day17;
+package hzt.aoc.day17
 
-import java.util.Objects;
+import java.util.*
 
-public class Point {
+open class Point(val x: Int, val y: Int, val z: Int) {
 
-    private final int x;
-    private final int y;
-    private final int z;
-
-    public Point(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Point) return false
+        return x == other.x && y == other.y && z == other.z
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Point)) return false;
-        Point point = (Point) o;
-        return x == point.x &&
-                y == point.y &&
-                z == point.z;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, z);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getZ() {
-        return z;
+    override fun hashCode(): Int {
+        return Objects.hash(x, y, z)
     }
 }

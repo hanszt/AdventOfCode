@@ -1,27 +1,15 @@
-package hzt.aoc.day05.model;
+package hzt.aoc.day05.model
 
-public class Seat {
-
-    private final String boardingPass;
-    private final int row;
-    private final int col;
-
-    public Seat(String boardingPass, int row, int col) {
-        this.boardingPass = boardingPass;
-        this.row = row;
-        this.col = col;
+class Seat(private val boardingPass: String, private val row: Int, private val col: Int) {
+    fun getSeatID(numberOfColumns: Int): Int {
+        return numberOfColumns * row + col
     }
 
-    public int getSeatID(int numberOfColumns) {
-        return numberOfColumns * row + col;
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Seat{" +
                 "boardingPass='" + boardingPass + '\'' +
                 ", row=" + row +
                 ", col=" + col +
-                '}';
+                '}'
     }
 }

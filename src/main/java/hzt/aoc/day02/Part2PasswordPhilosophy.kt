@@ -1,20 +1,15 @@
-package hzt.aoc.day02;
+package hzt.aoc.day02
 
-import hzt.aoc.day02.model.Policy;
+import hzt.aoc.day02.model.Policy
 
-public class Part2PasswordPhilosophy extends Day02Challenge {
-
-    public Part2PasswordPhilosophy() {
-        super("part 2",
-                "Count the passwords that are valid, see part two of ChallengeDay2.md for the validity rules");
+class Part2PasswordPhilosophy : Day02Challenge(
+    "part 2",
+    "Count the passwords that are valid, see part two of ChallengeDay2.md for the validity rules"
+) {
+    override fun isValid(password: String, policy: Policy): Boolean {
+        var matchesWithPolicyChar = 0
+        if (password[policy.lowerBound - 1] == policy.character) matchesWithPolicyChar++
+        if (password[policy.upperBound - 1] == policy.character) matchesWithPolicyChar++
+        return matchesWithPolicyChar == 1
     }
-
-    @Override
-    boolean isValid(String password, Policy policy) {
-        int matchesWithPolicyChar = 0;
-        if (password.charAt(policy.getLowerBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
-        if (password.charAt(policy.getUpperBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
-        return matchesWithPolicyChar == 1;
-    }
-
 }

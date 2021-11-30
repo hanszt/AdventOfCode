@@ -1,28 +1,20 @@
-package hzt.aoc.day25;
+package hzt.aoc.day25
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
 
-import java.util.List;
-
-public abstract class Day25Challenge extends Challenge {
-
-    Day25Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201225-input-day25.txt");
+abstract class Day25Challenge internal constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201225-input-day25.txt") {
+    override fun solve(inputList: List<String>): String {
+        val cardPublicKey = inputList[0].toLong()
+        val doorPublicKey = inputList[1].toLong()
+        return getMessage(solveByInput(cardPublicKey, doorPublicKey))
     }
 
-    static final int NUMBER_TO_DIVIDE_BY = 20201227;
-    static final int INIT_SUBJECT_NUMBER = 7;
+    protected abstract fun solveByInput(cardPublicKey: Long, doorPublicKey: Long): Long
+    abstract fun getMessage(value: Long): String
 
-    @Override
-    protected String solve(List<String> inputList) {
-        long cardPublicKey = Long.parseLong(inputList.get(0));
-        long doorPublicKey = Long.parseLong(inputList.get(1));
-        return getMessage(solveByInput(cardPublicKey, doorPublicKey));
-
+    companion object {
+        const val NUMBER_TO_DIVIDE_BY = 20201227
+        const val INIT_SUBJECT_NUMBER = 7
     }
-
-    protected abstract long solveByInput(long cardPublicKey, long doorPublicKey);
-
-
-    abstract String getMessage(long value);
 }

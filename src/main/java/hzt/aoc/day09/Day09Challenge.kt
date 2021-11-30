@@ -1,52 +1,42 @@
-package hzt.aoc.day09;
+package hzt.aoc.day09
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import java.util.stream.Collectors
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public abstract class Day09Challenge extends Challenge {
-
-
-    static final int PRE_AMBLE_LENGTH = 25;
-
-    Day09Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201209-input-day9.txt");
+abstract class Day09Challenge internal constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201209-input-day9.txt") {
+    override fun solve(inputList: List<String>): String {
+        val numbers = inputList.stream().map { s: String -> s.toLong() }.collect(Collectors.toList())
+        return solveByXmasList(numbers).toString()
     }
 
-    @Override
-    protected String solve(List<String> inputList) {
-        List<Long> numbers = inputList.stream().map(Long::parseLong).collect(Collectors.toList());
-        return String.valueOf(solveByXmasList(numbers));
-    }
-
-    protected abstract long solveByXmasList(List<Long> integers);
-
-    long findFirstNumberNotSumOfTwoIntegersInPreamble(List<Long> longs) {
-        long result = 0;
-        List<Long> preambleNumbers = new ArrayList<>();
-        for (int i = 0; i < longs.size(); i++) {
-            if (preambleNumbers.size() < PRE_AMBLE_LENGTH) preambleNumbers.add(longs.get(i));
-            else if (preambleNumbers.size() == PRE_AMBLE_LENGTH) {
-                boolean isSum = sumOfUniquePairInPreamble(longs.get(i), preambleNumbers);
+    protected abstract fun solveByXmasList(longs: List<Long>): Long
+    fun findFirstNumberNotSumOfTwoIntegersInPreamble(longs: List<Long>): Long {
+        var result: Long = 0
+        val preambleNumbers: MutableList<Long> = ArrayList()
+        for (i in longs.indices) {
+            if (preambleNumbers.size < PRE_AMBLE_LENGTH) preambleNumbers.add(longs[i]) else if (preambleNumbers.size == PRE_AMBLE_LENGTH) {
+                val isSum = sumOfUniquePairInPreamble(longs[i], preambleNumbers)
                 if (!isSum) {
-                    result = longs.get(i);
-                    break;
+                    result = longs[i]
+                    break
                 }
-                preambleNumbers.remove(longs.get(i - PRE_AMBLE_LENGTH));
-                preambleNumbers.add(longs.get(i));
+                preambleNumbers.remove(longs[i - PRE_AMBLE_LENGTH])
+                preambleNumbers.add(longs[i])
             }
         }
-        return result;
+        return result
     }
 
-    private boolean sumOfUniquePairInPreamble(Long current, List<Long> preAmbleNumbers) {
-        for (Long number : preAmbleNumbers) {
-            long difference = current - number;
-            if (preAmbleNumbers.contains(difference) && difference != number) return true;
+    private fun sumOfUniquePairInPreamble(current: Long, preAmbleNumbers: List<Long>): Boolean {
+        for (number in preAmbleNumbers) {
+            val difference = current - number
+            if (preAmbleNumbers.contains(difference) && difference != number) return true
         }
-        return false;
+        return false
     }
 
+    companion object {
+        const val PRE_AMBLE_LENGTH = 25
+    }
 }

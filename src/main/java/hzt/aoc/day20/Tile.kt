@@ -1,172 +1,154 @@
-package hzt.aoc.day20;
+package hzt.aoc.day20
 
-import java.awt.*;
-import java.util.*;
-import java.util.List;
+import java.awt.Point
+import java.util.function.Consumer
 
 // Credits to Johan de Jong
-public class Tile {
-
-    private Point position;
-    private final List<String> content;
-    private final List<List<String>> orientations;
-
-    public Tile(List<String> content) {
-        this.position = position;
-        this.content = content;
-        this.orientations = calculateOrientations();
-    }
-
-    private List<String> tileSides() {
-        List<String> sidesWithoutFlip = new ArrayList<>();
-        sidesWithoutFlip.add(content.get(0));
-        sidesWithoutFlip.add(content.get(content.size() - 1));
-        StringBuilder left = new StringBuilder();
-        StringBuilder right = new StringBuilder();
-        for (String line : content) {
-            left.append(line.charAt(0));
-            right.append(line.charAt(line.length() - 1));
+class Tile(content: List<String>) {
+    
+    var position: Point = Point()
+    private val content: List<String>
+    val orientations: List<List<String>>
+    
+    private fun tileSides(): List<String> {
+        val sidesWithoutFlip: MutableList<String> = ArrayList()
+        sidesWithoutFlip.add(content[0])
+        sidesWithoutFlip.add(content[content.size - 1])
+        val left = StringBuilder()
+        val right = StringBuilder()
+        for (line in content) {
+            left.append(line[0])
+            right.append(line[line.length - 1])
         }
-        sidesWithoutFlip.add(left.toString());
-        sidesWithoutFlip.add(right.toString());
-        List<String> sides = new ArrayList<>();
-        for (String side : sidesWithoutFlip) {
-            sides.add(side);
-            StringBuilder sb = new StringBuilder(side);
-            sb.reverse();
-            sides.add(sb.toString());
+        sidesWithoutFlip.add(left.toString())
+        sidesWithoutFlip.add(right.toString())
+        val sides: MutableList<String> = ArrayList()
+        for (side in sidesWithoutFlip) {
+            sides.add(side)
+            val sb = StringBuilder(side)
+            sb.reverse()
+            sides.add(sb.toString())
         }
-        return sides;
+        return sides
     }
 
-    private static final int CORNERS = 4;
-
-    public boolean isBorder(Map<Integer, Tile> tiles) {
-        Set<String> otherTiles = otherTileBorders(tiles);
-        Set<String> sideTiles = new HashSet<>(tileSides());
-        return countCommonElements(sideTiles, otherTiles) == CORNERS;
+    fun isBorder(tiles: Map<Int, Tile>): Boolean {
+        val otherTiles = otherTileBorders(tiles)
+        val sideTiles: Set<String> = HashSet(tileSides())
+        return countCommonElements(sideTiles, otherTiles) == CORNERS.toLong()
     }
 
-    private long countCommonElements(Set<String> sideTiles, Set<String> otherTiles) {
-        return sideTiles.stream().filter(otherTiles::contains).count();
+    private fun countCommonElements(sideTiles: Set<String>, otherTiles: Set<String>): Long {
+        return sideTiles.stream()
+            .filter(otherTiles::contains)
+            .count()
     }
 
-    private Set<String> otherTileBorders(Map<Integer, Tile> tiles) {
-        Set<String> otherSet = new HashSet<>();
-        for (Tile otherTile : tiles.values()) {
-            if (!equals(otherTile)) {
-                otherSet.addAll(otherTile.tileSides());
+    private fun otherTileBorders(tiles: Map<Int, Tile>): Set<String> {
+        val otherSet: MutableSet<String> = HashSet()
+        for (otherTile in tiles.values) {
+            if (equals(otherTile).not()) {
+                otherSet.addAll(otherTile.tileSides())
             }
         }
-        return otherSet;
+        return otherSet
     }
 
-    private List<List<String>> calculateOrientations() {
-        List<List<String>> result = new ArrayList<>();
-        collectRotations(result, content);
-        collectRotations(result, flip());
-        return result;
+    private fun calculateOrientations(): List<List<String>> {
+        val result: MutableList<List<String>> = ArrayList()
+        collectRotations(result, content)
+        collectRotations(result, flip())
+        return result
     }
 
-    private void collectRotations(List<List<String>> result, List<String> input) {
-        result.add(input);
-        List<String> temp = rotate(input);
-        result.add(temp);
-        temp = rotate(temp);
-        result.add(temp);
-        temp = rotate(temp);
-        result.add(temp);
+    private fun collectRotations(result: MutableList<List<String>>, input: List<String>) {
+        result.add(input)
+        var temp = rotate(input)
+        result.add(temp)
+        temp = rotate(temp)
+        result.add(temp)
+        temp = rotate(temp)
+        result.add(temp)
     }
 
-    private List<String> flip() {
-        List<String> result = new ArrayList<>();
-        for (String line : content) {
-            StringBuilder sb = new StringBuilder(line);
-            sb.reverse();
-            result.add(sb.toString());
+    private fun flip(): List<String> {
+        val result: MutableList<String> = ArrayList()
+        for (line in content) {
+            val sb = StringBuilder(line)
+            sb.reverse()
+            result.add(sb.toString())
         }
-        return result;
+        return result
     }
 
-    private List<String> rotate(List<String> original) {
-        List<String> result = new ArrayList<>();
-        for (int x = 0; x < original.size(); x++) {
-            StringBuilder sb = new StringBuilder();
-            for (int y = original.size() - 1; y >= 0; y--) {
-                sb.append(original.get(y).charAt(x));
+    private fun rotate(original: List<String>): List<String> {
+        val result: MutableList<String> = ArrayList()
+        for (x in original.indices) {
+            val sb = StringBuilder()
+            for (y in original.indices.reversed()) {
+                sb.append(original[y][x])
             }
-            result.add(sb.toString());
+            result.add(sb.toString())
         }
-        return result;
+        return result
     }
 
-    private String asString(List<String> content) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        content.forEach(s -> sb.append(s).append(String.format("%n")));
-        return sb.toString();
+    private fun asString(content: List<String>): String {
+        val sb = StringBuilder()
+        sb.append(String.format("%n"))
+        content.forEach(Consumer { s: String -> sb.append(s).append(String.format("%n")) })
+        return sb.toString()
     }
 
-    public String orientationsAsString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        orientations.forEach(o -> sb.append(asString(o)));
-        return sb.toString();
+    fun orientationsAsString(): String {
+        val sb = StringBuilder()
+        sb.append(String.format("%n"))
+        orientations.forEach(Consumer { o: List<String> -> sb.append(asString(o)) })
+        return sb.toString()
     }
 
-    public String getTop() {
-        return content.get(0);
-    }
-
-    public String getBottom() {
-        return content.get(content.size() - 1);
-    }
-
-    public String getLeft() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
-            sb.append(line.charAt(0));
+    val top: String
+        get() = content[0]
+    val bottom: String
+        get() = content[content.size - 1]
+    val left: String
+        get() {
+            val sb = StringBuilder()
+            for (line in content) {
+                sb.append(line[0])
+            }
+            return sb.toString()
         }
-        return sb.toString();
-    }
-
-    public String getRight() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
-            sb.append(line.charAt(line.length() - 1));
+    val right: String
+        get() {
+            val sb = StringBuilder()
+            for (line in content) {
+                sb.append(line[line.length - 1])
+            }
+            return sb.toString()
         }
-        return sb.toString();
-    }
-
-    public List<String> getInner() {
-        List<String> result = new ArrayList<>();
-        for (int i = 1; i < content.size() - 1; i++) {
-            String line = content.get(i);
-            result.add(line.substring(1, line.length() - 1));
+    val inner: List<String>
+        get() {
+            val result: MutableList<String> = ArrayList()
+            for (i in 1 until content.size - 1) {
+                val line = content[i]
+                result.add(line.substring(1, line.length - 1))
+            }
+            return result
         }
-        return result;
-    }
 
-    public List<String> getContent() {
-        return content;
-    }
-
-    public List<List<String>> getOrientations() {
-        return orientations;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Tile{" +
                 "content=" + asString(content) +
-                '}';
+                '}'
+    }
+
+    companion object {
+        private const val CORNERS = 4
+    }
+
+    init {
+        this.content = content
+        orientations = calculateOrientations()
     }
 }

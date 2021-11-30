@@ -1,53 +1,42 @@
-package hzt.aoc.day16;
+package hzt.aoc.day16
 
-import hzt.aoc.Pair;
+import hzt.aoc.Pair
 
-import java.util.ArrayList;
-import java.util.List;
+class Field(fieldName: String) {
 
-public class Field {
+    private val nr: Int = next++
+    private val fieldName: String
+    private val valueRanges: MutableList<Pair<Int, Int>> = ArrayList()
 
-    private static int next = 0;
-    private final int nr;
-    private final String fieldName;
-    private final List<Pair<Integer, Integer>> valueRanges = new ArrayList<>();
-
-    public Field(String fieldName) {
-        this.nr = next++;
-        this.fieldName = fieldName;
+    fun addRange(range: Pair<Int, Int>) {
+        valueRanges.add(range)
     }
 
-    public void addRange(Pair<Integer, Integer> range) {
-        if (range != null) valueRanges.add(range);
-    }
-
-    public boolean containsValueInRanges(Integer integer) {
-        for (Pair<Integer, Integer> p : valueRanges) {
-            if (integer >= p.getLeft() && integer <= p.getRight()) {
-                return true;
+    fun containsValueInRanges(integer: Int): Boolean {
+        for (p in valueRanges) {
+            if (integer >= p.left && integer <= p.right) {
+                return true
             }
         }
-        return false;
+        return false
     }
 
-    public int getNr() {
-        return nr;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public static void setNext(int next) {
-        Field.next = next;
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Field{" +
                 "nr=" + nr +
                 ", fieldName='" + fieldName + '\'' +
                 ", valueRanges=" + valueRanges +
-                '}';
+                '}'
+    }
+
+    companion object {
+        private var next = 0
+        fun setNext(next: Int) {
+            Companion.next = next
+        }
+    }
+
+    init {
+        this.fieldName = fieldName
     }
 }

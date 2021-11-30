@@ -1,133 +1,128 @@
-package hzt.aoc.day24;
+package hzt.aoc.day24
 
-import java.awt.*;
-import java.util.List;
-import java.util.*;
+import java.lang.StringBuilder
+import java.util.HashMap
+import java.util.Objects
+import java.awt.Point
+import java.util.ArrayList
 
-public class Tile {
+class Tile(val position: Point) {
 
-    static final String EAST = "e";
-    static final String SOUTH_EAST = "se";
-    static final String SOUTH_WEST = "sw";
-    static final String WEST = "w";
-    static final String NORTH_WEST = "nw";
-    static final String NORTH_EAST = "ne";
+    companion object {
+        const val EAST = "e"
+        const val SOUTH_EAST = "se"
+        const val SOUTH_WEST = "sw"
+        const val WEST = "w"
+        const val NORTH_WEST = "nw"
+        const val NORTH_EAST = "ne"
+        private val OPPOSITE_DIR: MutableMap<String, String> = HashMap()
+        private val INSTRUCTION_TO_DIR: MutableMap<String, Point> = HashMap()
 
-    private static final Map<String, String> OPPOSITE_DIR = new HashMap<>();
-    private static final Map<String, Point> INSTRUCTION_TO_DIR = new HashMap<>();
-
-    static {
-        OPPOSITE_DIR.put(EAST, WEST);
-        OPPOSITE_DIR.put(WEST, EAST);
-        OPPOSITE_DIR.put(SOUTH_EAST, NORTH_WEST);
-        OPPOSITE_DIR.put(NORTH_WEST, SOUTH_EAST);
-        OPPOSITE_DIR.put(SOUTH_WEST, NORTH_EAST);
-        OPPOSITE_DIR.put(NORTH_EAST, SOUTH_WEST);
-        INSTRUCTION_TO_DIR.put(EAST, new Point(1, 0));
-        INSTRUCTION_TO_DIR.put(WEST, new Point(-1, 0));
-        INSTRUCTION_TO_DIR.put(SOUTH_EAST, new Point(1, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_WEST, new Point(-1, 1));
-        INSTRUCTION_TO_DIR.put(SOUTH_WEST, new Point(0, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_EAST, new Point(0, 1));
-    }
-
-    private final Point position;
-    private boolean blackUp;
-    private int nrOfBlackNeighbors;
-
-    private final Map<Point, Tile> instructionsToNeighborsMap = new HashMap<>();
-
-    public Tile(Point position) {
-        this.position = position;
-        this.blackUp = false;
-    }
-
-    void flip() {
-        blackUp = !blackUp;
-    }
-
-    public Tile getNeighborByInstruction(String instruction, Map<Point, Tile> allTiles) {
-        Point delta = INSTRUCTION_TO_DIR.get(instruction);
-        Point newPosition = new Point(this.position.x + delta.x, this.position.y + delta.y);
-        Tile neighbor;
-        if (instructionsToNeighborsMap.get(delta) != null) neighbor = instructionsToNeighborsMap.get(delta);
-        else if (allTiles.containsKey(newPosition)) neighbor = allTiles.get(newPosition);
-        else neighbor = new Tile(newPosition);
-        neighbor.instructionsToNeighborsMap.put(INSTRUCTION_TO_DIR.get(OPPOSITE_DIR.get(instruction)), this);
-        this.instructionsToNeighborsMap.put(INSTRUCTION_TO_DIR.get(instruction), neighbor);
-        return neighbor;
-    }
-
-    void countBlackNeighbors() {
-        nrOfBlackNeighbors = 0;
-        for (Tile neighbor : instructionsToNeighborsMap.values()) {
-            if (neighbor.isBlackUp()) nrOfBlackNeighbors++;
+        init {
+            OPPOSITE_DIR[EAST] = WEST
+            OPPOSITE_DIR[WEST] = EAST
+            OPPOSITE_DIR[SOUTH_EAST] = NORTH_WEST
+            OPPOSITE_DIR[NORTH_WEST] = SOUTH_EAST
+            OPPOSITE_DIR[SOUTH_WEST] = NORTH_EAST
+            OPPOSITE_DIR[NORTH_EAST] =
+                SOUTH_WEST
+            INSTRUCTION_TO_DIR[EAST] = Point(1, 0)
+            INSTRUCTION_TO_DIR[WEST] = Point(-1, 0)
+            INSTRUCTION_TO_DIR[SOUTH_EAST] = Point(1, -1)
+            INSTRUCTION_TO_DIR[NORTH_WEST] = Point(-1, 1)
+            INSTRUCTION_TO_DIR[SOUTH_WEST] = Point(0, -1)
+            INSTRUCTION_TO_DIR[NORTH_EAST] = Point(0, 1)
         }
     }
 
-    void countBlackNeighbors(Map<Point, Tile> allTiles) {
-        nrOfBlackNeighbors = 0;
-        for (Point delta : INSTRUCTION_TO_DIR.values()) {
-            Point neighborPosition = new Point(this.position.x + delta.x, this.position.y + delta.y);
+    var isBlackUp = false
+        private set
+    private var nrOfBlackNeighbors = 0
+    private val instructionsToNeighborsMap: MutableMap<Point?, Tile> = HashMap()
+    fun flip() {
+        isBlackUp = !isBlackUp
+    }
+
+    fun getNeighborByInstruction(instruction: String, allTiles: Map<Point, Tile>): Tile? {
+        val delta: Point = INSTRUCTION_TO_DIR[instruction] ?: Point()
+        val newPosition = Point(position.x + delta.x, position.y + delta.y)
+        val neighbor: Tile? = if (instructionsToNeighborsMap[delta] != null) {
+            instructionsToNeighborsMap[delta]
+        } else if (allTiles.containsKey(newPosition)) {
+            allTiles[newPosition]
+        } else {
+            Tile(newPosition)
+        }
+        if (neighbor != null) {
+            neighbor.instructionsToNeighborsMap[INSTRUCTION_TO_DIR[OPPOSITE_DIR[instruction]]] = this
+            instructionsToNeighborsMap[INSTRUCTION_TO_DIR[instruction]] = neighbor
+        }
+        return neighbor
+    }
+
+    fun countBlackNeighbors() {
+        nrOfBlackNeighbors = 0
+        for (neighbor in instructionsToNeighborsMap.values) {
+            if (neighbor.isBlackUp) nrOfBlackNeighbors++
+        }
+    }
+
+    fun countBlackNeighbors(allTiles: Map<Point, Tile>) {
+        nrOfBlackNeighbors = 0
+        for (delta in INSTRUCTION_TO_DIR.values) {
+            val neighborPosition = Point(position.x + delta.x, position.y + delta.y)
             if (allTiles.containsKey(neighborPosition)) {
-                Tile neighbor = allTiles.get(neighborPosition);
-                if (neighbor.isBlackUp()) nrOfBlackNeighbors++;
+                val neighbor = allTiles[neighborPosition]
+                if (neighbor?.isBlackUp == true) nrOfBlackNeighbors++
             }
         }
     }
 
     //    Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
     //    Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
-    void executeRule() {
-        if (blackUp && (nrOfBlackNeighbors == 0 || nrOfBlackNeighbors > 2)) flip();
-        if (!blackUp && nrOfBlackNeighbors == 2) flip();
+    fun executeRule() {
+        if (isBlackUp && (nrOfBlackNeighbors == 0 || nrOfBlackNeighbors > 2)) flip()
+        if (!isBlackUp && nrOfBlackNeighbors == 2) flip()
     }
 
-    List<Tile> neighbors() {
-        List<Tile> neighbors = new ArrayList<>();
-        for (Point delta : INSTRUCTION_TO_DIR.values()) {
-            neighbors.add(new Tile(new Point(position.x + delta.x, position.y + delta.y)));
+    fun neighbors(): List<Tile> {
+        val neighbors: MutableList<Tile> = ArrayList()
+        for (delta in INSTRUCTION_TO_DIR.values) {
+            neighbors.add(Tile(Point(position.x + delta.x, position.y + delta.y)))
         }
-        return neighbors;
+        return neighbors
     }
 
-    public boolean isBlackUp() {
-        return blackUp;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val tile = o as Tile
+        return position == tile.position
     }
 
-    public Point getPosition() {
-        return position;
+    override fun hashCode(): Int {
+        return Objects.hash(position)
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tile tile = (Tile) o;
-        return Objects.equals(position, tile.position);
+    private fun neighborsAsString(): String {
+        val sb = StringBuilder()
+        instructionsToNeighborsMap.entries.forEach { sb.append(neighborAsString(it)) }
+        return sb.toString()
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(position);
+    private fun neighborAsString(e: Map.Entry<Point?, Tile>): String {
+        val p = e.value.position
+        val delta = e.key
+        return String.format(
+            "delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
+            delta?.x, delta?.y, p.x, p.y, e.value.isBlackUp
+        )
     }
 
-    private String neighborsAsString() {
-        StringBuilder sb = new StringBuilder();
-        instructionsToNeighborsMap.entrySet().forEach(e -> sb.append(neighborAsString(e)));
-        return sb.toString();
-    }
-
-    private String neighborAsString(Map.Entry<Point, Tile> e) {
-        Point p = e.getValue().position;
-        Point delta = e.getKey();
-        return String.format("delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
-                delta.x, delta.y, p.x, p.y, e.getValue().blackUp);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, nrOfBlackNeighbors=%d, Neighbors={%s}}",
-                position.x, position.y, blackUp, nrOfBlackNeighbors, neighborsAsString());
+    override fun toString(): String {
+        return String.format(
+            "Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, nrOfBlackNeighbors=%d, Neighbors={%s}}",
+            position.x, position.y, isBlackUp, nrOfBlackNeighbors, neighborsAsString()
+        )
     }
 }

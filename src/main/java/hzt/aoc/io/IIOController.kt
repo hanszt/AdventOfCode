@@ -1,12 +1,10 @@
-package hzt.aoc.io;
+package hzt.aoc.io
 
-import java.util.List;
+interface IIOController {
+    fun readInputFileByLine(path: String): List<String>
+    fun readInputFileByWord(path: String): List<String>
 
-public interface IIOController {
-
-    String RELATIVE_PATH = "../../../input/";
-
-    List<String> readInputFileByLine(String path);
-
-    List<String> readInputFileByWord(String path);
+    companion object {
+        const val RELATIVE_PATH = "../../../input/"
+    }
 }

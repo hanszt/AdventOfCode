@@ -1,95 +1,102 @@
-package hzt.aoc.day23;
+package hzt.aoc.day23
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap
 
 // Credits to TurkeyDev
-public class Part2CrabCups extends Day23Challenge {
-
-    public Part2CrabCups() {
-        super("part 2",
-                "You are quite surprised when the crab starts arranging many cups in a circle on your raft - one million (1000000) in total. " +
-                        "The crab is going to do ten million (10000000) moves! " +
-                        "Determine which two cups will end up immediately clockwise of cup 1. What do you get if you multiply their labels together?");
-    }
-
-    private static final int NR_OF_MOVES = 10_000_000;
-    private static final int CUP_AMOUNT = 1_000_000;
-    private static final int TARGET_VAL = 1;
-
-    @Override
-    protected long calculateAnswer(List<Integer> cupLabels) {
-        Map<Integer, LinkedNode<Integer>> labelToNodeMap = new HashMap<>();
-        LinkedNode<Integer> first = firstNode(cupLabels);
-        LinkedNode<Integer> current = first;
-        LinkedNode<Integer> target = new LinkedNode<>();
-        LinkedNode<Integer> next;
-        for (int i = 0; i < cupLabels.size(); i++) {
-            int label = cupLabels.get(i);
+class Part2CrabCups : Day23Challenge(
+    "part 2",
+    "You are quite surprised when the crab starts arranging many cups in a circle on your raft - one million (1000000) in total. " +
+            "The crab is going to do ten million (10000000) moves! " +
+            "Determine which two cups will end up immediately clockwise of cup 1. What do you get if you multiply their labels together"
+) {
+    override fun calculateAnswer(cups: MutableList<Int>): Long {
+        val labelToNodeMap: MutableMap<Int, LinkedNode<Int>?> = HashMap()
+        val first = firstNode(cups)
+        var current: LinkedNode<Int>? = first
+        var target: LinkedNode<Int>? = LinkedNode()
+        var next: LinkedNode<Int>
+        for (i in cups.indices) {
+            val label = cups[i]
             if (i != 0) {
-                next = new LinkedNode<>(label);
-                current.setNext(next);
-                current = next;
+                next = LinkedNode(label)
+                current?.next = next
+                current = next
             }
-            if (label == TARGET_VAL) target = current;
-            labelToNodeMap.put(label, current);
+            if (label == TARGET_VAL) target = current
+            labelToNodeMap[label] = current
         }
-        current = fillRestOfTheMap(labelToNodeMap, current);
-        current.setNext(first);
-        return run(first, target, labelToNodeMap);
+        current = fillRestOfTheMap(labelToNodeMap, current)
+        current?.next = first
+        return run(first, target, labelToNodeMap)
     }
 
-    private LinkedNode<Integer> firstNode(List<Integer> cupLabels) {
-        int label = cupLabels.get(0);
-        return new LinkedNode<>(label);
+    private fun firstNode(cupLabels: List<Int>): LinkedNode<Int> {
+        val label = cupLabels[0]
+        return LinkedNode(label)
     }
 
-    private LinkedNode<Integer> fillRestOfTheMap(Map<Integer, LinkedNode<Integer>> labelToNodeMap, LinkedNode<Integer> current) {
-        for (int label = labelToNodeMap.size() + 1; label <= CUP_AMOUNT; label++) {
-            LinkedNode<Integer> next = new LinkedNode<>(label);
-            labelToNodeMap.put(label, next);
-            current.setNext(next);
-            current = next;
+    private fun fillRestOfTheMap(
+        labelToNodeMap: MutableMap<Int, LinkedNode<Int>?>, current: LinkedNode<Int>?): LinkedNode<Int>? {
+        var mutCurrent: LinkedNode<Int>? = current
+        for (label in labelToNodeMap.size + 1..CUP_AMOUNT) {
+            val next = LinkedNode(label)
+            labelToNodeMap[label] = next
+            mutCurrent?.next = next
+            mutCurrent = next
         }
-        return current;
+        return mutCurrent
     }
 
-    public long run(LinkedNode<Integer> current, LinkedNode<Integer> target, Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
-        for (int i = 0; i < NR_OF_MOVES; i++) {
-            LinkedNode<Integer> moved = current.getNext();
-            current.setNext(current.getNext().getNext().getNext().getNext());
-            int destinationCupLabel = determineTargetCupLabel(current, moved, indexToLabelNodeMap);
-
-            LinkedNode<Integer> nodeToBeInserted = indexToLabelNodeMap.get(destinationCupLabel);
-            moved.getNext().getNext().setNext(nodeToBeInserted.getNext());
-            nodeToBeInserted.setNext(moved);
-
-            current = current.getNext();
+    private fun run(
+        current: LinkedNode<Int>?,
+        target: LinkedNode<Int>?,
+        indexToLabelNodeMap: Map<Int, LinkedNode<Int>?>
+    ): Long {
+        var mutCurrent: LinkedNode<Int>? = current
+        for (i in 0 until NR_OF_MOVES) {
+            val moved = mutCurrent?.next
+            mutCurrent?.next = mutCurrent?.next?.next?.next?.next
+            val destinationCupLabel = determineTargetCupLabel(mutCurrent, moved, indexToLabelNodeMap)
+            val nodeToBeInserted = indexToLabelNodeMap[destinationCupLabel]
+            if (nodeToBeInserted != null) {
+                moved?.next?.next?.next = nodeToBeInserted.next
+                nodeToBeInserted.next = moved
+            }
+            mutCurrent = mutCurrent?.next
         }
-        long num1 = target.getNext().getValue();
-        long num2 = target.getNext().getNext().getValue();
-        return num1 * num2;
+        val num1: Long = target?.next?.value?.toLong() ?: 0
+        val num2: Long = target?.next?.next?.value?.toLong() ?: 0
+        return num1 * num2
     }
 
-    private int determineTargetCupLabel(LinkedNode<Integer> current, LinkedNode<Integer> removed, Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
-        int destinationCupLabel = current.getValue().equals(TARGET_VAL) ? indexToLabelNodeMap.size() : current.getValue() - 1;
+    private fun determineTargetCupLabel(
+        current: LinkedNode<Int>?,
+        removed: LinkedNode<Int>?,
+        indexToLabelNodeMap: Map<Int, LinkedNode<Int>?>
+    ): Int {
+        var destinationCupLabel =
+            if (current?.value == TARGET_VAL) indexToLabelNodeMap.size else current?.value ?: (- 1)
         while (inRange(removed, destinationCupLabel)) {
-            destinationCupLabel--;
-            if (destinationCupLabel == 0) destinationCupLabel = indexToLabelNodeMap.size();
+            destinationCupLabel--
+            if (destinationCupLabel == 0) destinationCupLabel = indexToLabelNodeMap.size
         }
-        return destinationCupLabel;
+        return destinationCupLabel
     }
 
-    private boolean inRange(LinkedNode<Integer> removed, int destination) {
-        int current = removed.getValue();
-        int next = removed.getNext().getValue();
-        int secondNext = removed.getNext().getNext().getValue();
-        return current == destination || next == destination || secondNext == destination;
+    private fun inRange(removed: LinkedNode<Int>?, destination: Int): Boolean {
+        val current: Int? = removed?.value
+        val next: Int? = removed?.next?.value
+        val secondNext: Int? = removed?.next?.next?.value
+        return current == destination || next == destination || secondNext == destination
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
+    }
+
+    companion object {
+        private const val NR_OF_MOVES = 10000000
+        private const val CUP_AMOUNT = 1000000
+        private const val TARGET_VAL = 1
     }
 }

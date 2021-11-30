@@ -1,60 +1,55 @@
-package hzt.aoc.day01;
+package hzt.aoc.day01
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import java.util.*
+import java.util.stream.Collectors
 
-import java.util.*;
-import java.util.stream.Collectors;
+abstract class Day01Challenge protected constructor(challenge: String, description: String) :
+    Challenge(challenge, description, "20201201-input-day1.txt") {
+    private val integersThatSumTo2020List: MutableList<Array<Int>> = ArrayList()
 
-public abstract class Day01Challenge extends Challenge {
-
-    static final int SUM_TO_BE_FOUND = 2020;
-
-    protected Day01Challenge(String challenge, String description) {
-        super(challenge, description, "20201201-input-day1.txt");
+    override fun solve(inputList: List<String>): String {
+        val integers = inputList.stream().map { s: String -> s.toInt() }.collect(Collectors.toSet())
+        integersThatSumTo2020List.clear()
+        integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(TreeSet(integers)))
+        LOGGER.trace(getMessage(integersThatSumTo2020List))
+        return calculateProduct(integersThatSumTo2020List[0]).toString()
     }
 
-    private final List<Integer[]> integersThatSumTo2020List = new ArrayList<>();
-
-    @Override
-    protected String solve(List<String> inputList) {
-        Set<Integer> integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toSet());
-        integersThatSumTo2020List.clear();
-        integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(new TreeSet<>(integers)));
-        LOGGER.trace(getMessage(integersThatSumTo2020List));
-        return String.valueOf(calculateProduct(integersThatSumTo2020List.get(0)));
-    }
-
-    protected abstract List<Integer[]> findIntegersListThatSumTo2020(SortedSet<Integer> integers);
-
-    public String getMessage(List<Integer[]> integersThatSumTo2020List) {
-        StringBuilder sb = new StringBuilder();
-        String message = String.format("Output size: %d%n", integersThatSumTo2020List.size());
-        sb.append(message);
-        for (Integer[] entries : integersThatSumTo2020List) {
-            StringBuilder isb = new StringBuilder();
-            long product = 1;
-            for (Integer integer : entries) {
-                isb.append(integer).append(", ");
-                product *= integer;
+    protected abstract fun findIntegersListThatSumTo2020(integers: SortedSet<Int>): List<Array<Int>>
+    fun getMessage(integersThatSumTo2020List: List<Array<Int>>): String {
+        val sb = StringBuilder()
+        val message = String.format("Output size: %d%n", integersThatSumTo2020List.size)
+        sb.append(message)
+        for (entries in integersThatSumTo2020List) {
+            val isb = StringBuilder()
+            var product: Long = 1
+            for (integer in entries) {
+                isb.append(integer).append(", ")
+                product *= integer.toLong()
             }
-            String result = String.format("The %d digits from the list that sum to %d are: %s%nThe product of these digits is: %d%n",
-                    entries.length, SUM_TO_BE_FOUND, isb, product);
-            sb.append(result);
+            val result = String.format(
+                "The %d digits from the list that sum to %d are: %s%nThe product of these digits is: %d%n",
+                entries.size, SUM_TO_BE_FOUND, isb, product
+            )
+            sb.append(result)
         }
-        return sb.toString();
+        return sb.toString()
     }
 
-    private long calculateProduct(Integer[] entries) {
-        long product = 1;
-        for (Integer integer : entries) {
-            product *= integer;
+    private fun calculateProduct(entries: Array<Int>): Long {
+        var product: Long = 1
+        for (integer in entries) {
+            product *= integer.toLong()
         }
-        return product;
+        return product
     }
 
-    @Override
-    protected String getMessage(String message) {
-        return getMessage(integersThatSumTo2020List);
+    override fun getMessage(result: String): String {
+        return getMessage(integersThatSumTo2020List)
     }
 
+    companion object {
+        const val SUM_TO_BE_FOUND = 2020
+    }
 }

@@ -1,54 +1,57 @@
-package hzt.aoc;
+package hzt.aoc
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import hzt.Launcher
+import org.apache.log4j.LogManager
+import java.lang.Long.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
+import java.util.stream.Stream
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
+class ChallengeDay(
+    val title: String,
+    private val textColor: String,
+    private val date: LocalDate,
+    vararg challenges: Challenge
+) {
+    private val challenges: Array<out Challenge>
 
-import static hzt.Launcher.DOTTED_LINE;
-
-public class ChallengeDay {
-
-    private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
-
-    private final String textColor;
-    private final String title;
-    private final LocalDate date;
-    private final Challenge[] challenges;
-
-    public ChallengeDay(String title, String textColor, LocalDate date, Challenge... challenges) {
-        this.title = title;
-        this.textColor = textColor;
-        this.date = date;
-        this.challenges = challenges;
-        for(Challenge c : challenges) c.setTitle(title);
-    }
-
-    public void solveChallenges() {
-        LOGGER.info(String.format("%n%n%s%s%nDay %d: %s%nDate: %s%n%s", textColor,
-                DOTTED_LINE, date.getDayOfMonth(), title, date.format(DateTimeFormatter.ISO_DATE), DOTTED_LINE));
-        for (Challenge challenge : challenges) {
-            challenge.solveChallenge();
+    fun solveChallenges() {
+        LOGGER.info(
+            String.format(
+                "%n%n%s%s%nDay %d: %s%nDate: %s%n%s",
+                textColor,
+                Launcher.DOTTED_LINE,
+                date.dayOfMonth,
+                title,
+                date.format(DateTimeFormatter.ISO_DATE),
+                Launcher.DOTTED_LINE
+            )
+        )
+        for (challenge in challenges) {
+            challenge.solveChallenge()
         }
     }
 
-    public long getSolveTime() {
-        return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElse(0L);
+    val solveTime: Long
+        get() = Arrays.stream(challenges)
+            .map(Challenge::solveTime)
+            .reduce(::sum)
+            .orElse(0L)
+
+    fun challengesAsStream(): Stream<Challenge> {
+        return Stream.of(*challenges)
     }
 
-    public String getTitle() {
-        return title;
+    val dayOfMonth: Int
+        get() = date.dayOfMonth
+
+    companion object {
+        private val LOGGER = LogManager.getLogger(ChallengeDay::class.java)
     }
 
-    public Stream<Challenge> challengesAsStream() {
-        return Stream.of(challenges);
-    }
-
-    public int getDayOfMonth() {
-        return date.getDayOfMonth();
+    init {
+        this.challenges = challenges
+        challenges.forEach { it.setTitle(title) }
     }
 }

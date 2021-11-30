@@ -1,27 +1,21 @@
-package hzt.aoc.day14;
+package hzt.aoc.day14
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import hzt.aoc.Pair
+import java.util.function.Consumer
 
-public class Part1DockingData extends Day14Challenge {
-
-    public Part1DockingData() {
-        super("Docking Data part 1",
-                "Execute the initialization program. What is the sum of all values left in memory after it completes?");
-    }
-
-    long count(List<Program> programs) {
-        final Map<Integer, Long> valuesInMemory =  new HashMap<>();
-        for (Program p : programs) {
-            p.forEach(e -> valuesInMemory.put(e.getRight(), p.getValueStoredAfterBitMaskApplication(e.getLeft())));
+class Part1DockingData : Day14Challenge(
+    "Docking Data part 1",
+    "Execute the initialization program. What is the sum of all values left in memory after it completes"
+) {
+    override fun count(programs: List<Program>): Long {
+        val valuesInMemory: MutableMap<Int, Long> = HashMap()
+        for (p in programs) {
+            p.forEach(Consumer { e: Pair<Int, Int> ->
+                valuesInMemory[e.right] = p.getValueStoredAfterBitMaskApplication(e.left)
+            })
         }
-        return valuesInMemory.values().stream().reduce(Long::sum).orElse(0L);
+        return valuesInMemory.values.stream().reduce { a: Long, b: Long -> java.lang.Long.sum(a, b) }.orElse(0L)
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
-    }
-
+    override fun getMessage(value: Long): String = String.format("%d", value)
 }

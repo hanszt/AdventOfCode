@@ -1,48 +1,35 @@
-package hzt.aoc.day10;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package hzt.aoc.day10
 
 // credits to TurkeyDev
-public class Part2AdaptorArrayWithCachingLongs extends Day10Challenge {
-
-    public Part2AdaptorArrayWithCachingLongs() {
-        super("part 2 with caching using longs",
-                "What is the total number of distinct ways " +
-                        "you can arrange the adapters to connect the charging outlet to your device?");
-    }
-
-    @Override
-    protected Number solveByList(List<Integer> sortedList) {
-        return numberOfWaysToCompleteAdaptorChain(sortedList);
+class Part2AdaptorArrayWithCachingLongs : Day10Challenge(
+    "part 2 with caching using longs",
+    "What is the total number of distinct ways " +
+            "you can arrange the adapters to connect the charging outlet to your device"
+) {
+    override fun solveByList(list: List<Int>): Number {
+        return numberOfWaysToCompleteAdaptorChain(list)
     }
 
     //improves runtime: Allows to skip parts of the branches in the tree to be recursively walk through.,,
-    private final Map<String, Long> cache = new HashMap<>();
-
-    private long numberOfWaysToCompleteAdaptorChain(List<Integer> sortedList) {
-        if (sortedList.size() == 1) return 1;
-        long arrangements = 0;
-        int index = 1;
-        Integer current = sortedList.get(0);
-
-        while (sortedList.size() > index && sortedList.get(index) - current <= MAX_STEP_APART) {
-            List<Integer> subList = sortedList.subList(index, sortedList.size());
-            String stringSubList = Arrays.toString(subList.toArray(new Integer[0]));
+    private val cache: MutableMap<String, Long> = HashMap()
+    private fun numberOfWaysToCompleteAdaptorChain(sortedList: List<Int>): Long {
+        if (sortedList.size == 1) return 1
+        var arrangements: Long = 0
+        var index = 1
+        val current = sortedList[0]
+        while (sortedList.size > index && sortedList[index] - current <= MAX_STEP_APART) {
+            val subList = sortedList.subList(index, sortedList.size)
+            val stringSubList = subList.toTypedArray().contentToString()
             if (!cache.containsKey(stringSubList)) {
-                long subArrangements = numberOfWaysToCompleteAdaptorChain(subList);
-                cache.put(stringSubList, subArrangements);
-                arrangements += subArrangements;
-            } else arrangements += cache.get(stringSubList);
-            index++;
+                val subArrangements = numberOfWaysToCompleteAdaptorChain(subList)
+                cache[stringSubList] = subArrangements
+                arrangements += subArrangements
+            } else arrangements += cache[stringSubList] ?: 0
+            index++
         }
-        return arrangements;
+        return arrangements
     }
 
-    @Override
-    protected String getMessage(String number) {
-        return String.format("The number of distinct ways to connect your adaptor is: %s%n", number);
-    }
+    override fun getMessage(result: String): String =
+        String.format("The number of distinct ways to connect your adaptor is: %s%n", result)
 }

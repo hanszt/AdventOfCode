@@ -1,24 +1,15 @@
-package hzt.aoc.day08;
+package hzt.aoc.day08
 
-import java.util.List;
-
-public class Part1HandheldHalting extends Day08Challenge {
-
-    public Part1HandheldHalting() {
-        super("part 1",
-                "Immediately before any instruction is executed a second time, " +
-                        "what value is in the accumulator?");
+class Part1HandheldHalting : Day08Challenge(
+    "part 1",
+    "Immediately before any instruction is executed a second time, " +
+            "what value is in the accumulator"
+) {
+    override fun solveByInstructions(instructions: List<Instruction>): Int {
+        return testInstructions(instructions).global
     }
 
-
-    @Override
-    protected int solveByInstructions(List<Instruction> instructions) {
-        return testInstructions(instructions).getGlobal();
+    override fun getMessage(result: String): String {
+        return String.format("The value of the global variable before second execution: %s%n", result)
     }
-
-    @Override
-    protected String getMessage(String global) {
-        return String.format("The value of the global variable before second execution: %s%n", global);
-    }
-
 }

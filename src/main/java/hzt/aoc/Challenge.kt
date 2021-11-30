@@ -1,134 +1,125 @@
-package hzt.aoc;
+package hzt.aoc
 
-import hzt.aoc.io.IOController2;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import hzt.Launcher
+import hzt.aoc.io.IOController2
+import org.apache.log4j.LogManager
+import org.apache.log4j.Logger
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import java.util.regex.Pattern
+import java.util.stream.Collectors
 
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+abstract class Challenge protected constructor(
+    val part: String,
+    private val description: String,
+    private val inputFileName: String
+) {
 
-import static hzt.Launcher.DOTTED_LINE;
+    private var title: String? = null
+    var solveTime: Long = 0
+        private set
+    private var startTimeSolve: ZonedDateTime? = null
+    var answer: String = ""
+        private set
 
-public abstract class Challenge {
-
-    public static final Logger LOGGER = LogManager.getLogger(Challenge.class);
-    protected static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
-    protected static final Pattern NOT_DIGIT_LENGTH_ONE_OR_MORE = Pattern.compile("\\D+");
-
-    private String title;
-    private final String part;
-    private final String description;
-    private final String inputFileName;
-    private long solveTime = 0;
-    private ZonedDateTime startTimeSolve;
-    private String answer;
-
-    protected Challenge(String part, String description, String inputFileName) {
-        this.part = part;
-        this.description = description;
-        this.inputFileName = inputFileName;
-    }
-
-    public void solveChallenge() {
-        LOGGER.info(String.format("%n%s %s%nInput: %s%nChallenge: %s%n%s",
-                title, part, inputFileName, description, DOTTED_LINE));
-        List<String> inputList = loadInputList();
-        long startTime = System.nanoTime();
-        if (!inputList.isEmpty()) {
-            if (answer == null) {
-                startTimeSolve = ZonedDateTime.now();
-                answer = solve(inputList);
-                long endTime = System.nanoTime();
-                solveTime = endTime - startTime;
+    fun solveChallenge() {
+        LOGGER.info(String.format(
+                "%n%s %s%nInput: %s%nChallenge: %s%n%s",
+                title, part, inputFileName, description, Launcher.DOTTED_LINE
+            )
+        )
+        val inputList = loadInputList()
+        val startTime = System.nanoTime()
+        if (inputList.isNotEmpty()) {
+            if (answer.isEmpty()) {
+                startTimeSolve = ZonedDateTime.now()
+                answer = solve(inputList)
+                val endTime = System.nanoTime()
+                solveTime = endTime - startTime
             }
-            logResult(answer);
-            String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
-                    startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
-            LOGGER.info(message + DOTTED_LINE);
+            logResult(answer)
+            val message = String.format(
+                "%nSolved at %s%nSolved in %5.5f ms%n",
+                startTimeSolve?.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6
+            )
+            LOGGER.info(message + Launcher.DOTTED_LINE)
         }
     }
 
-    protected List<Integer> commaSeparatedStringToIntegerList(String s) {
-        return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+    protected fun commaSeparatedStringToIntegerList(s: String): MutableList<Int> {
+        return Arrays.stream(s.split(",".toRegex()).toTypedArray())
+            .map(String::toInt)
+            .collect(Collectors.toList())
     }
 
-    protected String listOfStringListsAsString(List<List<String>> listOfStringLists) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        for (List<String> row : listOfStringLists) {
-            for (String s : row) {
-                sb.append(s).append(", ");
+    protected fun listOfStringListsAsString(listOfStringLists: List<List<String>>): String {
+        val sb = StringBuilder()
+        sb.append(String.format("%n"))
+        for (row in listOfStringLists) {
+            for (s in row) {
+                sb.append(s).append(", ")
             }
-            sb.append(String.format("%n"));
+            sb.append(String.format("%n"))
         }
-        sb.append(String.format("%n"));
-        return sb.toString();
+        sb.append(String.format("%n"))
+        return sb.toString()
     }
 
-    protected String booleanGrid2DAsString(List<List<Boolean>> grid) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        for (List<Boolean> row : grid) {
-            for (boolean active : row) {
-                sb.append(active ? 1 : 0).append(", ");
+    protected fun booleanGrid2DAsString(grid: List<List<Boolean>>): String {
+        val sb = StringBuilder()
+        sb.append(String.format("%n"))
+        for (row in grid) {
+            for (active in row) {
+                sb.append(if (active) 1 else 0).append(", ")
             }
-            sb.append(String.format("%n"));
+            sb.append(String.format("%n"))
         }
-        sb.append(String.format("%n"));
-        return sb.toString();
+        sb.append(String.format("%n"))
+        return sb.toString()
     }
 
-    protected String booleanGrid2DAsString(boolean[][] grid) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        for (boolean[] row : grid) {
-            for (boolean active : row) {
-                sb.append(active ? 1 : 0).append(", ");
+    protected fun booleanGrid2DAsString(grid: Array<BooleanArray>): String {
+        val sb = StringBuilder()
+        sb.append(String.format("%n"))
+        for (row in grid) {
+            for (active in row) {
+                sb.append(if (active) 1 else 0).append(", ")
             }
-            sb.append(String.format("%n"));
+            sb.append(String.format("%n"))
         }
-        sb.append(String.format("%n"));
-        return sb.toString();
+        sb.append(String.format("%n"))
+        return sb.toString()
     }
 
-    protected List<String> loadInputList() {
-        return new IOController2().readInputFileByLine(inputFileName);
+    private fun loadInputList(): List<String> {
+        return IOController2().readInputFileByLine(inputFileName)
     }
 
-    protected abstract String solve(List<String> inputList);
+    protected abstract fun solve(inputList: List<String>): String
 
-    protected String getMessage(String result) {
-        return result;
+    protected open fun getMessage(result: String): String {
+        return result
     }
 
-    protected void logResult(String result) {
-        LOGGER.info(String.format("%s%nAnswer:%n%s", DOTTED_LINE, getMessage(result)));
+    private fun logResult(result: String) {
+        LOGGER.info(String.format("%s%nAnswer:%n%s", Launcher.DOTTED_LINE, getMessage(result)))
     }
 
-    public long getSolveTime() {
-        return solveTime;
+    fun setTitle(title: String): Challenge {
+        this.title = title
+        return this
     }
 
-    public String getPart() {
-        return part;
+    fun clearAnswer() {
+        answer = ""
     }
 
-    public Challenge setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public void clearAnswer() {
-        answer = null;
-    }
-
-    public String getAnswer() {
-        return answer;
+    companion object {
+        val LOGGER: Logger = LogManager.getLogger(Challenge::class.java)
+        @JvmStatic
+        protected val NUMBER_LENGTH_ONE_OR_MORE: Pattern = Pattern.compile("\\d+")
+        @JvmStatic
+        protected val NOT_DIGIT_LENGTH_ONE_OR_MORE: Pattern = Pattern.compile("\\D+")
     }
 }

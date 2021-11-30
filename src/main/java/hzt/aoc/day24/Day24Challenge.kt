@@ -1,69 +1,71 @@
-package hzt.aoc.day24;
+package hzt.aoc.day24
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import java.awt.Point
+import java.util.function.Consumer
+import java.util.stream.Collectors
 
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static hzt.aoc.day24.Tile.*;
-
-public abstract class Day24Challenge extends Challenge {
-
-    Day24Challenge(String part, String description) {
-        super(part, description, "20201224-input-day24ref.txt");
-    }
-
-    static final Set<String> INSTRUCTION_SET = Set.of(EAST, SOUTH_EAST, SOUTH_WEST, WEST, NORTH_WEST, NORTH_EAST);
-
-    private static final String COMMA_OR_COMMA_WITH_SPACE = "\\s?[, ]\\s?";
-
-    @Override
-    protected String solve(List<String> inputList) {
-        List<List<String>> instructions = new ArrayList<>();
-        for (String line : inputList) {
-            List<String> instruction = new ArrayList<>();
-            line = line.replace(SOUTH_EAST, " " + SOUTH_EAST + ",");
-            line = line.replace(SOUTH_WEST, " " + SOUTH_WEST + ",");
-            line = line.replace(NORTH_WEST, " " + NORTH_WEST + ",");
-            line = line.replace(NORTH_EAST, " " + NORTH_EAST + ",");
-            String[] array = line.split(COMMA_OR_COMMA_WITH_SPACE);
-            for (String string : array) {
-                if (string.length() != 2 || !INSTRUCTION_SET.contains(string)) {
-                    instruction.addAll(string.chars().mapToObj(c -> (char) c).map(String::valueOf).map(String::strip).collect(Collectors.toList()));
-                } else if (!string.isBlank()) {
-                    instruction.add(string.strip());
+abstract class Day24Challenge internal constructor(part: String, description: String) :
+    Challenge(part, description, "20201224-input-day24ref.txt") {
+    
+    override fun solve(inputList: List<String>): String {
+        val instructions: MutableList<List<String>> = ArrayList()
+        for (line in inputList) {
+            val instruction: MutableList<String> = ArrayList()
+            val parsedLine = line.replace(Tile.SOUTH_EAST, " " + Tile.SOUTH_EAST + ",")
+                .replace(Tile.SOUTH_WEST, " " + Tile.SOUTH_WEST + ",")
+                .replace(Tile.NORTH_WEST, " " + Tile.NORTH_WEST + ",")
+                .replace(Tile.NORTH_EAST, " " + Tile.NORTH_EAST + ",")
+            val array = parsedLine.split(COMMA_OR_COMMA_WITH_SPACE.toRegex()).toTypedArray()
+            for (string in array) {
+                if (string.length != 2 || !INSTRUCTION_SET.contains(string)) {
+                    instruction.addAll(string.chars()
+                        .mapToObj(Int::toChar)
+                        .map(Char::toString)
+                        .map(String::trim)
+                        .collect(Collectors.toList()))
+                } else if (string.isNotBlank()) {
+                    instruction.add(string.trim())
                 }
             }
-            instructions.add(instruction);
+            instructions.add(instruction)
         }
-        LOGGER.trace(listOfStringListsAsString(instructions));
-        return getMessage(calculateResult(instructions));
+        LOGGER.trace(listOfStringListsAsString(instructions))
+        return getMessage(calculateResult(instructions))
     }
 
-    Map<Point, Tile> buildFloorByInstructions(List<List<String>> instructionsList) {
-        Map<Point, Tile> tileMap = new HashMap<>();
-        Tile centerTile = new Tile(new Point(0, 0));
-        tileMap.put(centerTile.getPosition(), centerTile);
-        for (List<String> instructions : instructionsList) {
-            Tile curTile = centerTile;
-            for (String instruction : instructions) {
-                curTile = curTile.getNeighborByInstruction(instruction, tileMap);
-                tileMap.put(curTile.getPosition(), curTile);
+    fun buildFloorByInstructions(instructionsList: List<List<String>>): Map<Point, Tile> {
+        val tileMap: MutableMap<Point, Tile> = HashMap()
+        val centerTile = Tile(Point(0, 0))
+        tileMap[centerTile.position] = centerTile
+        for (instructions in instructionsList) {
+            var curTile: Tile? = centerTile
+            for (instruction in instructions) {
+                curTile = curTile?.getNeighborByInstruction(instruction, tileMap)
+                if (curTile != null) tileMap[curTile.position] = curTile
             }
-            curTile.flip();
+            curTile?.flip()
         }
-        tileMap.values().forEach(LOGGER::trace);
-        return tileMap;
+        tileMap.values.forEach(Consumer { message: Tile -> LOGGER.trace(message) })
+        return tileMap
     }
 
-    long countTilesWithBlackSideUp(Collection<Tile> tiles) {
-        return tiles.stream().filter(Tile::isBlackUp).count();
+    fun countTilesWithBlackSideUp(tiles: Collection<Tile>): Long {
+        return tiles.stream().filter { obj: Tile -> obj.isBlackUp }.count()
     }
 
-    protected abstract long calculateResult(List<List<String>> instructions);
+    protected abstract fun calculateResult(instructions: List<List<String>>): Long
+    abstract fun getMessage(value: Long): String
 
-
-    abstract String getMessage(long value);
+    companion object {
+        val INSTRUCTION_SET = setOf(
+            Tile.EAST,
+            Tile.SOUTH_EAST,
+            Tile.SOUTH_WEST,
+            Tile.WEST,
+            Tile.NORTH_WEST,
+            Tile.NORTH_EAST
+        )
+        private const val COMMA_OR_COMMA_WITH_SPACE = "\\s[, ]\\s"
+    }
 }

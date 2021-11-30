@@ -1,51 +1,47 @@
-package hzt.aoc.io;
+package hzt.aoc.io
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager
+import java.io.File
+import java.io.FileNotFoundException
+import java.util.*
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-public class IOController2 implements IIOController {
-
-    private static final Logger LOGGER = LogManager.getLogger(IOController2.class);
-
-    public List<String> readInputFileByLine(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
-        List<String> inputList = new ArrayList<>();
+class IOController2 : IIOController {
+    override fun readInputFileByLine(path: String): MutableList<String> {
+        val url = javaClass.getResource(IIOController.RELATIVE_PATH + path)
+        val inputList: MutableList<String> = ArrayList()
         if (url != null) {
-            try (Scanner input = new Scanner(new File(url.getFile()))) {
-                while (input.hasNextLine()) {
-                    inputList.add(input.nextLine());
+            try {
+                Scanner(File(url.file)).use { input ->
+                    while (input.hasNextLine()) {
+                        inputList.add(input.nextLine())
+                    }
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
+            } catch (e: FileNotFoundException) {
+                LOGGER.error("File with path " + IIOController.RELATIVE_PATH + path + " not found...")
             }
-        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
-        return inputList;
+        } else LOGGER.error("Resource url from relative path " + IIOController.RELATIVE_PATH + path + " is null...")
+        return inputList
     }
 
-    @Override
-    public List<String> readInputFileByWord(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
-        List<String> inputList = new ArrayList<>();
+    override fun readInputFileByWord(fileName: String): List<String> {
+        val url = javaClass.getResource(IIOController.RELATIVE_PATH + fileName)
+        val inputList: MutableList<String> = ArrayList()
         if (url != null) {
-            try (Scanner input = new Scanner(new File(url.getFile()))) {
-                while (input.hasNext()) {
-                    inputList.add(input.next());
+            try {
+                Scanner(File(url.file)).use { input ->
+                    while (input.hasNext()) {
+                        inputList.add(input.next())
+                    }
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("File with path " + url.getFile() + " not found...");
+            } catch (e: FileNotFoundException) {
+                LOGGER.error("File with path " + url.file + " not found...")
             }
-            LOGGER.info(inputList.size());
-        } else LOGGER.error("Url is null...");
-        return inputList;
+            LOGGER.info(inputList.size)
+        } else LOGGER.error("Url is null...")
+        return inputList
+    }
+
+    companion object {
+        private val LOGGER = LogManager.getLogger(IOController2::class.java)
     }
 }
-
-
-

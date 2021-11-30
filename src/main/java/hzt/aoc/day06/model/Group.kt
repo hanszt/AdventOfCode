@@ -1,48 +1,33 @@
-package hzt.aoc.day06.model;
+package hzt.aoc.day06.model
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-public class Group {
-
-    private final List<Character> answers;
-    private final List<List<Character>> personsInGroupAnswers;
-
-    public Group(List<Character> answers, List<List<Character>> personsInGroupAnswers) {
-        this.answers = answers;
-        this.personsInGroupAnswers = personsInGroupAnswers;
+class Group(private val answers: List<Char>, private val personsInGroupAnswers: List<List<Char>>) {
+    fun amountAnyoneAnsweredYes(): Int {
+        val answeredYes: Set<Char> = HashSet(answers)
+        return answeredYes.size
     }
 
-    public int amountAnyoneAnsweredYes() {
-        Set<Character> answeredYes = new HashSet<>(answers);
-        return answeredYes.size();
-    }
+    val givenAnswerSet: Set<Char>
+        get() = HashSet(answers)
 
-    public Set<Character> getGivenAnswerSet() {
-        return new HashSet<>(answers);
-    }
-
-    public int amountEveryoneAnsweredYes() {
-        int amountAnswersEveryoneAnsweredYes = 0;
-        for (Character answer : getGivenAnswerSet()) {
-            boolean everyOneAnsweredYes = true;
-            for (List<Character> personAnswers : personsInGroupAnswers) {
+    fun amountEveryoneAnsweredYes(): Int {
+        var amountAnswersEveryoneAnsweredYes = 0
+        for (answer in givenAnswerSet) {
+            var everyOneAnsweredYes = true
+            for (personAnswers in personsInGroupAnswers) {
                 if (!personAnswers.contains(answer)) {
-                    everyOneAnsweredYes = false;
-                    break;
+                    everyOneAnsweredYes = false
+                    break
                 }
             }
-            if (everyOneAnsweredYes) amountAnswersEveryoneAnsweredYes++;
+            if (everyOneAnsweredYes) amountAnswersEveryoneAnsweredYes++
         }
-        return amountAnswersEveryoneAnsweredYes;
+        return amountAnswersEveryoneAnsweredYes
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Group{" +
                 "answers=" + answers +
                 ", personsInGroupAnswers=" + personsInGroupAnswers +
-                '}';
+                '}'
     }
 }

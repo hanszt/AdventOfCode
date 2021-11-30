@@ -1,99 +1,83 @@
-package hzt.aoc.day13;
+package hzt.aoc.day13
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import hzt.aoc.Challenge
+import java.util.*
+import java.util.stream.Collectors
 
-public class Part2ShuttleSearch extends Day13Challenge {
-
-    public Part2ShuttleSearch() {
-        super("part 2",
-                "What is the earliest timestamp such that all of the listed bus IDs depart at " +
-                        "offsets matching their positions in the list?");
-    }
-
-    @Override
-    protected String solve(List<String> lines) {
-        List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
-                .map(x -> "x".equals(x) ? "-1" : x)
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        return String.valueOf(second(busIdsWithBlanks));
+class Part2ShuttleSearch : Day13Challenge(
+    "part 2",
+    "What is the earliest timestamp such that all of the listed bus IDs depart at " +
+            "offsets matching their positions in the list"
+) {
+    override fun solve(inputList: List<String>): String {
+        val busIdsWithBlanks = Arrays.stream(inputList[1].split(",".toRegex()).toTypedArray())
+            .map { x: String -> if ("x" == x) "-1" else x }
+            .map { s: String -> s.toInt() }
+            .collect(Collectors.toList())
+        return second(busIdsWithBlanks).toString()
     }
 
     // Chinese remainder theorem implementation
-    private long second(List<Integer> busIdsWithBlanks) {
-        List<Equation> equations = new ArrayList<>();
-        for (int i = 0; i < busIdsWithBlanks.size(); i++) {
-            int busId = busIdsWithBlanks.get(i);
+    private fun second(busIdsWithBlanks: List<Int>): Long {
+        val equations: MutableList<Equation> = ArrayList()
+        for (i in busIdsWithBlanks.indices) {
+            val busId = busIdsWithBlanks[i]
             if (busId != -1) {
-                equations.add(new Equation(-i, busId));
+                equations.add(Equation((-i).toLong(), busId.toLong()))
             }
         }
-
-        long moduloProduct = equations
-                .stream()
-                .map(equation -> equation.modulo)
-                .reduce(1L, (a, b) -> a * b);
-
-        for (Equation equation : equations) {
-            equation.n = moduloProduct / equation.modulo;
-            equation.w = euclideanGeneralTheorem(equation.n, equation.modulo);
-            if (equation.w < 0) equation.w += equation.modulo;
+        val moduloProduct = equations
+            .stream()
+            .map { equation: Equation -> equation.modulo }
+            .reduce(1L) { a: Long, b: Long -> a * b }
+        for (equation in equations) {
+            equation.n = moduloProduct / equation.modulo
+            equation.w = euclideanGeneralTheorem(equation.n, equation.modulo)
+            if (equation.w < 0) equation.w += equation.modulo
         }
-
-        long solution = equations
-                .stream()
-                .map(equation -> equation.minIndex * equation.n * equation.w)
-                .reduce(0L, Long::sum);
-        solution = properModulo(solution, moduloProduct);
-        return solution;
+        var solution = equations
+            .stream()
+            .map { equation: Equation -> equation.minIndex * equation.n * equation.w }
+            .reduce(0L) { a: Long, b: Long -> java.lang.Long.sum(a, b) }
+        solution = properModulo(solution, moduloProduct)
+        return solution
     }
 
-    private long euclideanGeneralTheorem(long a1, long b1) {
-        long b = a1;
-        long a = b1;
-
-        long x = 0;
-        long y = 1;
-        long u = 1;
-        long v = 0;
-        while (b != 0) {
-            long q = a / b;
-            long r = properModulo(a, b);
-            long m = x - u * q;
-            long n = y - v * q;
-            a = b;
-            b = r;
-            x = u;
-            y = v;
-            u = m;
-            v = n;
+    private fun euclideanGeneralTheorem(a1: Long, b1: Long): Long {
+        var b = a1
+        var a = b1
+        var x: Long = 0
+        var y: Long = 1
+        var u: Long = 1
+        var v: Long = 0
+        while (b != 0L) {
+            val q = a / b
+            val r = properModulo(a, b)
+            val m = x - u * q
+            val n = y - v * q
+            a = b
+            b = r
+            x = u
+            y = v
+            u = m
+            v = n
         }
-        if (a != 1) LOGGER.error("!" + a);
-        return x;
+        if (a != 1L) LOGGER.error("!$a")
+        return x
     }
 
-    private long properModulo(long a, long b) {
-        b = Math.abs(b);
-        if (a < 0) {
-            return b - ((-a) % b);
+    private fun properModulo(a: Long, b: Long): Long {
+        var b = b
+        b = Math.abs(b)
+        return if (a < 0) {
+            b - -a % b
         } else {
-            return a % b;
+            a % b
         }
     }
 
-    static class Equation {
-
-        long minIndex;
-        long modulo;
-        long n;
-        long w;
-
-        public Equation(long minIndex, long modulo) {
-            this.minIndex = minIndex;
-            this.modulo = modulo;
-        }
+    internal class Equation(var minIndex: Long, var modulo: Long) {
+        var n: Long = 0
+        var w: Long = 0
     }
 }

@@ -1,19 +1,20 @@
-package hzt.aoc.day11;
+package hzt.aoc.day11
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
 
-public abstract class Day11Challenge extends Challenge {
+abstract class Day11Challenge internal constructor(
+    challengeTitle: String,
+    description: String,
+    inputFileName: String
+) : Challenge(challengeTitle, description, inputFileName) {
 
-    static final char EMPTY_SEAT = 'L';
-    static final char OCCUPIED_SEAT = '#';
-    static final char FLOOR = '.';
-
-    Day11Challenge(String challengeTitle, String description, String inputFileName) {
-        super(challengeTitle, description, inputFileName);
+    override fun getMessage(result: String): String {
+        return String.format("The number of seats occupied after equilibrium: %s%n", result)
     }
 
-    @Override
-    protected String getMessage(String value) {
-        return String.format("The number of seats occupied after equilibrium: %s%n", value);
+    companion object {
+        const val EMPTY_SEAT = 'L'
+        const val OCCUPIED_SEAT = '#'
+        const val FLOOR = '.'
     }
 }

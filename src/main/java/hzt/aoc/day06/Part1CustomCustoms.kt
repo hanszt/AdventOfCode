@@ -1,23 +1,18 @@
-package hzt.aoc.day06;
+package hzt.aoc.day06
 
-import hzt.aoc.day06.model.Group;
+import hzt.aoc.day06.model.Group
 
-import java.util.List;
-
-public class Part1CustomCustoms extends Day06Challenge {
-
-    public Part1CustomCustoms() {
-        super("part 1", "For each group, count the number of questions to which anyone answered 'yes'. " +
-                "What is the sum of those counts?. ");
+class Part1CustomCustoms : Day06Challenge(
+    "part 1", "For each group, count the number of questions to which anyone answered 'yes'. " +
+            "What is the sum of those counts. "
+) {
+    override fun calculateResult(groups: List<Group>): Int {
+        return groups.stream()
+            .mapToInt(Group::amountAnyoneAnsweredYes)
+            .sum()
     }
 
-    @Override
-    protected int calculateResult(List<Group> groups) {
-        return groups.stream().map(Group::amountAnyoneAnsweredYes).reduce(0, (acc, cur) -> acc += cur);
-    }
-
-    @Override
-    protected String getMessage(String result) {
-        return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %s%n", result);
+    override fun getMessage(result: String): String {
+        return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %s%n", result)
     }
 }

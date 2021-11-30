@@ -1,37 +1,29 @@
-package hzt.aoc.io;
+package hzt.aoc.io
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.Collections;
-import java.util.List;
-
-public class IOController1 implements IIOController {
-
-    private static final Logger LOGGER = LogManager.getLogger(IOController1.class);
-
-    public List<String> readInputFileByLine(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
+class IOController1 : IIOController {
+    override fun readInputFileByLine(path: String): List<String> {
+        val url = javaClass.getResource(IIOController.RELATIVE_PATH + path)
         if (url != null) {
             try {
-                return Files.readAllLines(new File(url.getFile()).toPath());
-            } catch (IOException io) {
-                LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
-                io.printStackTrace();
+                return Files.readAllLines(File(url.file).toPath())
+            } catch (io: IOException) {
+                LOGGER.error("File with path " + IIOController.RELATIVE_PATH + path + " not found...")
+                io.printStackTrace()
             }
-        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
-        return Collections.emptyList();
+        } else LOGGER.error("Resource url from relative path " + IIOController.RELATIVE_PATH + path + " is null...")
+        return emptyList()
     }
 
-    @Override
-    public List<String> readInputFileByWord(String path) {
-        throw new UnsupportedOperationException();
+    override fun readInputFileByWord(path: String): List<String> {
+        throw UnsupportedOperationException()
+    }
+
+    companion object {
+        private val LOGGER = LogManager.getLogger(IOController1::class.java)
     }
 }
-
-
-

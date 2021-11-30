@@ -1,36 +1,11 @@
-package hzt.aoc.day02.model;
+package hzt.aoc.day02.model
 
-public class Policy {
-
-    private final int lowerBound;
-    private final int upperBound;
-    private final char character;
-
-    public Policy(int lowerBound, int upperBound, char character) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
-        this.character = character;
-    }
-
-    public int getLowerBound() {
-        return lowerBound;
-    }
-
-    public int getUpperBound() {
-        return upperBound;
-    }
-
-    public char getCharacter() {
-        return character;
-    }
-
-    @Override
-    public String toString() {
+class Policy(val lowerBound: Int, val upperBound: Int, val character: Char) {
+    override fun toString(): String {
         return "Policy{" +
                 "lowerBound=" + lowerBound +
                 ", upperBound=" + upperBound +
                 ", character=" + character +
-                '}';
+                '}'
     }
-
 }

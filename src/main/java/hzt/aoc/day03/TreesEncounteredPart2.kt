@@ -1,30 +1,30 @@
-package hzt.aoc.day03;
+package hzt.aoc.day03
 
-import java.awt.*;
-import java.util.List;
+import hzt.aoc.Challenge
+import java.awt.Point
 
-public class TreesEncounteredPart2 extends Day03Challenge {
-
-    public TreesEncounteredPart2() {
-        super("part 2",
-                "Find the product of the number of trees crossed by all the given paths");
-    }
-
-    @Override
-    protected long calculateResult(List<List<Boolean>> grid) {
-        long product = 1;
-        for (Path path : Path.values()) {
-            int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point(0, 0), path.getSlope());
-            LOGGER.info(String.format("The number of trees crossed using %s is %d", path.name(), numberOfTrees));
-            product *= numberOfTrees;
+class TreesEncounteredPart2 : Day03Challenge(
+    "part 2",
+    "Find the product of the number of trees crossed by all the given paths"
+) {
+    override fun calculateResult(grid: List<List<Boolean>>): Long {
+        var product: Long = 1
+        for (path in Path.values()) {
+            val numberOfTrees = calculateNumberOfTreesEncountered(grid, Point(0, 0), path.slope)
+            LOGGER.info(
+                String.format(
+                    "The number of trees crossed using %s is %d",
+                    path.name,
+                    numberOfTrees
+                )
+            )
+            product *= numberOfTrees.toLong()
         }
-        LOGGER.info("");
-        return product;
+        LOGGER.info("")
+        return product
     }
 
-    @Override
-   protected String getMessage(String result) {
-        return String.format("The product of all the number of trees crossed is: %s%n", result);
+    override fun getMessage(result: String): String {
+        return String.format("The product of all the number of trees crossed is: %s%n", result)
     }
-
 }

@@ -1,28 +1,25 @@
-package hzt.aoc.day16;
+package hzt.aoc.day16
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
-public class Part1TicketTranslation extends Day16Challenge {
-
-    public Part1TicketTranslation() {
-        super("part 1",
-                "Consider the validity of the nearby tickets you scanned. What is your ticket scanning error rate?");
+class Part1TicketTranslation : Day16Challenge(
+    "part 1",
+    "Consider the validity of the nearby tickets you scanned. What is your ticket scanning error rate"
+) {
+    override fun solveByParsedInput(
+        fields: List<Field>,
+        yourTicketValues: List<Int>,
+        nearbyTicketValues: List<List<Int>>
+    ): Long {
+        val inValidTicketValues = nearbyTicketValues.stream()
+            .flatMap { obj: List<Int> -> obj.stream() }
+            .collect(Collectors.toList())
+        inValidTicketValues.removeAll(findValidTicketValues(fields, nearbyTicketValues))
+        return inValidTicketValues.stream().reduce { a: Int, b: Int -> Integer.sum(a, b) }.orElse(0)
+            .toLong()
     }
 
-    @Override
-    protected long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, List<List<Integer>> nearbyTicketValues) {
-        List<Integer> inValidTicketValues = nearbyTicketValues.stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        inValidTicketValues.removeAll(findValidTicketValues(fields, nearbyTicketValues));
-        return inValidTicketValues.stream().reduce(Integer::sum).orElse(0);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
-
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
-    }
-
 }

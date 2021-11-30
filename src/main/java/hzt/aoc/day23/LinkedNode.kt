@@ -1,36 +1,13 @@
-package hzt.aoc.day23;
+package hzt.aoc.day23
 
-public class LinkedNode<T> {
-
-    private T value;
-    private LinkedNode<T> next;
-
-    public LinkedNode() {
-        this(null);
+class LinkedNode<T> @JvmOverloads constructor(value: T? = null) {
+    var value: T? = null
+    var next: LinkedNode<T>? = null
+    override fun toString(): String {
+        return "CustomLinkedNode{$value}"
     }
 
-    public LinkedNode(T value) {
-        this.setValue(value);
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    public void setValue(T value) {
-        this.value = value;
-    }
-
-    public LinkedNode<T> getNext() {
-        return next;
-    }
-
-    public void setNext(LinkedNode<T> next) {
-        this.next = next;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomLinkedNode{" + getValue() + '}';
+    init {
+        this.value = value
     }
 }

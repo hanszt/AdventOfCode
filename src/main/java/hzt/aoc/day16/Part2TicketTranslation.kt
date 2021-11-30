@@ -1,102 +1,110 @@
-package hzt.aoc.day16;
+package hzt.aoc.day16
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Arrays
+import java.util.ArrayList
 
 // credits to turkey dev
-public class Part2TicketTranslation extends Day16Challenge {
-
-    public Part2TicketTranslation() {
-        super("part 2",
-                "Once you work out which field is which, look for the six fields on your ticket that start with the word departure. \n" +
-                        "What do you get if you multiply those six values together?");
-    }
-
-    private static final int FIRST_SIX_FIELDS = 6;
-
-    @Override
-    protected long solveByParsedInput(List<Field> fields, List<Integer> ourTicketValues, List<List<Integer>> nearbyTickets) {
-        boolean[][] possibleMatches = new boolean[fields.size()][ourTicketValues.size()];
-        for (boolean[] possibleMatch : possibleMatches) Arrays.fill(possibleMatch, true);
-        List<List<Integer>> validTickets = findValidTickets(fields, nearbyTickets);
-        for (List<Integer> ticket : validTickets) {
-            for (int col = 0; col < ticket.size(); col++) {
-                for (int row = 0; row < fields.size(); row++) {
-                    if (!fields.get(row).containsValueInRanges(ticket.get(col))) {
-                        possibleMatches[row][col] = false;
+class Part2TicketTranslation : Day16Challenge(
+    "part 2",
+    """
+         Once you work out which field is which, look for the six fields on your ticket that start with the word departure. 
+         What do you get if you multiply those six values together
+         """.trimIndent()
+) {
+    override fun solveByParsedInput(
+        fields: List<Field>,
+        yourTicketValues: List<Int>,
+        nearbyTicketValues: List<List<Int>>
+    ): Long {
+        val possibleMatches = Array(fields.size) { BooleanArray(yourTicketValues.size) }
+        for (possibleMatch in possibleMatches) Arrays.fill(possibleMatch, true)
+        val validTickets = findValidTickets(fields, nearbyTicketValues)
+        for (ticket in validTickets) {
+            for (col in ticket.indices) {
+                for (row in fields.indices) {
+                    if (!fields[row].containsValueInRanges(ticket[col])) {
+                        possibleMatches[row][col] = false
                     }
                 }
             }
         }
-        LOGGER.trace(ourTicketValues);
-
-        iterateUntilUniqueValueForeEachField(possibleMatches);
-        if (LOGGER.isTraceEnabled()) LOGGER.trace(booleanGrid2DAsString(possibleMatches));
-        return getAnswer(possibleMatches, ourTicketValues);
+        LOGGER.trace(yourTicketValues)
+        iterateUntilUniqueValueForeEachField(possibleMatches)
+        if (LOGGER.isTraceEnabled) LOGGER.trace(
+            booleanGrid2DAsString(
+                possibleMatches
+            )
+        )
+        return getAnswer(possibleMatches, yourTicketValues)
     }
 
-    private void iterateUntilUniqueValueForeEachField(boolean[][] possibleMatches) {
-        while (!isDone(possibleMatches)) filterOutUniqueValues(possibleMatches);
+    private fun iterateUntilUniqueValueForeEachField(possibleMatches: Array<BooleanArray>) {
+        while (!isDone(possibleMatches)) filterOutUniqueValues(possibleMatches)
     }
 
-    public void filterOutUniqueValues(boolean[][] possibleMatches) {
-        for (int col = 0; col < possibleMatches[0].length; col++) {
-            int count = 0;
-            int index = -1;
-            for (int row = 0; row < possibleMatches.length; row++) {
+    private fun filterOutUniqueValues(possibleMatches: Array<BooleanArray>) {
+        for (col in 0 until possibleMatches[0].size) {
+            var count = 0
+            var index = -1
+            for (row in possibleMatches.indices) {
                 if (possibleMatches[col][row]) {
-                    count++;
-                    index = row;
+                    count++
+                    index = row
                 }
             }
             if (count == 1) {
-                for (int i = 0; i < possibleMatches.length; i++) {
+                for (i in possibleMatches.indices) {
                     if (i != col) {
-                        possibleMatches[i][index] = false;
+                        possibleMatches[i][index] = false
                     }
                 }
             }
         }
     }
 
-    public boolean isDone(boolean[][] possibleMatches) {
-        for (boolean[] possibleMatch : possibleMatches) {
-            int matches = 0;
-            for (boolean match : possibleMatch) {
-                if (match) matches++;
+    private fun isDone(possibleMatches: Array<BooleanArray>): Boolean {
+        for (possibleMatch in possibleMatches) {
+            var matches = 0
+            for (match in possibleMatch) {
+                if (match) matches++
             }
-            if (matches > 1) return false;
+            if (matches > 1) return false
         }
-        return true;
+        return true
     }
 
-    protected List<List<Integer>> findValidTickets(List<Field> fields, List<List<Integer>> nearbyTickets) {
-        List<List<Integer>> validTickets = new ArrayList<>();
-        for (List<Integer> nearbyTicket : nearbyTickets) {
-            boolean containsOnlyValidValues = nearbyTicket.stream().allMatch(value -> fieldsContainValue(value, fields));
-            if (containsOnlyValidValues) validTickets.add(nearbyTicket);
+    private fun findValidTickets(fields: List<Field>, nearbyTickets: List<List<Int>>): List<List<Int>> {
+        val validTickets: MutableList<List<Int>> = ArrayList()
+        for (nearbyTicket in nearbyTickets) {
+            val containsOnlyValidValues = nearbyTicket.stream().allMatch { value: Int ->
+                fieldsContainValue(
+                    value, fields
+                )
+            }
+            if (containsOnlyValidValues) validTickets.add(nearbyTicket)
         }
-        return validTickets;
+        return validTickets
     }
 
-    private long getAnswer(boolean[][] possibleMatches, List<Integer> ourTicketValues) {
-        long answer = 1;
-        for (int row = 0; row < FIRST_SIX_FIELDS; row++) {
-            for (int col = 0; col < possibleMatches.length; col++) {
+    private fun getAnswer(possibleMatches: Array<BooleanArray>, ourTicketValues: List<Int>): Long {
+        var answer: Long = 1
+        for (row in 0 until FIRST_SIX_FIELDS) {
+            for (col in possibleMatches.indices) {
                 if (possibleMatches[row][col]) {
-                    int value = ourTicketValues.get(col);
-                    answer *= value;
-                    break;
+                    val value = ourTicketValues[col]
+                    answer *= value.toLong()
+                    break
                 }
             }
         }
-        return answer;
+        return answer
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
+    }
+
+    companion object {
+        private const val FIRST_SIX_FIELDS = 6
     }
 }

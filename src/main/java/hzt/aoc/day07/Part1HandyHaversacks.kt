@@ -1,27 +1,26 @@
-package hzt.aoc.day07;
+package hzt.aoc.day07
 
-import java.util.Map;
-
-public class Part1HandyHaversacks extends Day07Challenge {
-
-    public Part1HandyHaversacks() {
-        super("part 1",
-                "What is the number of bag colors that can contain" +
-                        " at least one shiny gold bag?");
+class Part1HandyHaversacks : Day07Challenge(
+    "part 1",
+    "What is the number of bag colors that can contain" +
+            " at least one shiny gold bag"
+) {
+    override fun solveByRules(bags: Map<String, Bag>): Long {
+        return bags.values.stream()
+            .filter { hasDescendent(bags, SHINY_GOLD, it) }
+            .count()
     }
 
-    @Override
-    protected long solveByRules(Map<String, Bag> bags) {
-        return bags.values().stream().filter(bag -> hasDescendent(bags, SHINY_GOLD, bag)).count();
+    private fun hasDescendent(bags: Map<String, Bag>, target: String, bag: Bag?): Boolean {
+        return bag?.childBagColorsToAmounts?.keys?.stream()
+            ?.anyMatch { it == target || hasDescendent(bags, target, bags[it]) } ?: false
     }
 
-    private boolean hasDescendent(Map<String, Bag> bags, String target, Bag bag) {
-        return bag.childBagColorsToAmounts.keySet().stream()
-                .anyMatch(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
+    override fun getMessage(result: String): String {
+        return String.format(
+            "The number of bags containing a %s bag at least once: %s%n",
+            SHINY_GOLD,
+            result
+        )
     }
-@Override
-    protected String getMessage(String numberOfBags) {
-        return String.format("The number of bags containing a %s bag at least once: %s%n", SHINY_GOLD, numberOfBags);
-    }
-
 }

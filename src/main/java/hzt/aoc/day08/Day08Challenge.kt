@@ -1,81 +1,54 @@
-package hzt.aoc.day08;
+package hzt.aoc.day08
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import hzt.aoc.day08.Instruction.Companion.setNext
+import java.util.stream.Collectors
 
-import java.util.List;
+abstract class Day08Challenge protected constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201208-input-day8.txt") {
 
-import static java.util.stream.Collectors.toList;
-
-public abstract class Day08Challenge extends Challenge {
-
-    static final String ACCUMULATOR = "acc";
-    static final String JUMP = "jmp";
-    static final String NO_OPERATION = "nop";
-    protected Day08Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201208-input-day8.txt");
+    override fun solve(inputList: List<String>): String {
+        setNext(0)
+        val instructions = inputList.stream().map { string: String -> instruction(string) }
+            .collect(Collectors.toList())
+        val global = solveByInstructions(instructions)
+        return global.toString()
     }
 
-    @Override
-    protected String solve(List<String> inputList) {
-        Instruction.setNext(0);
-        List<Instruction> instructions = inputList.stream().map(this::instruction).collect(toList());
-        int global = solveByInstructions(instructions);
-        return String.valueOf(global);
-    }
-
-    protected abstract int solveByInstructions(List<Instruction> instructions);
-
-    Result testInstructions(List<Instruction> instructions) {
-        int position = 0;
-        int global = 0;
-        Instruction lastInstruction = null;
-        while (position < instructions.size() && !instructions.get(position).isVisited()) {
-            Instruction instruction = instructions.get(position);
-            switch (instruction.getDescriptor()) {
-                case JUMP:
-                    position += instruction.getArgument();
-                    break;
-                case ACCUMULATOR:
-                    global += instruction.getArgument();
-                    position++;
-                    break;
-                case NO_OPERATION:
-                    position++;
-                    break;
-                default:
-                    throw new UnsupportedOperationException();
+    protected abstract fun solveByInstructions(instructions: List<Instruction>): Int
+    fun testInstructions(instructions: List<Instruction>): Result {
+        var position = 0
+        var global = 0
+        var lastInstruction: Instruction? = null
+        while (position < instructions.size && !instructions[position].isVisited) {
+            val instruction = instructions[position]
+            when (instruction.descriptor) {
+                JUMP -> position += instruction.argument
+                ACCUMULATOR -> {
+                    global += instruction.argument
+                    position++
+                }
+                NO_OPERATION -> position++
+                else -> throw UnsupportedOperationException()
             }
-            instruction.setVisited(true);
-            lastInstruction = instruction;
+            instruction.isVisited = true
+            lastInstruction = instruction
         }
-        return new Result(lastInstruction, global);
+        return Result(lastInstruction, global)
     }
 
-    private Instruction instruction(String string) {
-        String[] strings = string.split("\\s");
-        String descriptor = strings[0];
-        String stringArgument = strings[1];
-        int argument = Integer.parseInt(stringArgument);
-        return new Instruction(descriptor, argument);
+    private fun instruction(string: String): Instruction {
+        val strings = string.split("\\s".toRegex()).toTypedArray()
+        val descriptor = strings[0]
+        val stringArgument = strings[1]
+        val argument = stringArgument.toInt()
+        return Instruction(descriptor, argument)
     }
 
-    static class Result {
-
-        private final Instruction lastInstruction;
-        private final int global;
-
-        public Result(Instruction lastInstruction, int global) {
-            this.lastInstruction = lastInstruction;
-            this.global = global;
-        }
-
-        public Instruction getLastInstruction() {
-            return lastInstruction;
-        }
-
-        public int getGlobal() {
-            return global;
-        }
+    class Result(val lastInstruction: Instruction?, val global: Int)
+    companion object {
+        const val ACCUMULATOR = "acc"
+        const val JUMP = "jmp"
+        const val NO_OPERATION = "nop"
     }
-
 }

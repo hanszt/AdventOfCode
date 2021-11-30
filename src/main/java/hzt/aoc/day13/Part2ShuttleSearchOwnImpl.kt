@@ -1,44 +1,38 @@
-package hzt.aoc.day13;
+package hzt.aoc.day13
 
-import java.math.BigInteger;
-import java.util.*;
+import java.math.BigInteger
+import java.util.*
 
-public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
-
-    public Part2ShuttleSearchOwnImpl() {
-        super("part 2",
-                "What is the earliest timestamp such that all of the listed bus IDs depart at " +
-                        "offsets matching their positions in the list? (This is a brute force implementation. Is too slow)",
-                "20201213-input-day13ref2.txt");
-    }
-
-    @Override
-    protected String solve(List<String> inputList) {
-        List<String> busNrList = Arrays.asList(inputList.get(1).split(","));
-        int highestIndex = busNrList.size() - 1;
-        Map<Integer, Integer> listPositionsToBusNrs = new TreeMap<>();
-        for (int i = 0; i < busNrList.size(); i++) {
-            if (!busNrList.get(i).matches("x")) {
-                listPositionsToBusNrs.put(i, Integer.parseInt(busNrList.get(i)));
+class Part2ShuttleSearchOwnImpl : Day13Challenge(
+    "part 2",
+    "What is the earliest timestamp such that all of the listed bus IDs depart at " +
+            "offsets matching their positions in the list (This is a brute force implementation. Is too slow)",
+    "20201213-input-day13ref2.txt"
+) {
+    override fun solve(inputList: List<String>): String {
+        val busNrList = listOf(*inputList[1].split(",".toRegex()).toTypedArray())
+        val highestIndex = busNrList.size - 1
+        val listPositionsToBusNrs: MutableMap<Int, Int> = TreeMap()
+        for (i in busNrList.indices) {
+            if (busNrList[i] != "x") {
+                listPositionsToBusNrs[i] = busNrList[i].toInt()
             }
         }
-        BigInteger earliestTimestamp = BigInteger.ZERO;
+        var earliestTimestamp = BigInteger.ZERO
         while (true) {
-            List<Boolean> matches = new ArrayList<>();
-            for (Map.Entry<Integer, Integer> entry : listPositionsToBusNrs.entrySet()) {
-                int listPosition = entry.getKey();
-                int busNr = entry.getValue();
-                BigInteger value = (earliestTimestamp.mod(BigInteger.valueOf(busNr)).add(BigInteger.valueOf((long) listPosition - highestIndex)));
-                matches.add(value.equals(BigInteger.ZERO));
+            val matches: MutableList<Boolean> = ArrayList()
+            for ((listPosition, busNr) in listPositionsToBusNrs) {
+                val value = earliestTimestamp.mod(BigInteger.valueOf(busNr.toLong()))
+                    .add(BigInteger.valueOf(listPosition.toLong() - highestIndex))
+                matches.add(value == BigInteger.ZERO)
             }
-            if (!matches.contains(false)) break;
-            earliestTimestamp = earliestTimestamp.add(BigInteger.ONE);
+            if (!matches.contains(false)) break
+            earliestTimestamp = earliestTimestamp.add(BigInteger.ONE)
         }
-        return String.valueOf(earliestTimestamp.subtract(BigInteger.valueOf(highestIndex)));
+        return earliestTimestamp.subtract(BigInteger.valueOf(highestIndex.toLong())).toString()
     }
 
-    @Override
-    protected String getMessage(String global) {
-        return String.format("%s (only works for small inputs)", global);
+    override fun getMessage(result: String): String {
+        return String.format("%s (only works for small inputs)", result)
     }
 }

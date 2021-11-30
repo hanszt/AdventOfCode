@@ -1,45 +1,37 @@
-package hzt.aoc.day06;
+package hzt.aoc.day06
 
-import hzt.aoc.Challenge;
-import hzt.aoc.day06.model.Group;
+import hzt.aoc.Challenge
+import hzt.aoc.day06.model.Group
 
-import java.util.ArrayList;
-import java.util.List;
+abstract class Day06Challenge protected constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201206-input-day6.txt") {
 
-public abstract class Day06Challenge extends Challenge {
-
-    protected Day06Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201206-input-day6.txt");
+    override fun solve(inputList: List<String>): String {
+        val groups = getGroups(inputList)
+        val result = calculateResult(groups)
+        return result.toString()
     }
 
-    @Override
-    protected String solve(List<String> inputByLineList) {
-        List<Group> groups = getGroups(inputByLineList);
-        int result = calculateResult(groups);
-        return String.valueOf(result);
-    }
-
-    protected List<Group> getGroups(List<String> inputByLineList) {
-        List<Group> groups = new ArrayList<>();
-        List<Character> groupAnswers = new ArrayList<>();
-        List<List<Character>> personsInGroupAnswers = new ArrayList<>();
-        for (String string : inputByLineList) {
-            List<Character> personAnswers = new ArrayList<>();
-            for (int i = 0; i < string.length(); i++) {
-                groupAnswers.add(string.charAt(i));
-                personAnswers.add(string.charAt(i));
+    private fun getGroups(inputByLineList: List<String>): List<Group> {
+        val groups: MutableList<Group> = ArrayList()
+        val groupAnswers: MutableList<Char> = ArrayList()
+        val personsInGroupAnswers: MutableList<List<Char>> = ArrayList()
+        for (string in inputByLineList) {
+            val personAnswers: MutableList<Char> = ArrayList()
+            for (i in string.indices) {
+                groupAnswers.add(string[i])
+                personAnswers.add(string[i])
             }
-            personsInGroupAnswers.add(personAnswers);
-            if (string.matches("\\s*")) {
-                personsInGroupAnswers.remove(personAnswers);
-                groups.add(new Group(new ArrayList<>(groupAnswers), new ArrayList<>(personsInGroupAnswers)));
-                groupAnswers.clear();
-                personsInGroupAnswers.clear();
+            personsInGroupAnswers.add(personAnswers)
+            if (string.matches(Regex("\\s*"))) {
+                personsInGroupAnswers.remove(personAnswers)
+                groups.add(Group(ArrayList(groupAnswers), ArrayList(personsInGroupAnswers)))
+                groupAnswers.clear()
+                personsInGroupAnswers.clear()
             }
         }
-        return groups;
+        return groups
     }
 
-    protected abstract int calculateResult(List<Group> groups);
-
+    protected abstract fun calculateResult(groups: List<Group>): Int
 }

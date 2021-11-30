@@ -1,54 +1,46 @@
-package hzt.aoc.day25;
+package hzt.aoc.day25
 
-public class Part1ComboBreaker extends Day25Challenge {
-
-    public Part1ComboBreaker() {
-        super("part 1",
-                "What encryption key is the handshake trying to establish?");
+class Part1ComboBreaker : Day25Challenge(
+    "part 1",
+    "What encryption key is the handshake trying to establish"
+) {
+    override fun solveByInput(cardPublicKey: Long, doorPublicKey: Long): Long {
+        val loopSizeCard = findLoopSize(cardPublicKey)
+        val loopSizeDoor = findLoopSize(doorPublicKey)
+        val encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard)
+        val encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor)
+        LOGGER.trace("Card loop size: $loopSizeCard")
+        LOGGER.trace("Door loop size: $loopSizeDoor")
+        LOGGER.trace("Card encryption key: $encryptionKeyCard")
+        LOGGER.trace("Door encryption key: $encryptionKeyDoor")
+        return if (encryptionKeyCard == encryptionKeyDoor) encryptionKeyCard else 0
     }
 
-    private static final long STARTING_VALUE = 1;
-
-    @Override
-    protected long solveByInput(long cardPublicKey, long doorPublicKey) {
-        long loopSizeCard = findLoopSize(cardPublicKey);
-        long loopSizeDoor = findLoopSize(doorPublicKey);
-        long encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
-        long encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
-        LOGGER.trace("Card loop size: " + loopSizeCard);
-        LOGGER.trace("Door loop size: " + loopSizeDoor);
-        LOGGER.trace("Card encryption key: " + encryptionKeyCard);
-        LOGGER.trace("Door encryption key: " + encryptionKeyDoor);
-        return encryptionKeyCard == encryptionKeyDoor ? encryptionKeyCard : 0;
-    }
-
-    private long calculateEncryptionKey(long publicKey, long loopSizeOther) {
-        long value = STARTING_VALUE;
-        for (int i = 0; i < loopSizeOther; i++) {
-            value = performStep(value, publicKey);
+    private fun calculateEncryptionKey(publicKey: Long, loopSizeOther: Long): Long {
+        var value = STARTING_VALUE
+        for (i in 0 until loopSizeOther) {
+            value = performStep(value, publicKey)
         }
-        return value;
+        return value
     }
 
-    private long performStep(long value, long subjectNumber) {
-        value = value * subjectNumber;
-        value = value % NUMBER_TO_DIVIDE_BY;
-        return value;
-    }
+    private fun performStep(value: Long, subjectNumber: Long): Long = (value * subjectNumber) % NUMBER_TO_DIVIDE_BY
 
-    private long findLoopSize(long publicKey) {
-        long newVal = STARTING_VALUE;
-        int counter = 0;
+    private fun findLoopSize(publicKey: Long): Long {
+        var newVal = STARTING_VALUE
+        var counter = 0
         do {
-            newVal = performStep(newVal, INIT_SUBJECT_NUMBER);
-            counter++;
-        } while (newVal != publicKey);
-        return counter;
+            newVal = performStep(newVal, INIT_SUBJECT_NUMBER.toLong())
+            counter++
+        } while (newVal != publicKey)
+        return counter.toLong()
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
 
+    companion object {
+        private const val STARTING_VALUE: Long = 1
+    }
 }

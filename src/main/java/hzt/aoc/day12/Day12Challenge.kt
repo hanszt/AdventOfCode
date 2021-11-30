@@ -1,33 +1,27 @@
-package hzt.aoc.day12;
+package hzt.aoc.day12
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import java.awt.Point
 
-import java.awt.*;
-
-public abstract class Day12Challenge extends Challenge {
-
-    Day12Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201212-input-day12.txt");
+abstract class Day12Challenge internal constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201212-input-day12.txt") {
+    fun translatePointInWindDirection(position: Point, direction: Char, amount: Int) {
+        if (direction == EAST) position.translate(amount, 0)
+        if (direction == WEST) position.translate(-amount, 0)
+        if (direction == NORTH) position.translate(0, amount)
+        if (direction == SOUTH) position.translate(0, -amount)
     }
 
-    static final char EAST = 'E';
-    static final char WEST = 'W';
-    static final char NORTH = 'N';
-    static final char SOUTH = 'S';
-    static final char TURN_LEFT = 'L';
-    static final char TURN_RIGHT = 'R';
-    static final char MOVE_FORWARD = 'F';
+    abstract fun getMessage(value: Int): String
 
-    static final int NINETY_DEGREES = 90;
-
-    void translatePointInWindDirection(Point position, char direction, int amount) {
-        if (direction == EAST) position.translate(amount, 0);
-        if (direction == WEST) position.translate(-amount, 0);
-        if (direction == NORTH) position.translate(0, amount);
-        if (direction == SOUTH) position.translate(0, -amount);
+    companion object {
+        const val EAST = 'E'
+        const val WEST = 'W'
+        const val NORTH = 'N'
+        const val SOUTH = 'S'
+        const val TURN_LEFT = 'L'
+        const val TURN_RIGHT = 'R'
+        const val MOVE_FORWARD = 'F'
+        const val NINETY_DEGREES = 90
     }
-
-
-    abstract String getMessage(int value);
-
 }

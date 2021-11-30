@@ -1,72 +1,63 @@
-package hzt.aoc.day17;
+package hzt.aoc.day17
 
-import java.util.Collection;
-import java.util.List;
+open class Part1ConwayCubes : Day17Challenge {
+    constructor() : super(
+        "part 1",
+        "Starting with your given initial configuration, simulate six cycles. " +
+                "How many cubes are left in the active state after the sixth cycle"
+    )
 
-public class Part1ConwayCubes extends Day17Challenge {
+    constructor(challengeTitle: String, description: String) : super(challengeTitle, description)
 
-    public Part1ConwayCubes() {
-        super("part 1",
-                "Starting with your given initial configuration, simulate six cycles. " +
-                        "How many cubes are left in the active state after the sixth cycle?");
-    }
-
-    public Part1ConwayCubes(String challengeTitle, String description) {
-        super(challengeTitle, description);
-    }
-
-    @Override
-    protected long solveByGrid(List<String> inputList) {
-        List<List<List<Boolean>>> grid3d = getInitGrid3D(inputList);
-        for (int i = 0; i < NUMBER_OF_CYCLES; i++) {
-            addInactiveOuterLayer3D(grid3d);
-            LOGGER.trace(String.format("Iteration: %d%n%s", i, grid3DAsString(grid3d)));
-            grid3d = updateGrid(grid3d);
+    override fun solveByGrid(inputList: List<String>): Long {
+        var grid3d = getInitGrid3D(inputList)
+        for (i in 0 until NUMBER_OF_CYCLES) {
+            addInactiveOuterLayer3D(grid3d)
+            LOGGER.trace(String.format("Iteration: %d%n%s", i, grid3DAsString(grid3d)))
+            grid3d = updateGrid(grid3d)
         }
-        return countActive3D(grid3d);
+        return countActive3D(grid3d)
     }
 
-    long countActive3D(List<List<List<Boolean>>> grid3d) {
+    fun countActive3D(grid3d: List<List<MutableList<Boolean>>>): Long {
         return grid3d.stream()
-                .flatMap(Collection::stream)
-                .flatMap(Collection::stream)
-                .filter(b -> b).count();
+            .flatMap<List<Boolean>> { obj: List<MutableList<Boolean>> -> obj.stream() }
+            .flatMap { obj: List<Boolean> -> obj.stream() }
+            .filter { b: Boolean -> b }.count()
     }
 
-    private List<List<List<Boolean>>> updateGrid(List<List<List<Boolean>>> grid3d) {
-        List<List<List<Boolean>>> newGrid3d = copyGrid3D(grid3d);
-        for (int z = 0; z < grid3d.size(); z++) {
-            List<List<Boolean>> grid2d = grid3d.get(z);
-            for (int y = 0; y < grid2d.size(); y++) {
-                List<Boolean> row = grid2d.get(y);
-                for (int x = 0; x < row.size(); x++) {
-                    boolean currentActive = row.get(x);
-                    int activeNeighbors = countActiveNeighbors(new Point(x, y, z), grid3d);
-                    currentActive = applyRules(currentActive, activeNeighbors);
-                    newGrid3d.get(z).get(y).set(x, currentActive);
+    private fun updateGrid(grid3d: MutableList<MutableList<MutableList<Boolean>>>):
+            MutableList<MutableList<MutableList<Boolean>>> {
+        val newGrid3d = copyGrid3D(grid3d)
+        for (z in grid3d.indices) {
+            val grid2d = grid3d[z]
+            for (y in grid2d.indices) {
+                val row: List<Boolean> = grid2d[y]
+                for (x in row.indices) {
+                    var currentActive = row[x]
+                    val activeNeighbors = countActiveNeighbors(Point(x, y, z), grid3d)
+                    currentActive = applyRules(currentActive, activeNeighbors)
+                    newGrid3d[z][y][x] = currentActive
                 }
             }
         }
-        addInactiveOuterLayer3D(newGrid3d);
-        return newGrid3d;
+        addInactiveOuterLayer3D(newGrid3d)
+        return newGrid3d
     }
 
-    int countActiveNeighbors(Point cur, List<List<List<Boolean>>> curGrid3d) {
-        int activeNeighbors = 0;
-        for (int z = Math.max(cur.getZ() - 1, 0); z <= upperBound(cur.getZ(), curGrid3d.size()); z++) {
-            for (int y = Math.max(cur.getY() - 1, 0); y <= upperBound(cur.getY(), curGrid3d.get(0).size()); y++) {
-                for (int x = Math.max(cur.getX() - 1, 0); x <= upperBound(cur.getX(), curGrid3d.get(0).get(0).size()); x++) {
-                    if (isActiveNeighbor(new Point(x, y, z), cur, curGrid3d))
-                        activeNeighbors++;
+    fun countActiveNeighbors(cur: Point, curGrid3d: List<List<MutableList<Boolean>>>): Int {
+        var activeNeighbors = 0
+        for (z in (cur.z - 1).coerceAtLeast(0)..upperBound(cur.z, curGrid3d.size)) {
+            for (y in (cur.y - 1).coerceAtLeast(0)..upperBound(cur.y, curGrid3d[0].size)) {
+                for (x in (cur.x - 1).coerceAtLeast(0)..upperBound(cur.x, curGrid3d[0][0].size)) {
+                    if (isActiveNeighbor(Point(x, y, z), cur, curGrid3d)) activeNeighbors++
                 }
             }
         }
-        return activeNeighbors;
+        return activeNeighbors
     }
 
-    private boolean isActiveNeighbor(Point checked, Point cur, List<List<List<Boolean>>> curGrid3d) {
-        if (!cur.equals(checked)) return curGrid3d.get(checked.getZ()).get(checked.getY()).get(checked.getX());
-        else return false;
+    private fun isActiveNeighbor(checked: Point, cur: Point, curGrid3d: List<List<MutableList<Boolean>>>): Boolean {
+        return cur != checked && curGrid3d[checked.z][checked.y][checked.x]
     }
-
 }

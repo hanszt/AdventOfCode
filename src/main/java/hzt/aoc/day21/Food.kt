@@ -1,31 +1,20 @@
-package hzt.aoc.day21;
+package hzt.aoc.day21
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.*
 
-public class Food {
-
-    private final Set<String> ingredients;
-    private final Set<String> allergens;
-
-    public Food(Set<String> ingredients, Set<String> allergens) {
-        this.ingredients = ingredients;
-        this.allergens = allergens;
+class Food(private val ingredients: Set<String>, private val allergens: Set<String>) {
+    fun getIngredients(): Set<String> {
+        return Collections.unmodifiableSet(ingredients)
     }
 
-    public Set<String> getIngredients() {
-        return Collections.unmodifiableSet(ingredients);
+    fun getAllergens(): Set<String> {
+        return Collections.unmodifiableSet(allergens)
     }
 
-    public Set<String> getAllergens() {
-        return Collections.unmodifiableSet(allergens);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Food{" +
                 "ingredients=" + ingredients +
                 ", allergens=" + allergens +
-                '}';
+                '}'
     }
 }

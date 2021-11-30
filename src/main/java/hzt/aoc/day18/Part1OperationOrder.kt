@@ -1,21 +1,14 @@
-package hzt.aoc.day18;
+package hzt.aoc.day18
 
-import java.util.*;
-
-public class Part1OperationOrder extends Day18Challenge {
-
-    public Part1OperationOrder() {
-        super("part 1",
-                "Evaluate the expression on each line of the homework; what is the sum of the resulting values?");
+class Part1OperationOrder : Day18Challenge(
+    "part 1",
+    "Evaluate the expression on each line of the homework; what is the sum of the resulting values"
+) {
+    override fun evaluateBetweenParentheses(strings: List<String>): String {
+        return evaluateInOrder(strings)
     }
 
-    @Override
-    String evaluateBetweenParentheses(List<String> subEquation) {
-        return evaluateInOrder(subEquation);
-    }
-
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
 }

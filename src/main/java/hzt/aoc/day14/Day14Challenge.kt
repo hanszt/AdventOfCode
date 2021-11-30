@@ -1,37 +1,26 @@
-package hzt.aoc.day14;
+package hzt.aoc.day14
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class Day14Challenge extends Challenge {
-
-    Day14Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201214-input-day14.txt");
-    }
-
-    @Override
-    protected String solve(List<String> inputList) {
-        final List<Program> programs = new ArrayList<>();
-        Program program = null;
-        for (String line : inputList) {
-            String[] array = line.split(" = ");
-            if (array[0].matches("mask")) {
-                program = new Program(array[1]);
-                programs.add(program);
+abstract class Day14Challenge internal constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201214-input-day14.txt") {
+    override fun solve(inputList: List<String>): String {
+        val programs: MutableList<Program> = ArrayList()
+        var program: Program? = null
+        for (line in inputList) {
+            val array = line.split(" = ".toRegex()).toTypedArray()
+            if (array[0] == "mask") {
+                program = Program(array[1])
+                programs.add(program)
             } else if (program != null) {
-                int value = Integer.parseInt(array[1]);
-                int memoryLocation = Integer.parseInt(array[0].substring(4, array[0].length() - 1));
-                program.put(value, memoryLocation);
+                val value = array[1].toInt()
+                val memoryLocation = array[0].substring(4, array[0].length - 1).toInt()
+                program.put(value, memoryLocation)
             }
         }
-        return getMessage(count(programs));
+        return getMessage(count(programs))
     }
 
-    abstract long count(List<Program> programs);
-
-
-    abstract String getMessage(long value);
-
+    abstract fun count(programs: List<Program>): Long
+    abstract fun getMessage(value: Long): String
 }

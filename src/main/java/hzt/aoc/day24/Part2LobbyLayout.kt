@@ -1,61 +1,53 @@
-package hzt.aoc.day24;
+package hzt.aoc.day24
 
-import java.awt.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
 // Credits to Johan de Jong
-public class Part2LobbyLayout extends Day24Challenge {
-
-    public Part2LobbyLayout() {
-        super("part 2",
-                "How many tiles will be black after 100 days?");
-    }
-
-    private static final int DAYS_OF_EXHIBIT = 100;
-
-    @Override
-    protected long calculateResult(List<List<String>> instructions) {
-        Map<Point, Tile> tileMap = buildFloorByInstructions(instructions);
-        Set<Tile> blackTiles = tileMap.values().stream().filter(Tile::isBlackUp).collect(Collectors.toSet());
-        for (int day = 0; day < DAYS_OF_EXHIBIT; day++) {
-            simulate(blackTiles);
+class Part2LobbyLayout : Day24Challenge(
+    "part 2",
+    "How many tiles will be black after 100 days"
+) {
+    override fun calculateResult(instructions: List<List<String>>): Long {
+        val tileMap = buildFloorByInstructions(instructions)
+        val blackTiles = tileMap.values.stream().filter { obj: Tile -> obj.isBlackUp }.collect(Collectors.toSet())
+        for (day in 0 until DAYS_OF_EXHIBIT) {
+            simulate(blackTiles)
         }
-        return blackTiles.size();
+        return blackTiles.size.toLong()
     }
 
-    private void simulate(Set<Tile> blackTiles) {
-        Set<Tile> active = determineActiveSet(blackTiles);
-        Set<Tile> originalBlack = new HashSet<>(blackTiles);
-        for (Tile position : active) {
-            long blackNeighbours = countBlackNeighbours(originalBlack, position);
-            if (originalBlack.contains(position) && (blackNeighbours == 0 || blackNeighbours > 2)) {
-                blackTiles.remove(position);
-            } else if (blackNeighbours == 2) {
-                blackTiles.add(position);
+    private fun simulate(blackTiles: MutableSet<Tile>) {
+        val active = determineActiveSet(blackTiles)
+        val originalBlack: Set<Tile> = HashSet(blackTiles)
+        for (position in active) {
+            val blackNeighbours = countBlackNeighbours(originalBlack, position)
+            if (originalBlack.contains(position) && (blackNeighbours == 0L || blackNeighbours > 2)) {
+                blackTiles.remove(position)
+            } else if (blackNeighbours == 2L) {
+                blackTiles.add(position)
             }
         }
     }
 
-    private long countBlackNeighbours(Set<Tile> originalBlack, Tile startTile) {
+    private fun countBlackNeighbours(originalBlack: Set<Tile>, startTile: Tile): Long {
         return startTile.neighbors().stream()
-                .filter(originalBlack::contains)
-                .count();
+            .filter { originalBlack.contains(it) }
+            .count()
     }
 
-    private Set<Tile> determineActiveSet(Set<Tile> blackTiles) {
-        Set<Tile> active = new HashSet<>(blackTiles);
-        for (Tile position : blackTiles) {
-            active.addAll(position.neighbors());
+    private fun determineActiveSet(blackTiles: Set<Tile>): Set<Tile> {
+        val active: MutableSet<Tile> = HashSet(blackTiles)
+        for (position in blackTiles) {
+            active.addAll(position.neighbors())
         }
-        return active;
+        return active
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
+    }
+
+    companion object {
+        private const val DAYS_OF_EXHIBIT = 100
     }
 }

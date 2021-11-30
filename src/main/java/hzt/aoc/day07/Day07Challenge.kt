@@ -1,68 +1,55 @@
-package hzt.aoc.day07;
+package hzt.aoc.day07
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
+import java.util.stream.Collectors
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+abstract class Day07Challenge protected constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201207-input-day7.txt") {
 
-public abstract class Day07Challenge extends Challenge {
-
-    static final String SHINY_GOLD = "shiny gold";
-
-    protected Day07Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201207-input-day7.txt");
+    override fun solve(inputList: List<String>): String {
+        val bagColorsToRule = inputList.stream()
+            .map(::extractBagFromLine)
+            .collect(Collectors.toMap(Bag::bagColor) { it })
+        val numberOfBags = solveByRules(bagColorsToRule)
+        return numberOfBags.toString()
     }
 
-    @Override
-    protected String solve(List<String> inputList) {
-        Map<String, Bag> bagColorsToRule = inputList.stream()
-                .map(this::extractBagFromLine)
-                .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
-        long numberOfBags = solveByRules(bagColorsToRule);
-        return String.valueOf(numberOfBags);
-    }
+    protected abstract fun solveByRules(bags: Map<String, Bag>): Long
 
-    protected abstract long solveByRules(Map<String, Bag> bags);
-
-    Bag extractBagFromLine(String line) {
-        String[] containerToContent = line.split(" bags contain ");
-        Bag currentBag = new Bag(containerToContent[0]);
-        String content = containerToContent[1];
-        if (!content.equals("no other bags.")) {
-            String[] rulesAsStrings = content.split(", ");
-            for (String string : rulesAsStrings) {
-                String stringAmount = string.replaceAll(NOT_DIGIT_LENGTH_ONE_OR_MORE.pattern(), "");
-                int amount = Integer.parseInt(stringAmount);
-                String bagColor = string.replaceAll(NUMBER_LENGTH_ONE_OR_MORE.pattern(), "")
-                        .split(" bag")[0].strip(); // strip white spaces from trailing edges
-                currentBag.addColorToAmount(bagColor, amount);
+    private fun extractBagFromLine(line: String): Bag {
+        val containerToContent = line.split(" bags contain ".toRegex()).toTypedArray()
+        val currentBag = Bag(containerToContent[0])
+        val content = containerToContent[1]
+        if (content != "no other bags.") {
+            val rulesAsStrings = content.split(", ".toRegex()).toTypedArray()
+            for (string in rulesAsStrings) {
+                val stringAmount: String =
+                    string.replace(NOT_DIGIT_LENGTH_ONE_OR_MORE.pattern().toRegex(), "")
+                val amount = stringAmount.toInt()
+                val bagColor: String =
+                    string.replace(NUMBER_LENGTH_ONE_OR_MORE.pattern().toRegex(), "")
+                        .split(" bag".toRegex()).toTypedArray()[0].trim() // strip white spaces from trailing edges
+                currentBag.addColorToAmount(bagColor, amount)
             }
         }
-        return currentBag;
+        return currentBag
     }
 
-    static class Bag {
-
-        final String bagColor;
-        final Map<String, Integer> childBagColorsToAmounts = new HashMap<>();
-
-        public Bag(String bagColor) {
-            this.bagColor = bagColor;
+    class Bag(val bagColor: String) {
+        val childBagColorsToAmounts: MutableMap<String, Int> = HashMap()
+        fun addColorToAmount(bagColor: String, amount: Int) {
+            childBagColorsToAmounts[bagColor] = amount
         }
 
-        void addColorToAmount(String bagColor, int amount) {
-            childBagColorsToAmounts.put(bagColor, amount);
-        }
-
-        @Override
-        public String toString() {
+        override fun toString(): String {
             return "Rule{" +
                     "bagColor='" + bagColor + '\'' +
                     ", childBagColorsToAmounts=" + childBagColorsToAmounts +
-                    '}';
+                    '}'
         }
     }
 
+    companion object {
+        const val SHINY_GOLD = "shiny gold"
+    }
 }

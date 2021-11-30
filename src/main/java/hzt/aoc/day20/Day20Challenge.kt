@@ -1,46 +1,34 @@
-package hzt.aoc.day20;
+package hzt.aoc.day20
 
-import hzt.aoc.Challenge;
+import hzt.aoc.Challenge
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public abstract class Day20Challenge extends Challenge {
-
-    Day20Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201220-input-day20.txt");
+abstract class Day20Challenge internal constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201220-input-day20.txt") {
+    override fun solve(inputList: List<String>): String {
+        val tileIdsToGrids = parseInput(inputList)
+        return getMessage(calculateAnswer(tileIdsToGrids))
     }
 
-    @Override
-    protected String solve(List<String> inputList) {
-        final Map<Integer, Tile> tileIdsToGrids = parseInput(inputList);
-        return getMessage(calculateAnswer(tileIdsToGrids));
-    }
-
-    private Map<Integer, Tile> parseInput(List<String> inputList) {
-        final Map<Integer, Tile> tileIdsToGrids = new HashMap<>();
-        List<String> tileContent = new ArrayList<>();
-        int tileId = 0;
-        for (String line : inputList) {
+    private fun parseInput(inputList: List<String>): Map<Int, Tile> {
+        val tileIdsToGrids: MutableMap<Int, Tile> = HashMap()
+        var tileContent: MutableList<String> = ArrayList()
+        var tileId = 0
+        for (line in inputList) {
             if (line.contains("Tile")) {
-                tileId = Integer.parseInt(line.replace("Tile ", "").replace(":", "").strip());
-                tileContent = new ArrayList<>();
-            } else if (!line.isEmpty()) {
-                tileContent.add(line);
+                tileId = line.replace("Tile ", "").replace(":", "").trim().toInt()
+                tileContent = ArrayList()
+            } else if (line.isNotEmpty()) {
+                tileContent.add(line)
             }
             if (line.isBlank()) {
-                tileIdsToGrids.put(tileId, new Tile(tileContent));
+                tileIdsToGrids[tileId] = Tile(tileContent)
             }
         }
-        tileIdsToGrids.forEach((k, v) -> LOGGER.trace(k + "->" + v));
-        LOGGER.trace(tileIdsToGrids.size());
-        return tileIdsToGrids;
+        tileIdsToGrids.forEach { (k: Int, v: Tile) -> LOGGER.trace("$k->$v") }
+        LOGGER.trace(tileIdsToGrids.size)
+        return tileIdsToGrids
     }
 
-    protected abstract long calculateAnswer(Map<Integer, Tile> tileIdsToGrids);
-
-
-    abstract String getMessage(long value);
+    protected abstract fun calculateAnswer(tileIdsToGrids: Map<Int, Tile>): Long
+    abstract fun getMessage(value: Long): String
 }

@@ -1,23 +1,16 @@
-package hzt.aoc.day03;
+package hzt.aoc.day03
 
-import java.awt.*;
-import java.util.List;
+import java.awt.Point
 
-public class TreesEncounteredPart1 extends Day03Challenge {
-
-    public TreesEncounteredPart1() {
-        super("part 1",
-                "Find the number of trees crossed");
+class TreesEncounteredPart1 : Day03Challenge(
+    "part 1",
+    "Find the number of trees crossed"
+) {
+    override fun calculateResult(grid: List<List<Boolean>>): Long {
+        return calculateNumberOfTreesEncountered(grid, Point(0, 0), Path.SLOPE3_1.slope).toLong()
     }
 
-    @Override
-    protected long calculateResult(List<List<Boolean>> grid) {
-        return calculateNumberOfTreesEncountered(grid, new Point(0, 0), Path.SLOPE3_1.getSlope());
+    override fun getMessage(result: String): String {
+        return String.format("The number of trees crossed is: %s%n", result)
     }
-
-    @Override
-    protected String getMessage(String result) {
-        return String.format("The number of trees crossed is: %s%n", result);
-    }
-
 }

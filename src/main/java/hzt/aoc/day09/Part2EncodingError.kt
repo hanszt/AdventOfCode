@@ -1,47 +1,41 @@
-package hzt.aoc.day09;
+package hzt.aoc.day09
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList
 
-public class Part2EncodingError extends Day09Challenge {
-
-    public Part2EncodingError() {
-        super("part 2",
-                "you must find a contiguous set of at least two numbers " +
-                        "in your list which sum to the invalid number from step 1. " +
-                        "To find the encryption weakness, add together the smallest and largest number in this contiguous range");
+class Part2EncodingError : Day09Challenge(
+    "part 2",
+    "you must find a contiguous set of at least two numbers " +
+            "in your list which sum to the invalid number from step 1. " +
+            "To find the encryption weakness, add together the smallest and largest number in this contiguous range"
+) {
+    override fun solveByXmasList(longs: List<Long>): Long {
+        val resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs)
+        val contiguousSumList = findSumList(longs, resultStep1)
+        return findSumMinAndMaxNumber(contiguousSumList)
     }
 
-    @Override
-    protected long solveByXmasList(List<Long> longs) {
-        long resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
-        List<Long> contiguousSumList = findSumList(longs, resultStep1);
-        return findSumMinAndMaxNumber(contiguousSumList);
-    }
-
-    private List<Long> findSumList(List<Long> longs, long ref) {
-        long sum = 0;
-        List<Long> sumList = new ArrayList<>();
-        for (int i = 0; i < longs.size(); i++) {
-            for (int j = i; j < longs.size(); j++) {
-                sumList.add(longs.get(j));
-                sum += longs.get(j);
-                if (sum == ref) return sumList;
+    private fun findSumList(longs: List<Long>, ref: Long): List<Long> {
+        var sum: Long = 0
+        val sumList: MutableList<Long> = ArrayList()
+        for (i in longs.indices) {
+            for (j in i until longs.size) {
+                sumList.add(longs[j])
+                sum += longs[j]
+                if (sum == ref) return sumList
             }
-            sumList.clear();
-            sum = 0;
+            sumList.clear()
+            sum = 0
         }
-        return sumList;
+        return sumList
     }
 
-    private long findSumMinAndMaxNumber(List<Long> list) {
-        long min = list.stream().reduce(Long::min).orElse(0L);
-        long max = list.stream().reduce(Long::max).orElse(0L);
-        return min + max;
+    private fun findSumMinAndMaxNumber(list: List<Long>): Long {
+        val min = list.minOf { it }
+        val max = list.maxOf { it }
+        return min + max
     }
 
-    @Override
-    protected String getMessage(String sum) {
-        return String.format("%s%n", sum);
+    override fun getMessage(result: String): String {
+        return String.format("%s%n", result)
     }
 }

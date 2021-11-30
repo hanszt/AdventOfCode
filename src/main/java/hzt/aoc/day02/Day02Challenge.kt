@@ -1,45 +1,35 @@
-package hzt.aoc.day02;
+package hzt.aoc.day02
 
+import hzt.aoc.Challenge
+import hzt.aoc.day02.model.Policy
 
-import hzt.aoc.Challenge;
-import hzt.aoc.day02.model.Policy;
+abstract class Day02Challenge protected constructor(part: String, description: String) :
+    Challenge(part, description, "20201202-input-day2.txt") {
+    private var inputListSize: Long = 0
 
-import java.util.List;
-
-public abstract class Day02Challenge extends Challenge {
-
-    protected Day02Challenge(String part, String description) {
-        super(part, description, "20201202-input-day2.txt");
+    override fun solve(inputList: List<String>): String {
+        inputListSize = inputList.size.toLong()
+        val validPasswords = inputList.stream().filter { line: String -> passwordIsValid(line) }.count()
+        return validPasswords.toString()
     }
 
-    private long inputListSize;
-
-    @Override
-    protected String solve(List<String> inputList) {
-        inputListSize = inputList.size();
-        long validPasswords = inputList.stream().filter(this::passwordIsValid).count();
-        return String.valueOf(validPasswords);
+    private fun passwordIsValid(line: String): Boolean {
+        val array = line.split(": ".toRegex()).toTypedArray()
+        val string = array[0]
+        val password = array[1]
+        val policy = getPolicyFromString(string)
+        return isValid(password, policy)
     }
 
-    boolean passwordIsValid(String line) {
-        String[] array = line.split(": ");
-        String string = array[0];
-        String password = array[1];
-        Policy policy = getPolicyFromString(string);
-        return isValid(password, policy);
+    abstract fun isValid(password: String, policy: Policy): Boolean
+    private fun getPolicyFromString(string: String): Policy {
+        val character = string[string.length - 1]
+        val range = string.substring(0, string.length - 2)
+        val lowerAndUpper = range.split("-".toRegex()).toTypedArray()
+        return Policy(lowerAndUpper[0].toInt(), lowerAndUpper[1].toInt(), character)
     }
 
-    abstract boolean isValid(String password, Policy policy);
-
-    private Policy getPolicyFromString(String string) {
-        char character = string.charAt(string.length() - 1);
-        String range = string.substring(0, string.length() - 2);
-        String[] lowerAndUpper = range.split("-");
-        return new Policy(Integer.parseInt(lowerAndUpper[0]), Integer.parseInt(lowerAndUpper[1]), character);
-    }
-
-   protected String getMessage(String validPasswords) {
-        return String.format("%s of the %d passwords are valid%n", validPasswords, inputListSize);
-
+    override fun getMessage(result: String): String {
+        return String.format("%s of the %d passwords are valid%n", result, inputListSize)
     }
 }

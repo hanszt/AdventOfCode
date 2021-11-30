@@ -1,18 +1,9 @@
-package hzt.aoc.day04;
+package hzt.aoc.day04
 
-import hzt.aoc.day04.model.Passport;
+import hzt.aoc.day04.model.Passport
 
-import java.util.List;
-
-public class PassportProcessingPart2 extends Day04Challenge {
-
-    public PassportProcessingPart2() {
-        super("part 2", "Find the number of valid passports. ");
+class PassportProcessingPart2 : Day04Challenge("part 2", "Find the number of valid passports. ") {
+    override fun calculateResult(passports: List<Passport>): Long {
+        return passports.stream().filter { obj: Passport -> obj.fieldsMeetCriteria() }.count()
     }
-
-    @Override
-    protected long calculateResult(List<Passport> passports) {
-        return passports.stream().filter(Passport::fieldsMeetCriteria).count();
-    }
-
 }

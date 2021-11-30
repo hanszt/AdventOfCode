@@ -1,114 +1,111 @@
-package hzt.aoc.day11;
+package hzt.aoc.day11
 
-import java.util.List;
-import java.util.function.IntBinaryOperator;
+import java.util.function.IntBinaryOperator
 
 // Credits to Johan de Jong
-public class Part2SeatingSystem extends Day11Challenge {
+class Part2SeatingSystem : Day11Challenge(
+    "part 2",
+    "Now, instead of considering just the eight immediately adjacent seats, " +
+            "consider the first seat in each of those eight directions. " +
+            "For example, the empty seat below would see eight occupied seats. echter " +
+            "Given the new visibility method and the rule change for occupied seats becoming empty, " +
+            "once equilibrium is reached, how many seats end up occupied",
+    "20201211-input-day11.txt"
+) {
+    private lateinit var state: Array<CharArray>
+    private var width = 0
+    private var height = 0
 
-    public Part2SeatingSystem() {
-        super("part 2",
-                "Now, instead of considering just the eight immediately adjacent seats, " +
-                        "consider the first seat in each of those eight directions. " +
-
-                        "For example, the empty seat below would see eight occupied seats. echter " +
-                        "Given the new visibility method and the rule change for occupied seats becoming empty, " +
-                        "once equilibrium is reached, how many seats end up occupied?",
-                "20201211-input-day11.txt");
-    }
-
-    private char[][] state;
-    private int width;
-    private int height;
-
-    @Override
-    protected String solve(List<String> inputList) {
-        width = inputList.get(0).length();
-        height = inputList.size();
-        state = new char[height][width];
-        for (int y = 0; y < height; y++) {
-            String s = inputList.get(y);
-            for (int x = 0; x < width; x++) {
-                state[y][x] = s.charAt(x);
+    override fun solve(inputList: List<String>): String {
+        width = inputList[0].length
+        height = inputList.size
+        state = Array(height) { CharArray(width) }
+        for (y in 0 until height) {
+            val s = inputList[y]
+            for (x in 0 until width) {
+                state[y][x] = s[x]
             }
         }
-        return String.valueOf(iterate(this::adjacentOccupiedLine));
+        return iterate { x: Int, y: Int -> this.adjacentOccupiedLine(x, y) }.toString()
     }
 
-    private int iterate(IntBinaryOperator adjacentOccupiedFunction) {
-        boolean updated = true;
+    private fun iterate(adjacentOccupiedFunction: IntBinaryOperator): Int {
+        var updated = true
         while (updated) {
-            updated = performUpdate(adjacentOccupiedFunction);
+            updated = performUpdate(adjacentOccupiedFunction)
         }
-        return countOccupied();
+        return countOccupied()
     }
 
-    private boolean performUpdate(IntBinaryOperator adjacentOccupiedFunction) {
-        boolean updated = false;
-        char[][] nextState = new char[height][width];
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
+    private fun performUpdate(adjacentOccupiedFunction: IntBinaryOperator): Boolean {
+        var updated = false
+        val nextState = Array(height) { CharArray(width) }
+        for (row in 0 until height) {
+            for (col in 0 until width) {
                 if (state[row][col] == EMPTY_SEAT && adjacentOccupiedFunction.applyAsInt(col, row) == 0) {
-                    nextState[row][col] = OCCUPIED_SEAT;
-                    updated = true;
+                    nextState[row][col] = OCCUPIED_SEAT
+                    updated = true
                 } else if (state[row][col] == OCCUPIED_SEAT &&
-                        adjacentOccupiedFunction.applyAsInt(col, row) >= THRESHOLD_BECOMES_EMPTY) {
-                    nextState[row][col] = EMPTY_SEAT;
-                    updated = true;
+                    adjacentOccupiedFunction.applyAsInt(col, row) >= THRESHOLD_BECOMES_EMPTY
+                ) {
+                    nextState[row][col] = EMPTY_SEAT
+                    updated = true
                 } else {
-                    nextState[row][col] = state[row][col];
+                    nextState[row][col] = state[row][col]
                 }
             }
         }
-        state = nextState;
-        return updated;
+        state = nextState
+        return updated
     }
 
-    private static final int THRESHOLD_BECOMES_EMPTY = 5;
-
-    private int adjacentOccupiedLine(int x, int y) {
-        int result = 0;
-        for (int dy = -1; dy <= 1; dy++) {
-            for (int dx = -1; dx <= 1; dx++) {
+    private fun adjacentOccupiedLine(x: Int, y: Int): Int {
+        var result = 0
+        for (dy in -1..1) {
+            for (dx in -1..1) {
                 if ((dx != 0 || dy != 0) && adjacentOccupiedLine(x, y, dx, dy)) {
-                    result++;
+                    result++
                 }
             }
         }
-        return result;
+        return result
     }
 
-    private boolean adjacentOccupiedLine(int x, int y, int dx, int dy) {
+    private fun adjacentOccupiedLine(x: Int, y: Int, dx: Int, dy: Int): Boolean {
+        var mx = x
+        var my = y
         while (true) {
-            x += dx;
-            y += dy;
-            char c = get(x, y);
-            if (c == OCCUPIED_SEAT) return true;
-            if (c == EMPTY_SEAT || c == '\0') return false;
+            mx += dx
+            my += dy
+            val c = get(mx, my)
+            if (c == OCCUPIED_SEAT) return true
+            if (c == EMPTY_SEAT || c == '\u0000') return false
         }
     }
 
-    private int countOccupied() {
-        int result = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+    private fun countOccupied(): Int {
+        var result = 0
+        for (y in 0 until height) {
+            for (x in 0 until width) {
                 if (state[y][x] == OCCUPIED_SEAT) {
-                    result++;
+                    result++
                 }
             }
         }
-        return result;
+        return result
     }
 
-    private char get(int x, int y) {
-        if (x < 0 || y < 0 || x >= width || y >= height) {
-            return '\0';
-        }
-        return state[y][x];
+    private operator fun get(x: Int, y: Int): Char {
+        return if (x < 0 || y < 0 || x >= width || y >= height) {
+            '\u0000'
+        } else state[y][x]
     }
 
-    @Override
-    protected String getMessage(String value) {
-        return String.format("The number of seats occupied after equilibrium: %s%n", value);
+    override fun getMessage(result: String): String {
+        return String.format("The number of seats occupied after equilibrium: %s%n", result)
+    }
+
+    companion object {
+        private const val THRESHOLD_BECOMES_EMPTY = 5
     }
 }

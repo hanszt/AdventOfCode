@@ -1,67 +1,60 @@
-package hzt.aoc.day05;
+package hzt.aoc.day05
 
-import hzt.aoc.Challenge;
-import hzt.aoc.day05.model.Seat;
+import hzt.aoc.Challenge
+import hzt.aoc.day05.model.Seat
+import java.util.stream.Collectors
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public abstract class Day05Challenge extends Challenge {
-
-    static final int NUMBER_OF_ROWS = 128;
-    static final int NUMBER_OF_COLUMNS = 8;
-    static final char KEEP_LOWER_HALF_ROWS = 'F';
-    static final char KEEP_UPPER_HALF_ROWS = 'B';
-    static final char KEEP_LOWER_HALF_COLS = 'L';
-    static final char KEEP_UPPER_HALF_COLS = 'R';
-    static final int AMOUNT_SIGNS_FRONT_BACK = 7;
-
-    protected Day05Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201205-input-day5.txt");
+abstract class Day05Challenge protected constructor(challengeTitle: String, description: String) :
+    Challenge(challengeTitle, description, "20201205-input-day5.txt") {
+    override fun solve(inputList: List<String>): String {
+        val seats = inputList.stream().map { string: String -> extractSeat(string) }.collect(Collectors.toList())
+        val result = calculateResult(seats)
+        return result.toString()
     }
 
-    @Override
-    protected String solve(List<String> inputList) {
-        List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
-        int result = calculateResult(seats);
-        return String.valueOf(result);
-    }
-
-    protected abstract int calculateResult(List<Seat> seats);
-
-    Seat extractSeat(String string) {
-        int lowerBoundRows = 0;
-        int upperBoundRows = NUMBER_OF_ROWS;
-        int lowerBoundCols = 0;
-        int upperBoundCols = NUMBER_OF_COLUMNS;
-        for (int i = 0; i < string.length(); i++) {
+    protected abstract fun calculateResult(seats: List<Seat>): Int
+    fun extractSeat(string: String): Seat {
+        var lowerBoundRows = 0
+        var upperBoundRows = NUMBER_OF_ROWS
+        var lowerBoundCols = 0
+        var upperBoundCols = NUMBER_OF_COLUMNS
+        for (i in 0 until string.length) {
             if (i < AMOUNT_SIGNS_FRONT_BACK) {
-                if (string.charAt(i) == KEEP_UPPER_HALF_ROWS) {
-                    lowerBoundRows = newLowerBound(lowerBoundRows, upperBoundRows);
-                } else if (string.charAt(i) == KEEP_LOWER_HALF_ROWS) {
-                    upperBoundRows = newUpperBound(lowerBoundRows, upperBoundRows);
+                if (string[i] == KEEP_UPPER_HALF_ROWS) {
+                    lowerBoundRows = newLowerBound(lowerBoundRows, upperBoundRows)
+                } else if (string[i] == KEEP_LOWER_HALF_ROWS) {
+                    upperBoundRows = newUpperBound(lowerBoundRows, upperBoundRows)
                 }
             } else {
-                if (string.charAt(i) == KEEP_UPPER_HALF_COLS) {
-                    lowerBoundCols = newLowerBound(lowerBoundCols, upperBoundCols);
-                } else if (string.charAt(i) == KEEP_LOWER_HALF_COLS) {
-                    upperBoundCols = newUpperBound(lowerBoundCols, upperBoundCols);
+                if (string[i] == KEEP_UPPER_HALF_COLS) {
+                    lowerBoundCols = newLowerBound(lowerBoundCols, upperBoundCols)
+                } else if (string[i] == KEEP_LOWER_HALF_COLS) {
+                    upperBoundCols = newUpperBound(lowerBoundCols, upperBoundCols)
                 }
             }
         }
-        return new Seat(string, lowerBoundRows, lowerBoundCols);
+        return Seat(string, lowerBoundRows, lowerBoundCols)
     }
 
-    private int newLowerBound(int lower, int upper) {
-        return lower + ((upper - lower) / 2);
+    private fun newLowerBound(lower: Int, upper: Int): Int {
+        return lower + (upper - lower) / 2
     }
 
-    private int newUpperBound(int lower, int upper) {
-        return upper - ((upper - lower) / 2);
+    private fun newUpperBound(lower: Int, upper: Int): Int {
+        return upper - (upper - lower) / 2
     }
 
-    int findHighestSeatID(List<Integer> boardingPassIds) {
-        return boardingPassIds.stream().reduce(Integer::max).orElse(0);
+    fun findHighestSeatID(boardingPassIds: List<Int>): Int {
+        return boardingPassIds.stream().reduce { a: Int, b: Int -> Integer.max(a, b) }.orElse(0)
     }
 
+    companion object {
+        const val NUMBER_OF_ROWS = 128
+        const val NUMBER_OF_COLUMNS = 8
+        const val KEEP_LOWER_HALF_ROWS = 'F'
+        const val KEEP_UPPER_HALF_ROWS = 'B'
+        const val KEEP_LOWER_HALF_COLS = 'L'
+        const val KEEP_UPPER_HALF_COLS = 'R'
+        const val AMOUNT_SIGNS_FRONT_BACK = 7
+    }
 }

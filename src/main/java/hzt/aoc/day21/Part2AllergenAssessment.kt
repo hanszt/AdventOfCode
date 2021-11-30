@@ -1,44 +1,36 @@
-package hzt.aoc.day21;
+package hzt.aoc.day21
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.TreeMap
 
 // credits to Johan de Jong
-public class Part2AllergenAssessment extends Day21Challenge {
-
-    public Part2AllergenAssessment() {
-        super("part 2",
-                "Time to stock your raft with supplies. What is your canonical dangerous ingredient list?");
+class Part2AllergenAssessment : Day21Challenge(
+    "part 2",
+    "Time to stock your raft with supplies. What is your canonical dangerous ingredient list"
+) {
+    override fun calculateAnswer(foods: List<Food>): String {
+        val allAllergens = extractAllAllergens(foods)
+        val allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap()
+        return getDangerousIngredientsListAsString(allergenToIngredientsMap)
     }
 
-
-    @Override
-    protected String calculateAnswer(List<Food> foods) {
-        var allAllergens = extractAllAllergens(foods);
-        var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
-        return getDangerousIngredientsListAsString(allergenToIngredientsMap);
-    }
-
-    private String getDangerousIngredientsListAsString(Map<String, List<String>> allergenToIngredientsMap) {
-        Map<String, String> uniqueAllergenToIngredientMap = new TreeMap<>();
-        while (uniqueAllergenToIngredientMap.size() < allergenToIngredientsMap.size()) {
-            for (Map.Entry<String, List<String>> entry : allergenToIngredientsMap.entrySet()) {
-                if (entry.getValue().size() == 1) {
-                    String ingredient = entry.getValue().get(0);
-                    uniqueAllergenToIngredientMap.put(entry.getKey(), ingredient);
-                    for (List<String> ingredients : allergenToIngredientsMap.values()) {
-                        ingredients.remove(ingredient);
+    private fun getDangerousIngredientsListAsString(allergenToIngredientsMap: Map<String, MutableList<String>>): String {
+        val uniqueAllergenToIngredientMap: MutableMap<String, String> = TreeMap()
+        while (uniqueAllergenToIngredientMap.size < allergenToIngredientsMap.size) {
+            for ((key, value) in allergenToIngredientsMap) {
+                if (value.size == 1) {
+                    val ingredient = value[0]
+                    uniqueAllergenToIngredientMap[key] = ingredient
+                    for (ingredients in allergenToIngredientsMap.values) {
+                        ingredients.remove(ingredient)
                     }
-                    break;
+                    break
                 }
             }
         }
-        return String.join(",", uniqueAllergenToIngredientMap.values());
+        return java.lang.String.join(",", uniqueAllergenToIngredientMap.values)
     }
 
-    @Override
-    protected String getMessage(String global) {
-        return String.format("%s", global);
+    override fun getMessage(result: String): String {
+        return String.format("%s", result)
     }
 }

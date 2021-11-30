@@ -1,141 +1,138 @@
-package hzt.aoc.day04.model;
+package hzt.aoc.day04.model
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager
+import java.util.*
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+class Passport {
 
-public class Passport {
+    private var passwordID: String? = null
+    private var expirationYear: String? = null
+    private var issueYear: String? = null
+    private var countryId: String? = null
+    private var birthYear: String? = null
+    private var height: String? = null
+    private var eyeColor: String? = null
+    private var hairColor: String? = null
 
-    private static final Logger LOGGER = LogManager.getLogger(Passport.class);
-    private static final int LOWEST_BIRTH_YEAR = 1920;
-    private static final int HIGHEST_BIRTH_YEAR = 2002;
-    private static final int LOWEST_ISSUE_YEAR = 2010;
-    private static final int HIGHEST_ISSUE_YEAR = 2020;
-    private static final int LOWEST_EXPIRATION_YEAR = 2020;
-    private static final int HIGHEST_EXPIRATION_YEAR = 2030;
-    private static final Set<String> VALID_EYE_COLORS = new HashSet<>(Arrays.asList("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth"));
-    private static final int UNIT_LENGTH = 2;
-    private static final int MINIMUM_HEIGHT_STRING_LENGTH = 3;
-
-    private String passwordID;
-    private String expirationYear;
-    private String issueYear;
-    private String countryId;
-    private String birthYear;
-    private String height;
-    private String eyeColor;
-    private String hairColor;
-
-    public Passport() {
-        super();
-    }
-
-    public Passport(String passwordID, String expirationYear, String issueYear, String birthYear, String height, String eyeColor, String hairColor) {
-        this.passwordID = passwordID;
-        this.expirationYear = expirationYear;
-        this.issueYear = issueYear;
-        this.birthYear = birthYear;
-        this.height = height;
-        this.eyeColor = eyeColor;
-        this.hairColor = hairColor;
+    constructor() : super()
+    constructor(
+        passwordID: String,
+        expirationYear: String,
+        issueYear: String,
+        birthYear: String,
+        height: String,
+        eyeColor: String,
+        hairColor: String
+    ) {
+        this.passwordID = passwordID
+        this.expirationYear = expirationYear
+        this.issueYear = issueYear
+        this.birthYear = birthYear
+        this.height = height
+        this.eyeColor = eyeColor
+        this.hairColor = hairColor
     }
 
     // in part 1, a password is valid when all fields have a value. Only country ID is optional
-    public boolean requiredFieldsPresent() {
-        boolean mandatoryPassportFieldsPresent = passwordID != null && expirationYear != null && issueYear != null;
-        boolean userFieldsPresent = birthYear != null && height != null && eyeColor != null && hairColor != null;
-        return mandatoryPassportFieldsPresent && userFieldsPresent;
+    fun requiredFieldsPresent(): Boolean {
+        val mandatoryPassportFieldsPresent = passwordID != null && expirationYear != null && issueYear != null
+        val userFieldsPresent = birthYear != null && height != null && eyeColor != null && hairColor != null
+        return mandatoryPassportFieldsPresent && userFieldsPresent
     }
 
-    public boolean fieldsMeetCriteria() {
-        if (requiredFieldsPresent()) {
-            boolean birthYearValid = checkYear(birthYear, LOWEST_BIRTH_YEAR, HIGHEST_BIRTH_YEAR);
-            boolean issueYearValid = checkYear(issueYear, LOWEST_ISSUE_YEAR, HIGHEST_ISSUE_YEAR);
-            boolean expirationYearValid = checkYear(expirationYear, LOWEST_EXPIRATION_YEAR, HIGHEST_EXPIRATION_YEAR);
-            boolean heightValid = checkHeight(height);
-            boolean hairColorValid = hairColor != null && hairColor.matches("(#)([0-9a-fA-F]{6})"); // a # followed by exactly six characters 0-9 or a-f.
-            boolean eyeColorValid = eyeColor != null && VALID_EYE_COLORS.contains(eyeColor);
-            boolean passportIdValid = passwordID.matches("([0-9]{9})"); // a nine-digit number, including leading zeroes.
-            LOGGER.trace(isValidAsString(birthYearValid, issueYearValid, expirationYearValid, heightValid,
-                    hairColorValid, eyeColorValid, passportIdValid));
-            return passportIdValid && eyeColorValid && hairColorValid
-                    && heightValid && expirationYearValid && issueYearValid && birthYearValid;
-        } else return false;
+    fun fieldsMeetCriteria(): Boolean {
+        return if (requiredFieldsPresent()) {
+            val birthYearValid = checkYear(birthYear, LOWEST_BIRTH_YEAR, HIGHEST_BIRTH_YEAR)
+            val issueYearValid = checkYear(issueYear, LOWEST_ISSUE_YEAR, HIGHEST_ISSUE_YEAR)
+            val expirationYearValid = checkYear(expirationYear, LOWEST_EXPIRATION_YEAR, HIGHEST_EXPIRATION_YEAR)
+            val heightValid = checkHeight(height ?: "")
+            val hairColorValid = hairColor?.matches(Regex("(#)([0-9a-fA-F]{6})")) == true // a # followed by exactly six characters 0-9 or a-f.
+            val eyeColorValid = VALID_EYE_COLORS.contains(eyeColor)
+            val passportIdValid = passwordID?.matches(Regex("([0-9]{9})")) == true // a nine-digit number, including leading zeroes.
+            LOGGER.trace(
+                isValidAsString(birthYearValid, issueYearValid, expirationYearValid, heightValid,
+                    hairColorValid, eyeColorValid, passportIdValid
+                )
+            )
+            (passportIdValid && eyeColorValid && hairColorValid
+                    && heightValid && expirationYearValid && issueYearValid && birthYearValid)
+        } else false
     }
 
-    private String isValidAsString(boolean birthYearValid, boolean issueYearValid, boolean expirationYearValid,
-                                   boolean heightValid, boolean hairColorValid, boolean eyeColorValid, boolean passportIdValid) {
-        return "birthYearValid=" + birthYearValid +
-                "\nissueYearValid=" + issueYearValid +
-                "\nexpirationYearValid=" + expirationYearValid +
-                "\nheightValid=" + heightValid +
-                "\nhairColorValid=" + hairColorValid +
-                "\neyeColorValid=" + eyeColorValid +
-                "\npassportIdValid=" + passportIdValid + "\n";
+    private fun isValidAsString(
+        birthYearValid: Boolean, issueYearValid: Boolean, expirationYearValid: Boolean,
+        heightValid: Boolean, hairColorValid: Boolean, eyeColorValid: Boolean, passportIdValid: Boolean
+    ): String {
+        return """
+            birthYearValid=$birthYearValid
+            issueYearValid=$issueYearValid
+            expirationYearValid=$expirationYearValid
+            heightValid=$heightValid
+            hairColorValid=$hairColorValid
+            eyeColorValid=$eyeColorValid
+            passportIdValid=$passportIdValid
+            
+            """.trimIndent()
     }
 
-    private boolean checkHeight(String height) {
-        if (height.length() >= MINIMUM_HEIGHT_STRING_LENGTH) {
-            String value = height.substring(0, height.length() - UNIT_LENGTH);
-            String unit = height.substring(height.length() - UNIT_LENGTH);
-            boolean valueIsNumber = value.matches("[0-9]+");
-            LOGGER.trace("value is number=" + valueIsNumber + " Value=" + value);
+    private fun checkHeight(height: String): Boolean {
+        return if (height.length >= MINIMUM_HEIGHT_STRING_LENGTH) {
+            val value = height.substring(0, height.length - UNIT_LENGTH)
+            val unit = height.substring(height.length - UNIT_LENGTH)
+            val valueIsNumber = value.matches(Regex("[0-9]+"))
+            LOGGER.trace("value is number=$valueIsNumber Value=$value")
             if (valueIsNumber) {
-                int heightValue = Integer.parseInt(value);
-                if (unit.equals("cm")) {
-                    return heightValue >= 150 && heightValue <= 193;
-                } else if (unit.equals("in")) {
-                    return heightValue >= 59 && heightValue <= 76;
-                } else return false;
-            } else return false;
-        } else return false;
+                val heightValue = value.toInt()
+                if (unit == "cm") {
+                    heightValue in 150..193
+                } else if (unit == "in") {
+                    heightValue in 59..76
+                } else false
+            } else false
+        } else false
     }
 
-    private boolean checkYear(String input, int lower, int upper) {
-        boolean mathesFourDigits = input.length() == 4 && input.matches("\\d{4}");
-        if (mathesFourDigits) {
-            int year = Integer.parseInt(input);
-            return year >= lower && year <= upper;
-        } else return false;
+    private fun checkYear(input: String?, lower: Int, upper: Int): Boolean {
+        val matchesFourDigits = input?.length == 4 && input.matches(Regex("\\d{4}"))
+        return if (matchesFourDigits) {
+            val year = input?.toInt() ?: 0
+            year in lower..upper
+        } else false
     }
 
-    public void setPasswordID(String passwordID) {
-        this.passwordID = passwordID;
+    fun setPasswordID(passwordID: String) {
+        this.passwordID = passwordID
     }
 
-    public void setExpirationYear(String expirationYear) {
-        this.expirationYear = expirationYear;
+    fun setExpirationYear(expirationYear: String) {
+        this.expirationYear = expirationYear
     }
 
-    public void setIssueYear(String issueYear) {
-        this.issueYear = issueYear;
+    fun setIssueYear(issueYear: String) {
+        this.issueYear = issueYear
     }
 
-    public void setCountryId(String countryId) {
-        this.countryId = countryId;
+    fun setCountryId(countryId: String) {
+        this.countryId = countryId
     }
 
-    public void setBirthYear(String birthYear) {
-        this.birthYear = birthYear;
+    fun setBirthYear(birthYear: String) {
+        this.birthYear = birthYear
     }
 
-    public void setHeight(String height) {
-        this.height = height;
+    fun setHeight(height: String) {
+        this.height = height
     }
 
-    public void setEyeColor(String eyeColor) {
-        this.eyeColor = eyeColor;
+    fun setEyeColor(eyeColor: String) {
+        this.eyeColor = eyeColor
     }
 
-    public void setHairColor(String hairColor) {
-        this.hairColor = hairColor;
+    fun setHairColor(hairColor: String) {
+        this.hairColor = hairColor
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Passport{" +
                 "passwordID=" + passwordID +
                 ", expirationYear=" + expirationYear +
@@ -145,6 +142,20 @@ public class Passport {
                 ", height=" + height +
                 ", eyeColor='" + eyeColor + '\'' +
                 ", hairColor='" + hairColor + '\'' +
-                '}';
+                '}'
+    }
+
+    companion object {
+        private val LOGGER = LogManager.getLogger(Passport::class.java)
+        private const val LOWEST_BIRTH_YEAR = 1920
+        private const val HIGHEST_BIRTH_YEAR = 2002
+        private const val LOWEST_ISSUE_YEAR = 2010
+        private const val HIGHEST_ISSUE_YEAR = 2020
+        private const val LOWEST_EXPIRATION_YEAR = 2020
+        private const val HIGHEST_EXPIRATION_YEAR = 2030
+        private val VALID_EYE_COLORS: Set<String> =
+            HashSet(listOf("amb", "amb", "blu", "brn", "gry", "grn", "hzl", "oth"))
+        private const val UNIT_LENGTH = 2
+        private const val MINIMUM_HEIGHT_STRING_LENGTH = 3
     }
 }

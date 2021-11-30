@@ -1,70 +1,65 @@
-package hzt.aoc.day22;
+package hzt.aoc.day22
 
-import java.util.*;
+import java.util.*
+import java.util.function.Consumer
 
 // Credits to Johan de Jong
-public class Part2CrabCombat extends Day22Challenge {
-
-    public Part2CrabCombat() {
-        super("part 2",
-                "Defend your honor as Raft Captain by playing the small crab in a game of Recursive Combat using the same two decks as before. " +
-                        "What is the winning player's score?");
+class Part2CrabCombat : Day22Challenge(
+    "part 2",
+    "Defend your honor as Raft Captain by playing the small crab in a game of Recursive Combat using the same two decks as before. " +
+            "What is the winning player's score"
+) {
+    override fun play(player1Cards: Deque<Int>, player2Cards: Deque<Int>): Long {
+        playRecursiveGame(player1Cards, player2Cards)
+        val winningPlayerCards: Deque<Int> = if (player1Cards.isEmpty()) player2Cards else player1Cards
+        return calculateScoreWinningPlayer(winningPlayerCards)
     }
 
-    @Override
-    protected long play(Deque<Integer> player1Cards, Deque<Integer> player2Cards) {
-        playRecursiveGame(player1Cards, player2Cards);
-        Deque<Integer> winningPlayerCards = player1Cards.isEmpty() ? player2Cards : player1Cards;
-        return calculateScoreWinningPlayer(winningPlayerCards);
-    }
-
-    private int playRecursiveGame(Deque<Integer> player1Cards, Deque<Integer> player2Cards) {
-        Set<String> configsPlayer1 = new HashSet<>();
-        Set<String> configsPlayer2 = new HashSet<>();
-
+    private fun playRecursiveGame(player1Cards: Deque<Int>, player2Cards: Deque<Int>): Int {
+        val configsPlayer1: MutableSet<String> = HashSet()
+        val configsPlayer2: MutableSet<String> = HashSet()
         while (!player1Cards.isEmpty() && !player2Cards.isEmpty()) {
-            String curConfigPlayer1 = configurationAsString(player1Cards);
-            String curConfigPlayer2 = configurationAsString(player2Cards);
+            val curConfigPlayer1 = configurationAsString(player1Cards)
+            val curConfigPlayer2 = configurationAsString(player2Cards)
             if (configsPlayer1.contains(curConfigPlayer1) || configsPlayer2.contains(curConfigPlayer2)) {
-                return 1;
+                return 1
             }
-            configsPlayer1.add(curConfigPlayer1);
-            configsPlayer2.add(curConfigPlayer2);
-            determineWinner(player1Cards, player2Cards);
+            configsPlayer1.add(curConfigPlayer1)
+            configsPlayer2.add(curConfigPlayer2)
+            determineWinner(player1Cards, player2Cards)
         }
-        return player2Cards.isEmpty() ? 1 : 2;
+        return if (player2Cards.isEmpty()) 1 else 2
     }
 
-    private void determineWinner(Deque<Integer> player1Cards, Deque<Integer> player2Cards) {
-        int player1TopCard = player1Cards.pop();
-        int player2TopCard = player2Cards.pop();
-
-        int winner;
-        if (player1Cards.size() >= player1TopCard && player2Cards.size() >= player2TopCard) {
-            Deque<Integer> subFirst = new ArrayDeque<>(new ArrayList<>(player1Cards).subList(0, player1TopCard));
-            Deque<Integer> subSecond = new ArrayDeque<>(new ArrayList<>(player2Cards).subList(0, player2TopCard));
-            winner = playRecursiveGame(subFirst, subSecond);
+    private fun determineWinner(player1Cards: Deque<Int>, player2Cards: Deque<Int>) {
+        val player1TopCard = player1Cards.pop()
+        val player2TopCard = player2Cards.pop()
+        val winner: Int
+        winner = if (player1Cards.size >= player1TopCard && player2Cards.size >= player2TopCard) {
+            val subFirst: Deque<Int> =
+                ArrayDeque(ArrayList(player1Cards).subList(0, player1TopCard))
+            val subSecond: Deque<Int> =
+                ArrayDeque(ArrayList(player2Cards).subList(0, player2TopCard))
+            playRecursiveGame(subFirst, subSecond)
         } else {
-            winner = player1TopCard > player2TopCard ? 1 : 2;
+            if (player1TopCard > player2TopCard) 1 else 2
         }
         if (winner == 1) {
-            player1Cards.addLast(player1TopCard);
-            player1Cards.addLast(player2TopCard);
+            player1Cards.addLast(player1TopCard)
+            player1Cards.addLast(player2TopCard)
         } else {
-            player2Cards.addLast(player2TopCard);
-            player2Cards.addLast(player1TopCard);
+            player2Cards.addLast(player2TopCard)
+            player2Cards.addLast(player1TopCard)
         }
     }
 
-    private String configurationAsString(Deque<Integer> playerCards) {
-        StringBuilder sb = new StringBuilder();
-        playerCards.forEach(sb::append);
-        return sb.toString();
+    private fun configurationAsString(playerCards: Deque<Int>): String {
+        val sb = StringBuilder()
+        playerCards.forEach(Consumer { obj: Int -> sb.append(obj) })
+        return sb.toString()
     }
 
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(global: Long): String {
+        return String.format("%d", global)
     }
-
 }

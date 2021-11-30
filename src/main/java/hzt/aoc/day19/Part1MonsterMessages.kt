@@ -1,65 +1,63 @@
-package hzt.aoc.day19;
+package hzt.aoc.day19
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
 // credits to Turkey dev
 // We used the principle of bnf's here
-public class Part1MonsterMessages extends Day19Challenge {
-
-    public Part1MonsterMessages() {
-        super("part 1",
-                "How many messages completely match rule 0? (without loops)");
+class Part1MonsterMessages : Day19Challenge(
+    "part 1",
+    "How many messages completely match rule 0 (without loops)"
+) {
+    override fun countMatches(): Long {
+        LOGGER.trace(parsedInputAsString(rulesToSubRules, messages))
+        return messages.stream()
+            .map(::asCharList)
+            .filter(this::matches)
+            .count()
     }
 
-    @Override
-    protected long countMatches() {
-        LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
-        return messages.stream().map(this::asCharList).filter(this::matches).count();
+    private fun asCharList(message: String): MutableList<Char> {
+        return message.chars()
+            .mapToObj(Int::toChar)
+            .collect(Collectors.toList())
     }
 
-    private List<Character> asCharList(String message) {
-        return message.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-    }
-
-    private boolean matches(List<Character> messageChars) {
+    private fun matches(messageChars: MutableList<Char>): Boolean {
         // chars has to be empty to match the same length after going through matches method
-        return matches(messageChars, START_RULE) && messageChars.isEmpty();
+        return matches(messageChars, START_RULE) && messageChars.isEmpty()
     }
 
     // requires a mutableList so that's why a list of chars is passed instead of a string
-    private boolean matches(List<Character> messageChars, int rule) {
-        if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars);
-
-        List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
-        for (List<Integer> subRules : allSubRules) {
-            List<Character> charsCopy = new ArrayList<>(messageChars);
-            boolean matchesAll = true;
-            for (int curRule : subRules) {
-                if (!matches(charsCopy, curRule)) {
-                    matchesAll = false;
-                    break;
+    private fun matches(messageChars: MutableList<Char>, rule: Int): Boolean {
+        if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars)
+        val allSubRules = rulesToSubRules[rule]
+        if (allSubRules != null) {
+            for (subRules in allSubRules) {
+                val charsCopy: MutableList<Char> = ArrayList(messageChars)
+                var matchesAll = true
+                for (curRule in subRules) {
+                    if (!matches(charsCopy, curRule)) {
+                        matchesAll = false
+                        break
+                    }
+                }
+                if (matchesAll) {
+                    while (messageChars.size > charsCopy.size) messageChars.removeAt(0)
+                    return true
                 }
             }
-            if (matchesAll) {
-                while (messageChars.size() > charsCopy.size()) messageChars.remove(0);
-                return true;
-            }
         }
-        return false;
+        return false
     }
 
-    private boolean ruleIsEndRule(int rule, List<Character> messageChars) {
-        if (messageChars.get(0).equals(endChars.get(rule))) {
-            messageChars.remove(0);
-            return true;
-        } else return false;
+    private fun ruleIsEndRule(rule: Int, messageChars: MutableList<Char>): Boolean {
+        return if (messageChars[0] == endChars[rule]) {
+            messageChars.removeAt(0)
+            true
+        } else false
     }
 
-    @Override
-    String getMessage(long answer) {
-        return String.format("%d", answer);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
-
 }

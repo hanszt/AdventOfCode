@@ -1,24 +1,17 @@
-package hzt.aoc.day05;
+package hzt.aoc.day05
 
-import hzt.aoc.day05.model.Seat;
+import java.util.stream.Collectors
+import hzt.aoc.day05.model.Seat
 
-import java.util.List;
-import java.util.stream.Collectors;
+class Part1BinaryBoarding : Day05Challenge("part 1", "Find the highest seat ID on a boarding pass in the list. ") {
 
-public class Part1BinaryBoarding extends Day05Challenge {
-
-    public Part1BinaryBoarding() {
-        super("part 1", "Find the highest seat ID on a boarding pass in the list. ");
+    override fun calculateResult(seats: List<Seat>): Int {
+        return findHighestSeatID(seats.stream()
+                .map { it.getSeatID(NUMBER_OF_COLUMNS) }
+                .collect(Collectors.toList()))
     }
 
-    @Override
-    protected int calculateResult(List<Seat> seats) {
-        return findHighestSeatID(seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
+    override fun getMessage(result: String): String {
+        return String.format("The highest seat ID is: %s%n", result)
     }
-
-    @Override
-    protected String getMessage(String result) {
-        return String.format("The highest seat ID is: %s%n", result);
-    }
-
 }

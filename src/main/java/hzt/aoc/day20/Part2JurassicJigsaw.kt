@@ -1,163 +1,160 @@
-package hzt.aoc.day20;
+package hzt.aoc.day20
 
-import java.awt.*;
-import java.util.List;
-import java.util.*;
+import java.awt.Point
+import kotlin.math.sqrt
 
 // Credits to Johan de Jong
-public class Part2JurassicJigsaw extends Day20Challenge {
-
-    public Part2JurassicJigsaw() {
-        super("part 2",
-                "Determine how rough the waters are in the sea monsters' habitat by counting the number of # " +
-                        "that are not part of a sea monster. How many # are not part of a sea monster?");
-    }
-
-    private int sideLength;
-
-    @Override
-    protected long calculateAnswer(Map<Integer, Tile> tileIdsToGrids) {
-        sideLength = (int) Math.sqrt(tileIdsToGrids.size());
-        int pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
-        long result = 0;
-        Set<Integer> placedIds = new HashSet<>();
-        Tile[][] placedTiles = new Tile[pictureSideLength][pictureSideLength];
-        boolean complete = placeNextTile(placedIds, placedTiles, new Point(0, 0), tileIdsToGrids);
+class Part2JurassicJigsaw : Day20Challenge(
+    "part 2",
+    "Determine how rough the waters are in the sea monsters' habitat by counting the number of # " +
+            "that are not part of a sea monster. How many # are not part of a sea monster"
+) {
+    private var sideLength = 0
+    override fun calculateAnswer(tileIdsToGrids: Map<Int, Tile>): Long {
+        sideLength = sqrt(tileIdsToGrids.size.toDouble()).toInt()
+        val pictureSideLength = sqrt(tileIdsToGrids.size.toDouble()).toInt()
+        var result: Long = 0
+        val placedIds: MutableSet<Int> = HashSet()
+        val placedTiles = Array(pictureSideLength) { arrayOfNulls<Tile>(pictureSideLength) }
+        val complete = placeNextTile(placedIds, placedTiles, Point(0, 0), tileIdsToGrids)
         if (complete) {
-            List<String> fullPicture = buildFullPicture(placedTiles, pictureSideLength);
-            result = countHowManyHashesNotPartOfSeeMonster(fullPicture);
+            val fullPicture = buildFullPicture(placedTiles, pictureSideLength)
+            result = countHowManyHashesNotPartOfSeeMonster(fullPicture)
         }
-        return result;
+        return result
     }
 
-    private long countHowManyHashesNotPartOfSeeMonster(List<String> fullPicture) {
-        List<String> seeMonster = createSeeMonster();
-        Tile fullPictureTile = new Tile(fullPicture);
-        for (List<String> orientation : fullPictureTile.getOrientations()) {
-            List<String> markedList = new ArrayList<>(orientation);
-            boolean marked = false;
-            for (int y = 0; y <= orientation.size() - seeMonster.size(); y++) {
-                for (int x = 0; x <= orientation.get(0).length() - seeMonster.get(0).length(); x++) {
+    private fun countHowManyHashesNotPartOfSeeMonster(fullPicture: List<String>): Long {
+        val seeMonster = createSeeMonster()
+        val fullPictureTile = Tile(fullPicture)
+        for (orientation in fullPictureTile.orientations) {
+            val markedList: MutableList<String> = ArrayList(orientation)
+            var marked = false
+            for (y in 0..orientation.size - seeMonster.size) {
+                for (x in 0..orientation[0].length - seeMonster[0].length) {
                     if (isPatternAt(orientation, seeMonster, x, y)) {
-                        markPatternAt(markedList, seeMonster, x, y);
-                        marked = true;
+                        markPatternAt(markedList, seeMonster, x, y)
+                        marked = true
                     }
                 }
             }
-            if (marked) return countHashes(markedList);
+            if (marked) return countHashes(markedList).toLong()
         }
-        return 0;
+        return 0
     }
 
-    private List<String> buildFullPicture(Tile[][] placedTile, int pictureSideLength) {
-        List<String> fullPicture = new ArrayList<>();
-        for (int y = 0; y < pictureSideLength; y++) {
-            List<List<String>> inners = new ArrayList<>();
-            for (int x = 0; x < pictureSideLength; x++) inners.add(placedTile[y][x].getInner());
-            for (int j = 0; j < inners.get(0).size(); j++) {
-                StringBuilder sb = new StringBuilder();
-                for (List<String> inner : inners) sb.append(inner.get(j));
-                fullPicture.add(sb.toString());
+    private fun buildFullPicture(placedTile: Array<Array<Tile?>>, pictureSideLength: Int): List<String> {
+        val fullPicture: MutableList<String> = ArrayList()
+        for (y in 0 until pictureSideLength) {
+            val inners: MutableList<List<String>> = ArrayList()
+            for (x in 0 until pictureSideLength) inners.add(placedTile[y][x]?.inner ?: emptyList())
+            for (j in inners[0].indices) {
+                val sb = StringBuilder()
+                for (inner in inners) sb.append(inner[j])
+                fullPicture.add(sb.toString())
             }
         }
-        return fullPicture;
+        return fullPicture
     }
 
-    private List<String> createSeeMonster() {
-        List<String> seeMonster = new ArrayList<>();
-        seeMonster.add("                  # ");
-        seeMonster.add("#    ##    ##    ###");
-        seeMonster.add(" #  #  #  #  #  #   ");
-        return seeMonster;
+    private fun createSeeMonster(): List<String> {
+        val seeMonster: MutableList<String> = ArrayList()
+        seeMonster.add("                  # ")
+        seeMonster.add("#    ##    ##    ###")
+        seeMonster.add(" #  #  #  #  #  #   ")
+        return seeMonster
     }
 
-    private boolean isPatternAt(List<String> fullPicture, List<String> pattern, int x, int y) {
-        for (int dy = 0; dy < pattern.size(); dy++) {
-            for (int dx = 0; dx < pattern.get(0).length(); dx++) {
-                boolean matchesHashInPattern = pattern.get(dy).charAt(dx) == '#';
-                boolean noMatchPictureCurSpot = fullPicture.get(y + dy).charAt(x + dx) != '#';
+    private fun isPatternAt(fullPicture: List<String>, pattern: List<String>, x: Int, y: Int): Boolean {
+        for (dy in pattern.indices) {
+            for (dx in 0 until pattern[0].length) {
+                val matchesHashInPattern = pattern[dy][dx] == '#'
+                val noMatchPictureCurSpot = fullPicture[y + dy][x + dx] != '#'
                 if (matchesHashInPattern && noMatchPictureCurSpot) {
-                    return false;
+                    return false
                 }
             }
         }
-        return true;
+        return true
     }
 
-    private void markPatternAt(List<String> fullPicture, List<String> pattern, int x, int y) {
-        for (int dy = 0; dy < pattern.size(); dy++) {
-            for (int dx = 0; dx < pattern.get(0).length(); dx++) {
-                if (pattern.get(dy).charAt(dx) == '#') {
-                    String originalLine = fullPicture.get(y + dy);
-                    int position = x + dx;
-                    String newLine = originalLine.substring(0, position) + "O" + originalLine.substring(position + 1);
-                    fullPicture.set(y + dy, newLine);
+    private fun markPatternAt(fullPicture: MutableList<String>, pattern: List<String>, x: Int, y: Int) {
+        for (dy in pattern.indices) {
+            for (dx in 0 until pattern[0].length) {
+                if (pattern[dy][dx] == '#') {
+                    val originalLine = fullPicture[y + dy]
+                    val position = x + dx
+                    val newLine = originalLine.substring(0, position) + "O" + originalLine.substring(position + 1)
+                    fullPicture[y + dy] = newLine
                 }
             }
         }
     }
 
-    private int countHashes(List<String> fullPicture) {
-        int count = 0;
-        for (String line : fullPicture) {
-            for (int i = 0; i < line.length(); i++) {
-                if (line.charAt(i) == '#') {
-                    count++;
+    private fun countHashes(fullPicture: List<String>): Int {
+        var count = 0
+        for (line in fullPicture) {
+            for (element in line) {
+                if (element == '#') {
+                    count++
                 }
             }
         }
-        return count;
+        return count
     }
 
-    private boolean placeNextTile(Set<Integer> placedIds, Tile[][] placed, Point curPosition, Map<Integer, Tile> tiles) {
-        for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
-            if (!placedIds.contains(entry.getKey())) {
-                Tile curTile = entry.getValue();
-                curTile.setPosition(curPosition);
-                placedIds.add(entry.getKey());
-                if (orientationFits(placed, curTile, placedIds, tiles)) return true;
-                placedIds.remove(entry.getKey());
+    private fun placeNextTile(placedIds: MutableSet<Int>, placed: Array<Array<Tile?>>,
+        curPosition: Point, tiles: Map<Int, Tile>
+    ): Boolean {
+        for ((key, curTile) in tiles) {
+            if (!placedIds.contains(key)) {
+                curTile.position = curPosition
+                placedIds.add(key)
+                if (orientationFits(placed, curTile, placedIds, tiles)) return true
+                placedIds.remove(key)
             }
         }
-        return false;
+        return false
     }
 
-    private boolean orientationFits(Tile[][] placed, Tile curTile, Set<Integer> placedIds, Map<Integer, Tile> tiles) {
-        for (List<String> orientation : curTile.getOrientations()) {
-            Point cur = curTile.getPosition();
-            placed[cur.y][cur.x] = new Tile(orientation);
+    private fun orientationFits(
+        placed: Array<Array<Tile?>>,
+        curTile: Tile,
+        placedIds: MutableSet<Int>,
+        tiles: Map<Int, Tile>
+    ): Boolean {
+        for (orientation in curTile.orientations) {
+            val cur = curTile.position
+            placed[cur.y][cur.x] = Tile(orientation)
             if (canPlaceTile(placed, cur)) {
-                Point next = nextPosition(cur);
-                boolean allTilesPlaced = next.y == sideLength;
-                if (allTilesPlaced || placeNextTile(placedIds, placed, next, tiles)) return true;
+                val next = nextPosition(cur)
+                val allTilesPlaced = next.y == sideLength
+                if (allTilesPlaced || placeNextTile(placedIds, placed, next, tiles)) return true
             }
         }
-        return false;
+        return false
     }
 
-    private Point nextPosition(Point point) {
-        int nextX = point.x + 1;
-        int nextY = point.y;
+    private fun nextPosition(point: Point): Point {
+        var nextX = point.x + 1
+        var nextY = point.y
         if (nextX == sideLength) {
-            nextX = 0;
-            nextY++;
+            nextX = 0
+            nextY++
         }
-        return new Point(nextX, nextY);
+        return Point(nextX, nextY)
     }
 
-    private boolean canPlaceTile(Tile[][] placed, Point p) {
-        if (p.x > 0 && !placed[p.y][p.x - 1].getRight().equals(placed[p.y][p.x].getLeft())) {
-            return false;
+    private fun canPlaceTile(placed: Array<Array<Tile?>>, p: Point): Boolean {
+        if (p.x > 0 && placed[p.y][p.x - 1]?.right != placed[p.y][p.x]?.left) {
+            return false
         }
-        if (p.y > 0) {
-            return placed[p.y - 1][p.x].getBottom().equals(placed[p.y][p.x].getTop());
-        }
-        return true;
+        return if (p.y > 0) {
+            placed[p.y - 1][p.x]?.bottom == placed[p.y][p.x]?.top
+        } else true
     }
 
-
-    @Override
-    String getMessage(long global) {
-        return String.format("%d", global);
+    override fun getMessage(value: Long): String {
+        return String.format("%d", value)
     }
 }
