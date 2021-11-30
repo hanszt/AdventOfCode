@@ -1,6 +1,5 @@
 package hzt.aoc.day03
 
-import hzt.aoc.Challenge
 import java.awt.Point
 
 class TreesEncounteredPart2 : Day03Challenge(

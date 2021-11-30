@@ -1,6 +1,5 @@
 package hzt.aoc.day13
 
-import hzt.aoc.Challenge
 import java.util.*
 import java.util.stream.Collectors
 
