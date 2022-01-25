@@ -1,9 +1,7 @@
 package hzt.aoc.day05;
 
 import hzt.aoc.day05.model.Seat;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import hzt.collections.ListX;
 
 public class Part1BinaryBoarding extends Day05Challenge {
 
@@ -12,8 +10,8 @@ public class Part1BinaryBoarding extends Day05Challenge {
     }
 
     @Override
-    protected int calculateResult(List<Seat> seats) {
-        return findHighestSeatID(seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
+    protected int calculateResult(ListX<Seat> seats) {
+        return seats.maxOf(seat -> seat.getSeatID(NUMBER_OF_COLUMNS));
     }
 
     @Override

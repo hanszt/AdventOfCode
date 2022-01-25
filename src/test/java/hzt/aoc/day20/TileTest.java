@@ -1,10 +1,11 @@
 package hzt.aoc.day20;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TileTest {
 
@@ -18,7 +19,7 @@ class TileTest {
         list.add("#    ");
         Tile tile = new Tile(list);
         System.out.println(tile.orientationsAsString());
-        Assertions.assertTrue(true);
+        assertTrue(true);
     }
 
 }

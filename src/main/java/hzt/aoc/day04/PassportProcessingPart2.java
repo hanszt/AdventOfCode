@@ -1,8 +1,7 @@
 package hzt.aoc.day04;
 
 import hzt.aoc.day04.model.Passport;
-
-import java.util.List;
+import hzt.collections.ListX;
 
 public class PassportProcessingPart2 extends Day04Challenge {
 
@@ -11,8 +10,8 @@ public class PassportProcessingPart2 extends Day04Challenge {
     }
 
     @Override
-    protected long calculateResult(List<Passport> passports) {
-        return passports.stream().filter(Passport::fieldsMeetCriteria).count();
+    protected long calculateResult(ListX<Passport> passports) {
+        return passports.count(Passport::fieldsMeetCriteria);
     }
 
 }

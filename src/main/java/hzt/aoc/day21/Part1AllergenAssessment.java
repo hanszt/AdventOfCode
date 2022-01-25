@@ -1,6 +1,6 @@
 package hzt.aoc.day21;
 
-import java.util.*;
+import hzt.collections.ListX;
 
 // credits to Johan de Jong
 public class Part1AllergenAssessment extends Day21Challenge {
@@ -11,28 +11,13 @@ public class Part1AllergenAssessment extends Day21Challenge {
                         "How many times do any of those ingredients appear?");
     }
 
-
     @Override
-    protected String calculateAnswer(List<Food> foods) {
-        Set<String> allAllergens = extractAllAllergens(foods);
-        Set<String> potentialAllergenIngredients = extractAllergens(allAllergens, foods)
-                .getPotentialAllergenIngredients();
-
-        return String.valueOf(countIngredientsWithoutAllergens(potentialAllergenIngredients, foods));
+    protected String calculateAnswer(ListX<Food> foods) {
+        var allAllergens = foods.flatMapToMutableSetOf(Food::getAllergens);
+        var potentialAllergenIngredients = extractAllergens(allAllergens, foods).getLeft();
+        final long sum = foods.sumOf((Food food) -> food.getIngredients().count(potentialAllergenIngredients::containsNot));
+        return String.valueOf(sum);
     }
-
-    private long countIngredientsWithoutAllergens(Set<String> potentialAllergenIngredients, List<Food> foods) {
-        long count = 0;
-        for (Food food : foods) {
-            for (String ingredient : food.getIngredients()) {
-                if (!potentialAllergenIngredients.contains(ingredient)) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
 
     @Override
     protected String getMessage(String global) {

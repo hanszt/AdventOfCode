@@ -1,9 +1,12 @@
 package hzt.aoc.day21;
 
 import hzt.aoc.Challenge;
+import hzt.aoc.Pair;
+import hzt.collections.ListX;
+import hzt.collections.MutableSetX;
+import hzt.collections.SetX;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 // credits to Johan de Jong
 public abstract class Day21Challenge extends Challenge {
@@ -14,11 +17,10 @@ public abstract class Day21Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        List<Food> foods = inputList.stream().map(this::parseLine).collect(Collectors.toList());
-        return calculateAnswer(foods);
+        return ListX.of(inputList).toMutableListOf(this::parseLine).let(this::calculateAnswer);
     }
 
-    protected abstract String calculateAnswer(List<Food> idsToIngredientsAndAllergens);
+    protected abstract String calculateAnswer(ListX<Food> idsToIngredientsAndAllergens);
 
     private static final String ONE_OR_MORE_SPACES = "\\s+";
 
@@ -31,57 +33,20 @@ public abstract class Day21Challenge extends Challenge {
         return new Food(Set.of(ingredientsAsArray), Set.of(allergensAsArray));
     }
 
-    Result extractAllergens(final Set<String> allAllergens, final List<Food> foods) {
-        final Set<String> potentialAllergenIngredients = new HashSet<>();
+    Pair<SetX<String>, Map<String, List<String>>> extractAllergens(final Set<String> allAllergens, final ListX<Food> foods) {
+        final var potentialAllergenIngredients = MutableSetX.<String>empty();
         final Map<String, List<String>> allergenToIngredientsMap = new HashMap<>();
         for (String allergen : allAllergens) {
-            final List<Food> foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
-            final Set<String> allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
+            final ListX<Food> foodsWithAllergen = foods.filter(food -> food.getAllergens().contains(allergen));
+            final Set<String> allPossibleIngredients = foodsWithAllergen.flatMapToMutableSetOf(Food::getIngredients);
             for (String ingredient : allPossibleIngredients) {
-                boolean inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.getIngredients().contains(ingredient));
+                boolean inAllFoods = foodsWithAllergen.all(food -> food.getIngredients().contains(ingredient));
                 if (inAllFoods) {
                     potentialAllergenIngredients.add(ingredient);
                     allergenToIngredientsMap.computeIfAbsent(allergen, key -> new ArrayList<>()).add(ingredient);
                 }
             }
         }
-        return new Result(potentialAllergenIngredients, allergenToIngredientsMap);
-    }
-
-    private List<Food> extractFoodsWithAllergen(String allergen, List<Food> foods) {
-        return foods.stream()
-                .filter(food -> food.getAllergens().contains(allergen))
-                .collect(Collectors.toList());
-    }
-
-    private Set<String> allPossibleIngredientsContainingAllergen(List<Food> foodsWithAllergen) {
-        return foodsWithAllergen.stream()
-                .flatMap(food -> food.getIngredients().stream())
-                .collect(Collectors.toSet());
-    }
-
-    Set<String> extractAllAllergens(List<Food> foods) {
-        return foods.stream()
-                .flatMap(line -> line.getAllergens().stream())
-                .collect(Collectors.toSet());
-    }
-
-    static class Result {
-
-        private final Set<String> potentialAllergenIngredients;
-        private final Map<String, List<String>> allergenToIngredientsMap;
-
-        public Result(Set<String> potentialAllergenIngredients, Map<String, List<String>> allergenToIngredientsMap) {
-            this.potentialAllergenIngredients = potentialAllergenIngredients;
-            this.allergenToIngredientsMap = allergenToIngredientsMap;
-        }
-
-        public Set<String> getPotentialAllergenIngredients() {
-            return Collections.unmodifiableSet(potentialAllergenIngredients);
-        }
-
-        public Map<String, List<String>> getAllergenToIngredientsMap() {
-            return Collections.unmodifiableMap(allergenToIngredientsMap);
-        }
+        return new Pair<>(potentialAllergenIngredients, allergenToIngredientsMap);
     }
 }

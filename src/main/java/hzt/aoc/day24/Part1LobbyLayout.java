@@ -1,5 +1,8 @@
 package hzt.aoc.day24;
 
+import hzt.collections.ListX;
+import hzt.collections.MapX;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -15,8 +18,8 @@ public class Part1LobbyLayout extends Day24Challenge {
 
     @Override
     protected long calculateResult(List<List<String>> instructionsList) {
-        Map<Point, Tile> tileMap = buildFloorByInstructions(instructionsList);
-        return countTilesWithBlackSideUp(tileMap.values());
+        MapX<Point, Tile> tileMap = buildFloorByInstructions(instructionsList);
+        return ListX.of(tileMap.values()).count(Tile::isBlackUp);
     }
 
     @Override

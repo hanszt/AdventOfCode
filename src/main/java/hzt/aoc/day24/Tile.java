@@ -1,5 +1,10 @@
 package hzt.aoc.day24;
 
+import hzt.collections.ListX;
+import hzt.collections.MapX;
+import hzt.collections.MutableListX;
+import hzt.collections.MutableMapX;
+
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -14,7 +19,7 @@ public class Tile {
     static final String NORTH_EAST = "ne";
 
     private static final Map<String, String> OPPOSITE_DIR = new HashMap<>();
-    private static final Map<String, Point> INSTRUCTION_TO_DIR = new HashMap<>();
+    private static final MutableMapX<String, Point> INSTRUCTION_TO_DIR = MutableMapX.empty();
 
     static {
         OPPOSITE_DIR.put(EAST, WEST);
@@ -83,12 +88,9 @@ public class Tile {
         if (!blackUp && nrOfBlackNeighbors == 2) flip();
     }
 
-    List<Tile> neighbors() {
-        List<Tile> neighbors = new ArrayList<>();
-        for (Point delta : INSTRUCTION_TO_DIR.values()) {
-            neighbors.add(new Tile(new Point(position.x + delta.x, position.y + delta.y)));
-        }
-        return neighbors;
+    MutableListX<Tile> neighbors() {
+        return INSTRUCTION_TO_DIR.values()
+                        .toMutableListOf(delta -> new Tile(new Point(position.x + delta.x, position.y + delta.y)));
     }
 
     public boolean isBlackUp() {

@@ -1,19 +1,24 @@
 package hzt.aoc.day20;
 
+import hzt.collections.MutableListX;
+import hzt.collections.SetX;
+
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 // Credits to Johan de Jong
 public class Tile {
 
     private Point position;
-    private final List<String> content;
+    private final MutableListX<String> content;
     private final List<List<String>> orientations;
 
     public Tile(List<String> content) {
-        this.position = position;
-        this.content = content;
+        this.content = MutableListX.of(content);
         this.orientations = calculateOrientations();
     }
 
@@ -43,12 +48,8 @@ public class Tile {
 
     public boolean isBorder(Map<Integer, Tile> tiles) {
         Set<String> otherTiles = otherTileBorders(tiles);
-        Set<String> sideTiles = new HashSet<>(tileSides());
-        return countCommonElements(sideTiles, otherTiles) == CORNERS;
-    }
-
-    private long countCommonElements(Set<String> sideTiles, Set<String> otherTiles) {
-        return sideTiles.stream().filter(otherTiles::contains).count();
+        SetX<String> sideTiles = SetX.copyOf(tileSides());
+        return sideTiles.count(otherTiles::contains) == CORNERS;
     }
 
     private Set<String> otherTileBorders(Map<Integer, Tile> tiles) {
@@ -79,13 +80,7 @@ public class Tile {
     }
 
     private List<String> flip() {
-        List<String> result = new ArrayList<>();
-        for (String line : content) {
-            StringBuilder sb = new StringBuilder(line);
-            sb.reverse();
-            result.add(sb.toString());
-        }
-        return result;
+        return content.toListOf(line -> new StringBuilder(line).reverse().toString());
     }
 
     private List<String> rotate(List<String> original) {
@@ -123,19 +118,11 @@ public class Tile {
     }
 
     public String getLeft() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
-            sb.append(line.charAt(0));
-        }
-        return sb.toString();
+        return content.joinToStringBy(line -> line.charAt(0));
     }
 
     public String getRight() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
-            sb.append(line.charAt(line.length() - 1));
-        }
-        return sb.toString();
+        return content.joinToStringBy(line -> line.charAt(line.length() - 1));
     }
 
     public List<String> getInner() {

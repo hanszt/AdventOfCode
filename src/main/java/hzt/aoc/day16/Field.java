@@ -1,16 +1,14 @@
 package hzt.aoc.day16;
 
 import hzt.aoc.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
+import hzt.collections.MutableListX;
 
 public class Field {
 
     private static int next = 0;
     private final int nr;
     private final String fieldName;
-    private final List<Pair<Integer, Integer>> valueRanges = new ArrayList<>();
+    private final MutableListX<Pair<Integer, Integer>> valueRanges = MutableListX.empty();
 
     public Field(String fieldName) {
         this.nr = next++;
@@ -18,16 +16,13 @@ public class Field {
     }
 
     public void addRange(Pair<Integer, Integer> range) {
-        if (range != null) valueRanges.add(range);
+        if (range != null) {
+            valueRanges.add(range);
+        }
     }
 
     public boolean containsValueInRanges(Integer integer) {
-        for (Pair<Integer, Integer> p : valueRanges) {
-            if (integer >= p.getLeft() && integer <= p.getRight()) {
-                return true;
-            }
-        }
-        return false;
+        return valueRanges.any(p -> integer >= p.getLeft() && integer <= p.getRight());
     }
 
     public int getNr() {

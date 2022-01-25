@@ -1,21 +1,20 @@
 package hzt.aoc;
 
 import hzt.aoc.io.IOController2;
+import hzt.collections.MutableListX;
+import hzt.strings.StringX;
+import hzt.utils.ObjectX;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static hzt.Launcher.DOTTED_LINE;
 
-public abstract class Challenge {
+public abstract class Challenge implements ObjectX<Challenge> {
 
     public static final Logger LOGGER = LogManager.getLogger(Challenge.class);
     protected static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
@@ -54,14 +53,14 @@ public abstract class Challenge {
         }
     }
 
-    protected List<Integer> commaSeparatedStringToIntegerList(String s) {
-        return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+    protected MutableListX<Integer> commaSeparatedStringToIntegerList(String s) {
+        return StringX.of(s).split(",").toMutableListOf(Integer::parseInt);
     }
 
     protected String listOfStringListsAsString(List<List<String>> listOfStringLists) {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (List<String> row : listOfStringLists) {
+        for (var row : listOfStringLists) {
             for (String s : row) {
                 sb.append(s).append(", ");
             }
@@ -130,5 +129,10 @@ public abstract class Challenge {
 
     public String getAnswer() {
         return answer;
+    }
+
+    @Override
+    public Challenge get() {
+        return this;
     }
 }

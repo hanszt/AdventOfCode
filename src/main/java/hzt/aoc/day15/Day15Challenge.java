@@ -16,7 +16,7 @@ public abstract class Day15Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        List<Integer> numbers = commaSeparatedStringToIntegerList(inputList.get(0));
+        var numbers = commaSeparatedStringToIntegerList(inputList.get(0));
         return String.valueOf(getNthNumberSpoken(numbers));
     }
 

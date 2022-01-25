@@ -2,11 +2,11 @@ package hzt.aoc.day16;
 
 import hzt.aoc.Challenge;
 import hzt.aoc.Pair;
+import hzt.collections.ListX;
+import hzt.collections.MutableListX;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day16Challenge extends Challenge {
 
@@ -18,7 +18,7 @@ public abstract class Day16Challenge extends Challenge {
     protected String solve(List<String> inputList) {
         List<Field> fields = new ArrayList<>();
         List<Integer> yourTicketValues = new ArrayList<>();
-        List<List<Integer>> nearbyTicketValues = new ArrayList<>();
+        var nearbyTicketValues = MutableListX.<ListX<Integer>>empty();
         Field.setNext(0);
         int inputPart = 0;
         for (String s : inputList) {
@@ -34,10 +34,10 @@ public abstract class Day16Challenge extends Challenge {
                 }
             }
         }
-        return getMessage(solveByParsedInput(fields, yourTicketValues, nearbyTicketValues));
+        return getMessage(solveByParsedInput(fields, yourTicketValues, ListX.of(nearbyTicketValues)));
     }
 
-    protected abstract long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, List<List<Integer>> nearbyTicketValues);
+    protected abstract long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, ListX<ListX<Integer>> nearbyTicketValues);
 
     private void addField(String s, List<Field> fields) {
         String[] array = s.split(": ");
@@ -52,10 +52,10 @@ public abstract class Day16Challenge extends Challenge {
         fields.add(field);
     }
 
-    protected List<Integer> findValidTicketValues(List<Field> fields, List<List<Integer>> nearbyTicketValues) {
-        return nearbyTicketValues.stream().flatMap(Collection::stream)
-                .filter(value -> fieldsContainValue(value, fields))
-                .collect(Collectors.toList());
+    protected List<Integer> findValidTicketValues(List<Field> fields, ListX<ListX<Integer>> nearbyTicketValues) {
+        return nearbyTicketValues
+                .flatMap(ListX::toList)
+                .filterToMutableList(value -> fieldsContainValue(value, fields));
     }
 
     boolean fieldsContainValue(int value, List<Field> fields) {

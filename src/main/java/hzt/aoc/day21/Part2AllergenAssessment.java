@@ -1,5 +1,7 @@
 package hzt.aoc.day21;
 
+import hzt.collections.ListX;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,11 +14,10 @@ public class Part2AllergenAssessment extends Day21Challenge {
                 "Time to stock your raft with supplies. What is your canonical dangerous ingredient list?");
     }
 
-
     @Override
-    protected String calculateAnswer(List<Food> foods) {
-        var allAllergens = extractAllAllergens(foods);
-        var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
+    protected String calculateAnswer(ListX<Food> foods) {
+        var allAllergens = foods.flatMapToMutableSetOf(Food::getAllergens);
+        var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getRight();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }
 

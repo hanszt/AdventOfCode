@@ -1,5 +1,8 @@
 package hzt.aoc.day21;
 
+import hzt.collections.MutableSetX;
+import hzt.collections.SetX;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -13,8 +16,8 @@ public class Food {
         this.allergens = allergens;
     }
 
-    public Set<String> getIngredients() {
-        return Collections.unmodifiableSet(ingredients);
+    public MutableSetX<String> getIngredients() {
+        return MutableSetX.of(ingredients);
     }
 
     public Set<String> getAllergens() {
