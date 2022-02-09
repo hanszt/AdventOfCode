@@ -78,14 +78,10 @@ public class Part2TicketTranslation extends Day16Challenge {
     }
 
     protected ListX<ListX<Integer>> findValidTickets(ListX<Field> fields, ListX<ListX<Integer>> nearbyTickets) {
-        return nearbyTickets.filter(ticket -> ticket.all(value -> fieldsContainValue(value, fields)));
+        return nearbyTickets.filter(ticket -> ticket.all(value -> fields.any(field -> field.containsValueInRanges(value))));
     }
 
-    private boolean fieldsContainValue(Integer value, ListX<Field> fields) {
-        return false;
-    }
-
-    private long getAnswer(boolean[][] possibleMatches, List<Integer> ourTicketValues) {
+    private static long getAnswer(boolean[][] possibleMatches, List<Integer> ourTicketValues) {
         long answer = 1;
         for (int row = 0; row < FIRST_SIX_FIELDS; row++) {
             for (int col = 0; col < possibleMatches.length; col++) {
