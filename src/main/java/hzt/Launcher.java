@@ -55,21 +55,22 @@ import hzt.aoc.day23.Part2CrabCups;
 import hzt.aoc.day24.Part1LobbyLayout;
 import hzt.aoc.day24.Part2LobbyLayout;
 import hzt.aoc.day25.Part1ComboBreaker;
+import hzt.collections.CollectionView;
+import hzt.collections.ListX;
+import hzt.collections.MutableCollection;
+import hzt.collections.MutableMapX;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static java.lang.System.*;
+import static java.lang.System.exit;
+import static java.lang.System.in;
+import static java.lang.System.nanoTime;
+import static java.lang.System.out;
 
 /**
  * This is a project to participate in the Advent of code 2020.
@@ -95,7 +96,7 @@ public class Launcher implements Runnable {
             "__________________________________________________________________________________________________________          \n" +
             RESET;
 
-    private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
+    private final MutableMapX<Integer, ChallengeDay> challengeDays = MutableMapX.empty();
 
     public Launcher() {
         populateChallengeDaysMap(challengeDays);
@@ -185,9 +186,8 @@ public class Launcher implements Runnable {
 
     private void executeAllAndPrintSummary() {
         challengeDays.values().forEach(ChallengeDay::solveChallenges);
-        long totalSolveTime = challengeDays.values().stream()
-                .map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow();
-        LOGGER.info(sortedSolveTimesAsString(new ArrayList<>(challengeDays.values())));
+        long totalSolveTime = challengeDays.values().sumOfLongs(ChallengeDay::getSolveTime);
+        LOGGER.info(sortedSolveTimesAsString(challengeDays.values()));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
                 DOTTED_LINE, totalSolveTime / 1e9, DOTTED_LINE));
     }
@@ -220,7 +220,9 @@ public class Launcher implements Runnable {
         int dayNr = Integer.parseInt(input);
         if (challengeDays.containsKey(dayNr)) {
             challengeDays.get(dayNr).solveChallenges();
-        } else out.println("The selected number is not in the challenge list...");
+        } else {
+            out.println("The selected number is not in the challenge list...");
+        }
     }
 
     private static final String EXIT = "e";
@@ -246,11 +248,10 @@ public class Launcher implements Runnable {
         return String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", dayNr, dayNr, title);
     }
 
-    private String sortedSolveTimesAsString(List<ChallengeDay> challengeDays) {
-        List<Pair<Challenge, ChallengeDay>> challenges = challengeDays.stream()
-                .map(day -> day.challengesAsStream().map(c -> new Pair<>(c, day)))
-                .flatMap(Stream::distinct)
-                .sorted(Comparator.comparing(pair -> pair.getLeft().getSolveTime())).collect(Collectors.toList());
+    private String sortedSolveTimesAsString(CollectionView<ChallengeDay> challengeDays) {
+        var challenges = challengeDays
+                .flatMap(day -> day.map(c -> new Pair<>(c, day)))
+                .sortedBy(pair -> pair.getLeft().getSolveTime());
 
         StringBuilder sb = new StringBuilder();
         sb.append(RESET);

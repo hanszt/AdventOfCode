@@ -3,6 +3,7 @@ package hzt.aoc.day02;
 
 import hzt.aoc.Challenge;
 import hzt.aoc.day02.model.Policy;
+import hzt.collections.ListX;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public abstract class Day02Challenge extends Challenge {
     @Override
     protected String solve(List<String> inputList) {
         inputListSize = inputList.size();
-        long validPasswords = inputList.stream().filter(this::passwordIsValid).count();
+        long validPasswords = ListX.of(inputList).count(this::passwordIsValid);
         return String.valueOf(validPasswords);
     }
 

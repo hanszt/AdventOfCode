@@ -35,7 +35,7 @@ public abstract class Day24Challenge extends Challenge {
                 if (string.length() != 2 || !INSTRUCTION_SET.contains(string)) {
                     instruction.addAll(StringX.of(string)
                             .map(String::valueOf)
-                            .toMutableListOf(String::strip));
+                            .toListOf(String::strip));
                 } else if (!string.isBlank()) {
                     instruction.add(string.strip());
                 }

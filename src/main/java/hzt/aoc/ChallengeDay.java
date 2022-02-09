@@ -1,17 +1,21 @@
 package hzt.aoc;
 
+import hzt.collections.ArrayX;
+import hzt.iterables.IterableX;
+import hzt.iterators.ArrayIterator;
+import hzt.sequences.Sequence;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import static hzt.Launcher.DOTTED_LINE;
 
-public class ChallengeDay {
+public final class ChallengeDay implements Sequence<Challenge> {
 
     private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
 
@@ -25,7 +29,7 @@ public class ChallengeDay {
         this.textColor = textColor;
         this.date = date;
         this.challenges = challenges;
-        for(Challenge c : challenges) c.setTitle(title);
+        ArrayX.of(challenges).forEach(c -> c.setTitle(title));
     }
 
     public void solveChallenges() {
@@ -37,7 +41,7 @@ public class ChallengeDay {
     }
 
     public long getSolveTime() {
-        return Arrays.stream(challenges).map(Challenge::getSolveTime).reduce(Long::sum).orElse(0L);
+        return ArrayX.of(challenges).sumOfLongs(Challenge::getSolveTime);
     }
 
     public String getTitle() {
@@ -50,5 +54,10 @@ public class ChallengeDay {
 
     public int getDayOfMonth() {
         return date.getDayOfMonth();
+    }
+
+    @Override
+    public @NotNull Iterator<Challenge> iterator() {
+        return ArrayIterator.of(challenges);
     }
 }

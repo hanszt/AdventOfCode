@@ -90,7 +90,8 @@ public class Tile {
 
     MutableListX<Tile> neighbors() {
         return INSTRUCTION_TO_DIR.values()
-                        .toMutableListOf(delta -> new Tile(new Point(position.x + delta.x, position.y + delta.y)));
+                        .mapTo(MutableListX::empty,
+                                delta -> new Tile(new Point(position.x + delta.x, position.y + delta.y)));
     }
 
     public boolean isBlackUp() {

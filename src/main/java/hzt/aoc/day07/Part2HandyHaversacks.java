@@ -1,6 +1,6 @@
 package hzt.aoc.day07;
 
-import java.util.Map;
+import hzt.collections.MapX;
 
 public class Part2HandyHaversacks extends Day07Challenge {
 
@@ -10,15 +10,14 @@ public class Part2HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(Map<String, Bag> bags) {
-        return !bags.isEmpty() ? countInnerBagsRecursive(bags, bags.get(SHINY_GOLD)) - 1 : 0; // We counted the target bag, reduce count by 1.
+    protected long solveByRules(MapX<String, Bag> bags) {
+        // We counted the target bag, reduce count by 1.
+        return bags.isNotEmpty() ? (countInnerBagsRecursive(bags, bags.get(SHINY_GOLD)) - 1) : 0;
     }
 
-    private long countInnerBagsRecursive(Map<String, Bag> bags, Bag bag) {
-        long accumulator = 1;
-        accumulator += bag.childBagColorsToAmounts.entrySet().stream()
-                .mapToLong(entry -> entry.getValue() * countInnerBagsRecursive(bags, bags.get(entry.getKey()))).sum();
-        return accumulator;
+    private static long countInnerBagsRecursive(MapX<String, Bag> bags, Bag bag) {
+        return bag.getChildBagColorsToAmounts().entrySet()
+                .sumOfLongs(entry -> entry.getValue() * countInnerBagsRecursive(bags, bags.get(entry.getKey()))) + 1;
     }
 
     @Override

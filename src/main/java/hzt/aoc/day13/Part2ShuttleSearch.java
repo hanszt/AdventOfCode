@@ -1,9 +1,11 @@
 package hzt.aoc.day13;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import hzt.collections.ArrayX;
+import hzt.collections.ListX;
+import hzt.collections.MutableListX;
+import hzt.utils.Transformable;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Part2ShuttleSearch extends Day13Challenge {
 
@@ -15,16 +17,16 @@ public class Part2ShuttleSearch extends Day13Challenge {
 
     @Override
     protected String solve(List<String> lines) {
-        List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
+        return ArrayX.of(lines.get(1).split(","))
                 .map(x -> "x".equals(x) ? "-1" : x)
                 .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        return String.valueOf(second(busIdsWithBlanks));
+                .run(this::second)
+                .let(String::valueOf);
     }
 
     // Chinese remainder theorem implementation
-    private long second(List<Integer> busIdsWithBlanks) {
-        List<Equation> equations = new ArrayList<>();
+    private long second(ListX<Integer> busIdsWithBlanks) {
+        var equations = MutableListX.<Equation>empty();
         for (int i = 0; i < busIdsWithBlanks.size(); i++) {
             int busId = busIdsWithBlanks.get(i);
             if (busId != -1) {
@@ -32,23 +34,17 @@ public class Part2ShuttleSearch extends Day13Challenge {
             }
         }
 
-        long moduloProduct = equations
-                .stream()
-                .map(equation -> equation.modulo)
-                .reduce(1L, (a, b) -> a * b);
+        long moduloProduct = equations.fold(1L, (acc,  equation) -> acc * equation.modulo);
 
         for (Equation equation : equations) {
             equation.n = moduloProduct / equation.modulo;
             equation.w = euclideanGeneralTheorem(equation.n, equation.modulo);
-            if (equation.w < 0) equation.w += equation.modulo;
+            if (equation.w < 0) {
+                equation.w += equation.modulo;
+            }
         }
-
-        long solution = equations
-                .stream()
-                .map(equation -> equation.minIndex * equation.n * equation.w)
-                .reduce(0L, Long::sum);
-        solution = properModulo(solution, moduloProduct);
-        return solution;
+        return Transformable.from(equations.sumOfLongs(equation -> equation.minIndex * equation.n * equation.w))
+                .let(solution -> properModulo(solution, moduloProduct));
     }
 
     private long euclideanGeneralTheorem(long a1, long b1) {
@@ -71,7 +67,9 @@ public class Part2ShuttleSearch extends Day13Challenge {
             u = m;
             v = n;
         }
-        if (a != 1) LOGGER.error("!" + a);
+        if (a != 1) {
+            LOGGER.error("!" + a);
+        }
         return x;
     }
 

@@ -9,15 +9,13 @@ class Day20ChallengeTest {
 
     @Test
     void testPart1() {
-        Challenge challenge = new Part1JurassicJigsaw().also(Challenge::solveChallenge);
-        final var answer = challenge.getAnswer();
+        final var answer = new Part1JurassicJigsaw().also(Challenge::solveChallenge).getAnswer();
         assertEquals(83775126454273L, Long.parseLong(answer));
     }
 
     @Test
     void testPart2() {
-        Challenge challenge = new Part2JurassicJigsaw().also(Challenge::solveChallenge);
-        final var answer = challenge.getAnswer();
+        final var answer = new Part2JurassicJigsaw().also(Challenge::solveChallenge).getAnswer();
         assertEquals(1993, Integer.parseInt(answer));
     }
 }

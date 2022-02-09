@@ -1,9 +1,10 @@
 package hzt.aoc.day13;
 
-import java.util.Arrays;
+import hzt.collections.ListX;
+import hzt.sequences.Sequence;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Part1ShuttleSearch extends Day13Challenge {
 
@@ -15,12 +16,15 @@ public class Part1ShuttleSearch extends Day13Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        int earliestTimestamp = Integer.parseInt(inputList.get(0));
-        List<Integer> integers = Arrays.stream(inputList.get(1).split(","))
-                .filter(s -> !s.matches("x"))
-                .map(Integer::parseInt).collect(Collectors.toList());
-        Map<Integer, Integer> busNumbersToWaitingTimes = integers.stream()
-                .collect(Collectors.toMap(busNr -> busNr, busNr -> busNr - earliestTimestamp % busNr));
+        final var listX = ListX.of(inputList);
+        int earliestTimestamp = Integer.parseInt(listX.first());
+
+        Map<Integer, Integer> busNumbersToWaitingTimes = Sequence.of(inputList.get(1).split(","))
+                .filterNot(s -> s.matches("x"))
+                .map(Integer::parseInt)
+                .associateWith(busNr -> busNr - earliestTimestamp % busNr)
+                .toMutableMap();
+
         int timeToWaitForEarliestBus = Integer.MAX_VALUE;
         int busNumberBelongingToSmallest = 0;
         for (Map.Entry<Integer, Integer> entry : busNumbersToWaitingTimes.entrySet()) {

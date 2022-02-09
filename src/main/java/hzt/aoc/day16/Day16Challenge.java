@@ -16,7 +16,7 @@ public abstract class Day16Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        List<Field> fields = new ArrayList<>();
+        var fields = MutableListX.<Field>empty();
         List<Integer> yourTicketValues = new ArrayList<>();
         var nearbyTicketValues = MutableListX.<ListX<Integer>>empty();
         Field.setNext(0);
@@ -37,7 +37,7 @@ public abstract class Day16Challenge extends Challenge {
         return getMessage(solveByParsedInput(fields, yourTicketValues, ListX.of(nearbyTicketValues)));
     }
 
-    protected abstract long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, ListX<ListX<Integer>> nearbyTicketValues);
+    protected abstract long solveByParsedInput(ListX<Field> fields, List<Integer> yourTicketValues, ListX<ListX<Integer>> nearbyTicketValues);
 
     private void addField(String s, List<Field> fields) {
         String[] array = s.split(": ");
@@ -52,14 +52,10 @@ public abstract class Day16Challenge extends Challenge {
         fields.add(field);
     }
 
-    protected List<Integer> findValidTicketValues(List<Field> fields, ListX<ListX<Integer>> nearbyTicketValues) {
+    protected List<Integer> findValidTicketValues(ListX<Field> fields, ListX<ListX<Integer>> nearbyTicketValues) {
         return nearbyTicketValues
                 .flatMap(ListX::toList)
-                .filterToMutableList(value -> fieldsContainValue(value, fields));
-    }
-
-    boolean fieldsContainValue(int value, List<Field> fields) {
-        return fields.stream().anyMatch(field -> field.containsValueInRanges(value));
+                .filterTo(MutableListX::empty, value -> fields.any(field -> field.containsValueInRanges(value)));
     }
 
 

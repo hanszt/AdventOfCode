@@ -1,6 +1,6 @@
 package hzt.aoc.day07;
 
-import java.util.Map;
+import hzt.collections.MapX;
 
 public class Part1HandyHaversacks extends Day07Challenge {
 
@@ -11,13 +11,13 @@ public class Part1HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(Map<String, Bag> bags) {
-        return bags.values().stream().filter(bag -> hasDescendent(bags, SHINY_GOLD, bag)).count();
+    protected long solveByRules(MapX<String, Bag> bags) {
+        return bags.values().count(bag -> hasDescendent(bags, SHINY_GOLD, bag));
     }
 
-    private boolean hasDescendent(Map<String, Bag> bags, String target, Bag bag) {
-        return bag.childBagColorsToAmounts.keySet().stream()
-                .anyMatch(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
+    private boolean hasDescendent(MapX<String, Bag> bags, String target, Bag bag) {
+        return bag.getChildBagColorsToAmounts().keySet()
+                .any(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
     }
 @Override
     protected String getMessage(String numberOfBags) {

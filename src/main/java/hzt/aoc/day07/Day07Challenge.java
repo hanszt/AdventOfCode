@@ -1,11 +1,11 @@
 package hzt.aoc.day07;
 
 import hzt.aoc.Challenge;
+import hzt.collections.ListX;
+import hzt.collections.MapX;
+import hzt.collections.MutableMapX;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class Day07Challenge extends Challenge {
 
@@ -17,14 +17,14 @@ public abstract class Day07Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        Map<String, Bag> bagColorsToRule = inputList.stream()
+        MapX<String, Bag> bagColorsToRule = ListX.of(inputList)
                 .map(this::extractBagFromLine)
-                .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
+                .associateBy(Bag::getBagColor);
         long numberOfBags = solveByRules(bagColorsToRule);
         return String.valueOf(numberOfBags);
     }
 
-    protected abstract long solveByRules(Map<String, Bag> bags);
+    protected abstract long solveByRules(MapX<String, Bag> bags);
 
     Bag extractBagFromLine(String line) {
         String[] containerToContent = line.split(" bags contain ");
@@ -45,8 +45,8 @@ public abstract class Day07Challenge extends Challenge {
 
     static class Bag {
 
-        final String bagColor;
-        final Map<String, Integer> childBagColorsToAmounts = new HashMap<>();
+        private final String bagColor;
+        private final MutableMapX<String, Integer> childBagColorsToAmounts = MutableMapX.empty();
 
         public Bag(String bagColor) {
             this.bagColor = bagColor;
@@ -54,6 +54,14 @@ public abstract class Day07Challenge extends Challenge {
 
         void addColorToAmount(String bagColor, int amount) {
             childBagColorsToAmounts.put(bagColor, amount);
+        }
+
+        public String getBagColor() {
+            return bagColor;
+        }
+
+        public MutableMapX<String, Integer> getChildBagColorsToAmounts() {
+            return childBagColorsToAmounts;
         }
 
         @Override

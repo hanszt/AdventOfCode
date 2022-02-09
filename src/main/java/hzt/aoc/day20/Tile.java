@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 // Credits to Johan de Jong
 public class Tile {
@@ -103,10 +104,9 @@ public class Tile {
     }
 
     public String orientationsAsString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        orientations.forEach(o -> sb.append(asString(o)));
-        return sb.toString();
+        return orientations.stream()
+                .map(this::asString)
+                .collect(Collectors.joining());
     }
 
     public String getTop() {

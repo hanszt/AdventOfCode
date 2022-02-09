@@ -3,7 +3,7 @@ package hzt.aoc;
 import hzt.aoc.io.IOController2;
 import hzt.collections.MutableListX;
 import hzt.strings.StringX;
-import hzt.utils.ObjectX;
+import hzt.utils.Transformable;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import static hzt.Launcher.DOTTED_LINE;
 
-public abstract class Challenge implements ObjectX<Challenge> {
+public abstract class Challenge implements Transformable<Challenge> {
 
     public static final Logger LOGGER = LogManager.getLogger(Challenge.class);
     protected static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
@@ -54,7 +54,7 @@ public abstract class Challenge implements ObjectX<Challenge> {
     }
 
     protected MutableListX<Integer> commaSeparatedStringToIntegerList(String s) {
-        return StringX.of(s).split(",").toMutableListOf(Integer::parseInt);
+        return StringX.of(s).split(",").mapTo(MutableListX::of, Integer::parseInt);
     }
 
     protected String listOfStringListsAsString(List<List<String>> listOfStringLists) {

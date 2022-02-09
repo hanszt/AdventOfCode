@@ -2,7 +2,7 @@ package hzt.aoc.day05;
 
 import hzt.aoc.day05.model.Seat;
 import hzt.collections.ListX;
-import hzt.function.It;
+import hzt.utils.It;
 
 import java.util.HashSet;
 import java.util.Set;

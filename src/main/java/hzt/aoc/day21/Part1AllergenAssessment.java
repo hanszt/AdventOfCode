@@ -1,6 +1,7 @@
 package hzt.aoc.day21;
 
 import hzt.collections.ListX;
+import hzt.collections.MutableSetX;
 
 // credits to Johan de Jong
 public class Part1AllergenAssessment extends Day21Challenge {
@@ -13,9 +14,9 @@ public class Part1AllergenAssessment extends Day21Challenge {
 
     @Override
     protected String calculateAnswer(ListX<Food> foods) {
-        var allAllergens = foods.flatMapToMutableSetOf(Food::getAllergens);
+        var allAllergens = foods.flatMapTo(MutableSetX::empty, Food::getAllergens);
         var potentialAllergenIngredients = extractAllergens(allAllergens, foods).getLeft();
-        final long sum = foods.sumOf((Food food) -> food.getIngredients().count(potentialAllergenIngredients::containsNot));
+        final long sum = foods.sumOfLongs(food -> food.getIngredients().count(potentialAllergenIngredients::containsNot));
         return String.valueOf(sum);
     }
 

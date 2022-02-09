@@ -19,7 +19,7 @@ public class Part2LobbyLayout extends Day24Challenge {
     @Override
     protected long calculateResult(List<List<String>> instructions) {
         var tileMap = buildFloorByInstructions(instructions);
-        var blackTiles = tileMap.values().filterToMutableSet(Tile::isBlackUp);
+        var blackTiles = tileMap.values().filterTo(MutableSetX::empty, Tile::isBlackUp);
         for (int day = 0; day < DAYS_OF_EXHIBIT; day++) {
             simulate(blackTiles);
         }

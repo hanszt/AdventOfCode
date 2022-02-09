@@ -17,7 +17,7 @@ public abstract class Day21Challenge extends Challenge {
 
     @Override
     protected String solve(List<String> inputList) {
-        return ListX.of(inputList).toMutableListOf(this::parseLine).let(this::calculateAnswer);
+        return ListX.of(inputList).map(this::parseLine).let(this::calculateAnswer);
     }
 
     protected abstract String calculateAnswer(ListX<Food> idsToIngredientsAndAllergens);
@@ -38,7 +38,7 @@ public abstract class Day21Challenge extends Challenge {
         final Map<String, List<String>> allergenToIngredientsMap = new HashMap<>();
         for (String allergen : allAllergens) {
             final ListX<Food> foodsWithAllergen = foods.filter(food -> food.getAllergens().contains(allergen));
-            final Set<String> allPossibleIngredients = foodsWithAllergen.flatMapToMutableSetOf(Food::getIngredients);
+            final Set<String> allPossibleIngredients = foodsWithAllergen.flatMapTo(MutableSetX::empty, Food::getIngredients);
             for (String ingredient : allPossibleIngredients) {
                 boolean inAllFoods = foodsWithAllergen.all(food -> food.getIngredients().contains(ingredient));
                 if (inAllFoods) {

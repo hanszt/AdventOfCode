@@ -1,6 +1,7 @@
 package hzt.aoc.day21;
 
 import hzt.collections.ListX;
+import hzt.collections.MutableSetX;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Part2AllergenAssessment extends Day21Challenge {
 
     @Override
     protected String calculateAnswer(ListX<Food> foods) {
-        var allAllergens = foods.flatMapToMutableSetOf(Food::getAllergens);
+        var allAllergens = foods.flatMapTo(MutableSetX::empty, Food::getAllergens);
         var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getRight();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }

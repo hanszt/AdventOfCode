@@ -1,7 +1,6 @@
 package hzt.aoc.day16;
 
 import hzt.collections.ListX;
-import hzt.function.It;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,7 @@ public class Part2TicketTranslation extends Day16Challenge {
     private static final int FIRST_SIX_FIELDS = 6;
 
     @Override
-    protected long solveByParsedInput(List<Field> fields, List<Integer> ourTicketValues, ListX<ListX<Integer>> nearbyTickets) {
+    protected long solveByParsedInput(ListX<Field> fields, List<Integer> ourTicketValues, ListX<ListX<Integer>> nearbyTickets) {
         boolean[][] possibleMatches = new boolean[fields.size()][ourTicketValues.size()];
         for (boolean[] possibleMatch : possibleMatches) {
             Arrays.fill(possibleMatch, true);
@@ -70,7 +69,7 @@ public class Part2TicketTranslation extends Day16Challenge {
 
     public boolean isDone(boolean[][] possibleMatches) {
         for (boolean[] possibleMatch : possibleMatches) {
-            int matches = ListX.ofBools(possibleMatch).count(It::self);
+            int matches = ListX.ofBools(possibleMatch).size();
             if (matches > 1) {
                 return false;
             }
@@ -78,8 +77,12 @@ public class Part2TicketTranslation extends Day16Challenge {
         return true;
     }
 
-    protected List<ListX<Integer>> findValidTickets(List<Field> fields, ListX<ListX<Integer>> nearbyTickets) {
-        return nearbyTickets.filterToMutableList(ticket -> ticket.all(value -> fieldsContainValue(value, fields)));
+    protected ListX<ListX<Integer>> findValidTickets(ListX<Field> fields, ListX<ListX<Integer>> nearbyTickets) {
+        return nearbyTickets.filter(ticket -> ticket.all(value -> fieldsContainValue(value, fields)));
+    }
+
+    private boolean fieldsContainValue(Integer value, ListX<Field> fields) {
+        return false;
     }
 
     private long getAnswer(boolean[][] possibleMatches, List<Integer> ourTicketValues) {
