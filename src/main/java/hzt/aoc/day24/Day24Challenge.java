@@ -2,9 +2,13 @@ package hzt.aoc.day24;
 
 import hzt.aoc.Challenge;
 
-import java.awt.*;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static hzt.aoc.day24.Tile.*;
@@ -12,7 +16,7 @@ import static hzt.aoc.day24.Tile.*;
 public abstract class Day24Challenge extends Challenge {
 
     Day24Challenge(String part, String description) {
-        super(part, description, "20201224-input-day24ref.txt");
+        super(part, description, "20201224-input-day24.txt");
     }
 
     static final Set<String> INSTRUCTION_SET = Set.of(EAST, SOUTH_EAST, SOUTH_WEST, WEST, NORTH_WEST, NORTH_EAST);
