@@ -2,13 +2,9 @@ package hzt.aoc.day12;
 
 import hzt.aoc.Challenge;
 
-import java.awt.*;
+import hzt.aoc.Point2D;
 
 public abstract class Day12Challenge extends Challenge {
-
-    Day12Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201212-input-day12.txt");
-    }
 
     static final char EAST = 'E';
     static final char WEST = 'W';
@@ -17,14 +13,25 @@ public abstract class Day12Challenge extends Challenge {
     static final char TURN_LEFT = 'L';
     static final char TURN_RIGHT = 'R';
     static final char MOVE_FORWARD = 'F';
-
     static final int NINETY_DEGREES = 90;
 
-    void translatePointInWindDirection(Point position, char direction, int amount) {
-        if (direction == EAST) position.translate(amount, 0);
-        if (direction == WEST) position.translate(-amount, 0);
-        if (direction == NORTH) position.translate(0, amount);
-        if (direction == SOUTH) position.translate(0, -amount);
+    Day12Challenge(final String challengeTitle, final String description) {
+        super(challengeTitle, description, "20201212-input-day12.txt");
+    }
+
+    Point2D getTranslationInWindDirection(final char direction, final int amount) {
+        switch (direction) {
+            case EAST:
+                return new Point2D(amount, 0);
+            case WEST:
+                return new Point2D(-amount, 0);
+            case NORTH:
+                return new Point2D(0, amount);
+            case SOUTH:
+                return new Point2D(0, -amount);
+            default:
+                return new Point2D(0,0);
+        }
     }
 
 

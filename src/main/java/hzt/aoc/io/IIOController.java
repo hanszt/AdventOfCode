@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IIOController {
 
-    String RELATIVE_PATH = "../../../input/";
+    String RELATIVE_PATH = "/input/";
 
     List<String> readInputFileByLine(String path);
 

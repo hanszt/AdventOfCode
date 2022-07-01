@@ -1,8 +1,9 @@
 package hzt.aoc.day24;
 
-import java.awt.*;
-import java.util.*;
+import hzt.aoc.Point2D;
+
 import java.util.List;
+import java.util.Map;
 
 public class Part1LobbyLayout extends Day24Challenge {
 
@@ -14,13 +15,13 @@ public class Part1LobbyLayout extends Day24Challenge {
 
 
     @Override
-    protected long calculateResult(List<List<String>> instructionsList) {
-        Map<Point, Tile> tileMap = buildFloorByInstructions(instructionsList);
+    protected long calculateResult(final List<List<String>> instructionsList) {
+        final Map<Point2D, Tile> tileMap = buildFloorByInstructions(instructionsList);
         return countTilesWithBlackSideUp(tileMap.values());
     }
 
     @Override
-    String getMessage(long result) {
+    String getMessage(final long result) {
         return String.format("%d", result);
     }
 

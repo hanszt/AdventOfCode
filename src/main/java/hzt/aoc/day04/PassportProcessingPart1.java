@@ -11,8 +11,10 @@ public class PassportProcessingPart1 extends Day04Challenge {
     }
 
     @Override
-    protected long calculateResult(List<Passport> passports) {
-        return passports.stream().filter(Passport::requiredFieldsPresent).count();
+    protected long calculateResult(final List<Passport> passports) {
+        return passports.stream()
+                .filter(Passport::requiredFieldsPresent)
+                .count();
     }
 
 }

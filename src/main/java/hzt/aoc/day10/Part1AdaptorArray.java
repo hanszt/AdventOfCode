@@ -13,12 +13,12 @@ public class Part1AdaptorArray extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(List<Integer> sortedlist) {
+    protected Number solveByList(final List<Integer> sortedlist) {
         return calculateTheProductBetweenOneAndThreeDifference(sortedlist);
     }
 
     @Override
-    protected String getMessage(String number) {
+    protected String getMessage(final String number) {
         return String.format("The number of 1-jolt differences multiplied by the number of 3-jolt differences is: %s", number);
     }
 

@@ -7,32 +7,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Day23Challenge extends Challenge {
+    private static final int CUPS_PICKED_UP = 3;
 
-    Day23Challenge(String challengeTitle, String description) {
+    Day23Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201223-input-day23.txt");
     }
 
     @Override
-    protected String solve(List<String> inputList) {
-        List<Integer> integers = inputList.get(0).chars().map(Character::getNumericValue).boxed().collect(Collectors.toList());
+    protected String solve(final List<String> inputList) {
+        final List<Integer> integers = inputList.get(0).chars()
+                .mapToObj(Character::getNumericValue)
+                .collect(Collectors.toList());
 
         return getMessage(calculateAnswer(integers));
     }
 
     protected abstract long calculateAnswer(List<Integer> integers);
 
-    int makeMove(List<Integer> cups, int indexCurrent, int lowestCupLabel, int highestCupLabel) {
-        int currentCupLabel = cups.get(indexCurrent);
-        List<Integer> threePickedUpCups = listPickedUpCups(indexCurrent, cups);
+    int makeMove(final List<Integer> cups, int indexCurrent, final int lowestCupLabel, final int highestCupLabel) {
+        final int currentCupLabel = cups.get(indexCurrent);
+        final List<Integer> threePickedUpCups = listPickedUpCups(indexCurrent, cups);
         cups.removeAll(threePickedUpCups);
-        int targetCupLabel = determineTargetCupLabel(currentCupLabel, lowestCupLabel, highestCupLabel, cups);
-        int targetIndex = getIndexByLabel(targetCupLabel, cups);
+        final int targetCupLabel = determineTargetCupLabel(currentCupLabel, lowestCupLabel, highestCupLabel, cups);
+        final int targetIndex = getIndexByLabel(targetCupLabel, cups);
         cups.addAll(targetIndex + 1, threePickedUpCups);
         indexCurrent = getIndexByLabel(currentCupLabel, cups);
-        return indexCurrent + 1 < cups.size() ? indexCurrent + 1 : 0;
+        return ((indexCurrent + 1) < cups.size()) ? (indexCurrent + 1) : 0;
     }
 
-    int determineTargetCupLabel(int currentCupLabel, int lowestCupLabel, int highestCupLabel, List<Integer> cups) {
+    int determineTargetCupLabel(final int currentCupLabel,
+                                final int lowestCupLabel,
+                                final int highestCupLabel,
+                                final List<Integer> cups) {
         int targetCupLabel = currentCupLabel - 1;
         while (!cups.contains(targetCupLabel)) {
             targetCupLabel--;
@@ -43,10 +49,9 @@ public abstract class Day23Challenge extends Challenge {
         return targetCupLabel;
     }
 
-    private static final int CUPS_PICKED_UP = 3;
-
-    List<Integer> listPickedUpCups(int indexCurrent, List<Integer> cups) {
-        List<Integer> pickedUpCups = new ArrayList<>();
+    List<Integer> listPickedUpCups(final int indexCurrent,
+                                   final List<Integer> cups) {
+        final List<Integer> pickedUpCups = new ArrayList<>();
         int indexNext = indexCurrent + 1;
         while (indexNext <= indexCurrent + CUPS_PICKED_UP) {
             pickedUpCups.add(cups.get(indexNext % cups.size()));
@@ -55,7 +60,7 @@ public abstract class Day23Challenge extends Challenge {
         return pickedUpCups;
     }
 
-    int getIndexByLabel(int label, List<Integer> cups) {
+    int getIndexByLabel(final int label, final List<Integer> cups) {
         int index = 0;
         for (int i = 0; i < cups.size(); i++) {
             if (cups.get(i) == label) {

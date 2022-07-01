@@ -9,29 +9,31 @@ import java.util.Map;
 
 public abstract class Day20Challenge extends Challenge {
 
-    Day20Challenge(String challengeTitle, String description) {
+    Day20Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201220-input-day20.txt");
     }
 
     @Override
-    protected String solve(List<String> inputList) {
+    protected String solve(final List<String> inputList) {
         final Map<Integer, Tile> tileIdsToGrids = parseInput(inputList);
         return getMessage(calculateAnswer(tileIdsToGrids));
     }
 
-    private Map<Integer, Tile> parseInput(List<String> inputList) {
+    private static Map<Integer, Tile> parseInput(final List<String> inputList) {
         final Map<Integer, Tile> tileIdsToGrids = new HashMap<>();
         List<String> tileContent = new ArrayList<>();
         int tileId = 0;
-        for (String line : inputList) {
+        for (final String line : inputList) {
+            if (line.isBlank()) {
+                tileIdsToGrids.put(tileId, new Tile(tileContent));
+            }
             if (line.contains("Tile")) {
                 tileId = Integer.parseInt(line.replace("Tile ", "").replace(":", "").strip());
                 tileContent = new ArrayList<>();
-            } else if (!line.isEmpty()) {
-                tileContent.add(line);
+                continue;
             }
-            if (line.isBlank()) {
-                tileIdsToGrids.put(tileId, new Tile(tileContent));
+            if (!line.isEmpty()) {
+                tileContent.add(line);
             }
         }
         tileIdsToGrids.forEach((k, v) -> LOGGER.trace(k + "->" + v));

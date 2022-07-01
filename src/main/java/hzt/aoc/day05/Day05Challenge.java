@@ -16,20 +16,20 @@ public abstract class Day05Challenge extends Challenge {
     static final char KEEP_UPPER_HALF_COLS = 'R';
     static final int AMOUNT_SIGNS_FRONT_BACK = 7;
 
-    protected Day05Challenge(String challengeTitle, String description) {
+    protected Day05Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201205-input-day5.txt");
     }
 
     @Override
-    protected String solve(List<String> inputList) {
-        List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
-        int result = calculateResult(seats);
+    protected String solve(final List<String> inputList) {
+        final List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
+        final int result = calculateResult(seats);
         return String.valueOf(result);
     }
 
     protected abstract int calculateResult(List<Seat> seats);
 
-    Seat extractSeat(String string) {
+    Seat extractSeat(final String string) {
         int lowerBoundRows = 0;
         int upperBoundRows = NUMBER_OF_ROWS;
         int lowerBoundCols = 0;
@@ -52,15 +52,15 @@ public abstract class Day05Challenge extends Challenge {
         return new Seat(string, lowerBoundRows, lowerBoundCols);
     }
 
-    private int newLowerBound(int lower, int upper) {
+    private int newLowerBound(final int lower, final int upper) {
         return lower + ((upper - lower) / 2);
     }
 
-    private int newUpperBound(int lower, int upper) {
+    private int newUpperBound(final int lower, final int upper) {
         return upper - ((upper - lower) / 2);
     }
 
-    int findHighestSeatID(List<Integer> boardingPassIds) {
+    int findHighestSeatID(final List<Integer> boardingPassIds) {
         return boardingPassIds.stream().reduce(Integer::max).orElse(0);
     }
 

@@ -11,12 +11,12 @@ public class Part1ConwayCubes extends Day17Challenge {
                         "How many cubes are left in the active state after the sixth cycle?");
     }
 
-    public Part1ConwayCubes(String challengeTitle, String description) {
+    public Part1ConwayCubes(final String challengeTitle, final String description) {
         super(challengeTitle, description);
     }
 
     @Override
-    protected long solveByGrid(List<String> inputList) {
+    protected long solveByGrid(final List<String> inputList) {
         List<List<List<Boolean>>> grid3d = getInitGrid3D(inputList);
         for (int i = 0; i < NUMBER_OF_CYCLES; i++) {
             addInactiveOuterLayer3D(grid3d);
@@ -26,23 +26,22 @@ public class Part1ConwayCubes extends Day17Challenge {
         return countActive3D(grid3d);
     }
 
-    long countActive3D(List<List<List<Boolean>>> grid3d) {
+    long countActive3D(final List<List<List<Boolean>>> grid3d) {
         return grid3d.stream()
                 .flatMap(Collection::stream)
                 .flatMap(Collection::stream)
                 .filter(b -> b).count();
     }
 
-    private List<List<List<Boolean>>> updateGrid(List<List<List<Boolean>>> grid3d) {
-        List<List<List<Boolean>>> newGrid3d = copyGrid3D(grid3d);
+    private List<List<List<Boolean>>> updateGrid(final List<List<List<Boolean>>> grid3d) {
+        final List<List<List<Boolean>>> newGrid3d = copyGrid3D(grid3d);
         for (int z = 0; z < grid3d.size(); z++) {
-            List<List<Boolean>> grid2d = grid3d.get(z);
+            final List<List<Boolean>> grid2d = grid3d.get(z);
             for (int y = 0; y < grid2d.size(); y++) {
-                List<Boolean> row = grid2d.get(y);
+                final List<Boolean> row = grid2d.get(y);
                 for (int x = 0; x < row.size(); x++) {
-                    boolean currentActive = row.get(x);
-                    int activeNeighbors = countActiveNeighbors(new Point(x, y, z), grid3d);
-                    currentActive = applyRules(currentActive, activeNeighbors);
+                    final int activeNeighbors = countActiveNeighbors(new Point3D(x, y, z), grid3d);
+                    final var currentActive = applyRules(row.get(x), activeNeighbors);
                     newGrid3d.get(z).get(y).set(x, currentActive);
                 }
             }
@@ -51,22 +50,22 @@ public class Part1ConwayCubes extends Day17Challenge {
         return newGrid3d;
     }
 
-    int countActiveNeighbors(Point cur, List<List<List<Boolean>>> curGrid3d) {
+    int countActiveNeighbors(final Point3D cur, final List<List<List<Boolean>>> curGrid3d) {
         int activeNeighbors = 0;
         for (int z = Math.max(cur.getZ() - 1, 0); z <= upperBound(cur.getZ(), curGrid3d.size()); z++) {
             for (int y = Math.max(cur.getY() - 1, 0); y <= upperBound(cur.getY(), curGrid3d.get(0).size()); y++) {
                 for (int x = Math.max(cur.getX() - 1, 0); x <= upperBound(cur.getX(), curGrid3d.get(0).get(0).size()); x++) {
-                    if (isActiveNeighbor(new Point(x, y, z), cur, curGrid3d))
+                    if (isActiveNeighbor(new Point3D(x, y, z), cur, curGrid3d)) {
                         activeNeighbors++;
+                    }
                 }
             }
         }
         return activeNeighbors;
     }
 
-    private boolean isActiveNeighbor(Point checked, Point cur, List<List<List<Boolean>>> curGrid3d) {
-        if (!cur.equals(checked)) return curGrid3d.get(checked.getZ()).get(checked.getY()).get(checked.getX());
-        else return false;
+    private static boolean isActiveNeighbor(final Point3D checked, final Point3D cur, final List<List<List<Boolean>>> curGrid3d) {
+        return !cur.equals(checked) && curGrid3d.get(checked.getZ()).get(checked.getY()).get(checked.getX());
     }
 
 }

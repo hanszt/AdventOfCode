@@ -14,8 +14,8 @@ public class Part2ShuttleSearch extends Day13Challenge {
     }
 
     @Override
-    protected String solve(List<String> lines) {
-        List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
+    protected String solve(final List<String> lines) {
+        final List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
                 .map(x -> "x".equals(x) ? "-1" : x)
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
@@ -23,24 +23,26 @@ public class Part2ShuttleSearch extends Day13Challenge {
     }
 
     // Chinese remainder theorem implementation
-    private long second(List<Integer> busIdsWithBlanks) {
-        List<Equation> equations = new ArrayList<>();
+    private long second(final List<Integer> busIdsWithBlanks) {
+        final List<Equation> equations = new ArrayList<>();
         for (int i = 0; i < busIdsWithBlanks.size(); i++) {
-            int busId = busIdsWithBlanks.get(i);
+            final int busId = busIdsWithBlanks.get(i);
             if (busId != -1) {
                 equations.add(new Equation(-i, busId));
             }
         }
 
-        long moduloProduct = equations
+        final long moduloProduct = equations
                 .stream()
                 .map(equation -> equation.modulo)
                 .reduce(1L, (a, b) -> a * b);
 
-        for (Equation equation : equations) {
+        for (final Equation equation : equations) {
             equation.n = moduloProduct / equation.modulo;
             equation.w = euclideanGeneralTheorem(equation.n, equation.modulo);
-            if (equation.w < 0) equation.w += equation.modulo;
+            if (equation.w < 0) {
+                equation.w += equation.modulo;
+            }
         }
 
         long solution = equations
@@ -51,7 +53,7 @@ public class Part2ShuttleSearch extends Day13Challenge {
         return solution;
     }
 
-    private long euclideanGeneralTheorem(long a1, long b1) {
+    private long euclideanGeneralTheorem(final long a1, final long b1) {
         long b = a1;
         long a = b1;
 
@@ -60,10 +62,10 @@ public class Part2ShuttleSearch extends Day13Challenge {
         long u = 1;
         long v = 0;
         while (b != 0) {
-            long q = a / b;
-            long r = properModulo(a, b);
-            long m = x - u * q;
-            long n = y - v * q;
+            final long q = a / b;
+            final long r = properModulo(a, b);
+            final long m = x - u * q;
+            final long n = y - v * q;
             a = b;
             b = r;
             x = u;
@@ -71,17 +73,15 @@ public class Part2ShuttleSearch extends Day13Challenge {
             u = m;
             v = n;
         }
-        if (a != 1) LOGGER.error("!" + a);
+        if (a != 1) {
+            LOGGER.error("!" + a);
+        }
         return x;
     }
 
-    private long properModulo(long a, long b) {
+    private static long properModulo(final long a, long b) {
         b = Math.abs(b);
-        if (a < 0) {
-            return b - ((-a) % b);
-        } else {
-            return a % b;
-        }
+        return (a < 0) ? (b - ((-a) % b)) : (a % b);
     }
 
     static class Equation {
@@ -91,7 +91,7 @@ public class Part2ShuttleSearch extends Day13Challenge {
         long n;
         long w;
 
-        public Equation(long minIndex, long modulo) {
+        public Equation(final long minIndex, final long modulo) {
             this.minIndex = minIndex;
             this.modulo = modulo;
         }

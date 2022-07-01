@@ -10,10 +10,14 @@ public class Part2PasswordPhilosophy extends Day02Challenge {
     }
 
     @Override
-    boolean isValid(String password, Policy policy) {
+    boolean isValid(final String password, final Policy policy) {
         int matchesWithPolicyChar = 0;
-        if (password.charAt(policy.getLowerBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
-        if (password.charAt(policy.getUpperBound() - 1) == policy.getCharacter()) matchesWithPolicyChar++;
+        if (password.charAt(policy.getLowerBound() - 1) == policy.getCharacter()) {
+            matchesWithPolicyChar++;
+        }
+        if (password.charAt(policy.getUpperBound() - 1) == policy.getCharacter()) {
+            matchesWithPolicyChar++;
+        }
         return matchesWithPolicyChar == 1;
     }
 

@@ -14,31 +14,37 @@ public class Part2AllergenAssessment extends Day21Challenge {
 
 
     @Override
-    protected String calculateAnswer(List<Food> foods) {
-        var allAllergens = extractAllAllergens(foods);
-        var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
+    protected String calculateAnswer(final List<Food> foods) {
+        final var allAllergens = extractAllAllergens(foods);
+        final var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }
 
-    private String getDangerousIngredientsListAsString(Map<String, List<String>> allergenToIngredientsMap) {
-        Map<String, String> uniqueAllergenToIngredientMap = new TreeMap<>();
+    private static String getDangerousIngredientsListAsString(final Map<String, List<String>> allergenToIngredientsMap) {
+        final Map<String, String> uniqueAllergenToIngredientMap = new TreeMap<>();
         while (uniqueAllergenToIngredientMap.size() < allergenToIngredientsMap.size()) {
-            for (Map.Entry<String, List<String>> entry : allergenToIngredientsMap.entrySet()) {
-                if (entry.getValue().size() == 1) {
-                    String ingredient = entry.getValue().get(0);
-                    uniqueAllergenToIngredientMap.put(entry.getKey(), ingredient);
-                    for (List<String> ingredients : allergenToIngredientsMap.values()) {
-                        ingredients.remove(ingredient);
-                    }
-                    break;
-                }
-            }
+            extracted(allergenToIngredientsMap, uniqueAllergenToIngredientMap);
         }
         return String.join(",", uniqueAllergenToIngredientMap.values());
     }
 
+    private static void extracted(final Map<String, List<String>> allergenToIngredientsMap,
+                                  final Map<String, String> uniqueAllergenToIngredientMap) {
+        for (final var entry : allergenToIngredientsMap.entrySet()) {
+            final var ingredientsList = entry.getValue();
+            if (ingredientsList.size() == 1) {
+                final String ingredient = ingredientsList.get(0);
+                uniqueAllergenToIngredientMap.put(entry.getKey(), ingredient);
+                for (final List<String> ingredients : allergenToIngredientsMap.values()) {
+                    ingredients.remove(ingredient);
+                }
+                break;
+            }
+        }
+    }
+
     @Override
-    protected String getMessage(String global) {
+    protected String getMessage(final String global) {
         return String.format("%s", global);
     }
 }

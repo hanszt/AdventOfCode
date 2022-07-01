@@ -1,6 +1,7 @@
 package hzt.aoc.day21;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 // credits to Johan de Jong
 public class Part1AllergenAssessment extends Day21Challenge {
@@ -13,18 +14,18 @@ public class Part1AllergenAssessment extends Day21Challenge {
 
 
     @Override
-    protected String calculateAnswer(List<Food> foods) {
-        Set<String> allAllergens = extractAllAllergens(foods);
-        Set<String> potentialAllergenIngredients = extractAllergens(allAllergens, foods)
+    protected String calculateAnswer(final List<Food> foods) {
+        final Set<String> allAllergens = extractAllAllergens(foods);
+        final Set<String> potentialAllergenIngredients = extractAllergens(allAllergens, foods)
                 .getPotentialAllergenIngredients();
 
         return String.valueOf(countIngredientsWithoutAllergens(potentialAllergenIngredients, foods));
     }
 
-    private long countIngredientsWithoutAllergens(Set<String> potentialAllergenIngredients, List<Food> foods) {
+    private static long countIngredientsWithoutAllergens(final Set<String> potentialAllergenIngredients, final List<Food> foods) {
         long count = 0;
-        for (Food food : foods) {
-            for (String ingredient : food.getIngredients()) {
+        for (final Food food : foods) {
+            for (final String ingredient : food.getIngredients()) {
                 if (!potentialAllergenIngredients.contains(ingredient)) {
                     count++;
                 }
@@ -35,7 +36,7 @@ public class Part1AllergenAssessment extends Day21Challenge {
 
 
     @Override
-    protected String getMessage(String global) {
+    protected String getMessage(final String global) {
         return String.format("%s", global);
     }
 

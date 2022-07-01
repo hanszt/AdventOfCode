@@ -11,13 +11,13 @@ class TileTest {
 
     @Test
     void testOrientationsWithP() {
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
         list.add("#### ");
         list.add("#   #");
         list.add("#### ");
         list.add("#    ");
         list.add("#    ");
-        Tile tile = new Tile(list);
+        final Tile tile = new Tile(list);
         final var orientationsAsString = tile.orientationsAsString();
         System.out.println(orientationsAsString);
 
@@ -26,7 +26,7 @@ class TileTest {
         assertEquals(oriCount * 8, resultCount);
     }
 
-    private long countNrOfHashTags(String pattern) {
+    private long countNrOfHashTags(final String pattern) {
         return pattern.chars()
                 .mapToObj(c -> (char) c)
                 .filter(c -> c == '#')

@@ -2,19 +2,19 @@ package hzt.aoc.day25;
 
 public class Part1ComboBreaker extends Day25Challenge {
 
+    private static final long STARTING_VALUE = 1;
+
     public Part1ComboBreaker() {
         super("part 1",
                 "What encryption key is the handshake trying to establish?");
     }
 
-    private static final long STARTING_VALUE = 1;
-
     @Override
-    protected long solveByInput(long cardPublicKey, long doorPublicKey) {
-        long loopSizeCard = findLoopSize(cardPublicKey);
-        long loopSizeDoor = findLoopSize(doorPublicKey);
-        long encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
-        long encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
+    protected long solveByInput(final long cardPublicKey, final long doorPublicKey) {
+        final long loopSizeCard = findLoopSize(cardPublicKey);
+        final long loopSizeDoor = findLoopSize(doorPublicKey);
+        final long encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
+        final long encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
         LOGGER.trace("Card loop size: " + loopSizeCard);
         LOGGER.trace("Door loop size: " + loopSizeDoor);
         LOGGER.trace("Card encryption key: " + encryptionKeyCard);
@@ -22,7 +22,7 @@ public class Part1ComboBreaker extends Day25Challenge {
         return encryptionKeyCard == encryptionKeyDoor ? encryptionKeyCard : 0;
     }
 
-    private long calculateEncryptionKey(long publicKey, long loopSizeOther) {
+    private long calculateEncryptionKey(final long publicKey, final long loopSizeOther) {
         long value = STARTING_VALUE;
         for (int i = 0; i < loopSizeOther; i++) {
             value = performStep(value, publicKey);
@@ -30,13 +30,13 @@ public class Part1ComboBreaker extends Day25Challenge {
         return value;
     }
 
-    private long performStep(long value, long subjectNumber) {
+    private long performStep(long value, final long subjectNumber) {
         value = value * subjectNumber;
         value = value % NUMBER_TO_DIVIDE_BY;
         return value;
     }
 
-    private long findLoopSize(long publicKey) {
+    private long findLoopSize(final long publicKey) {
         long newVal = STARTING_VALUE;
         int counter = 0;
         do {
@@ -47,7 +47,7 @@ public class Part1ComboBreaker extends Day25Challenge {
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

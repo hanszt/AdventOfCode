@@ -12,12 +12,12 @@ public class Part1CustomCustoms extends Day06Challenge {
     }
 
     @Override
-    protected int calculateResult(List<Group> groups) {
+    protected int calculateResult(final List<Group> groups) {
         return groups.stream().map(Group::amountAnyoneAnsweredYes).reduce(0, (acc, cur) -> acc += cur);
     }
 
     @Override
-    protected String getMessage(String result) {
+    protected String getMessage(final String result) {
         return String.format("The sum of the counts in each group to which anyone answered 'yes' is: %s%n", result);
     }
 }

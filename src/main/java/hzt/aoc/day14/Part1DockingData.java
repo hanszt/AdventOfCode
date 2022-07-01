@@ -11,16 +11,16 @@ public class Part1DockingData extends Day14Challenge {
                 "Execute the initialization program. What is the sum of all values left in memory after it completes?");
     }
 
-    long count(List<Program> programs) {
+    long count(final List<Program> programs) {
         final Map<Integer, Long> valuesInMemory =  new HashMap<>();
-        for (Program p : programs) {
+        for (final Program p : programs) {
             p.forEach(e -> valuesInMemory.put(e.getRight(), p.getValueStoredAfterBitMaskApplication(e.getLeft())));
         }
         return valuesInMemory.values().stream().reduce(Long::sum).orElse(0L);
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

@@ -11,9 +11,9 @@ public class Part2DockingData extends Day14Challenge {
                 "Execute the initialization program using an emulator for a version 2 decoder chip. What is the sum of all values left in memory after it completes?");
     }
 
-    long count(List<Program> programs) {
+    long count(final List<Program> programs) {
         final Map<Long, Long> memoryAddressesToValues =  new HashMap<>();
-        for (Program p : programs) {
+        for (final Program p : programs) {
             p.forEach(pair -> p.getMemoryLocationsAfterBitMaskApplication(pair.getRight())
                     .forEach(memAdr -> memoryAddressesToValues.put(memAdr, (long) pair.getLeft())));
         }
@@ -22,7 +22,7 @@ public class Part2DockingData extends Day14Challenge {
 
 
     @Override
-    String getMessage(long value) {
+    String getMessage(final long value) {
         return String.format("%d", value);
     }
 }

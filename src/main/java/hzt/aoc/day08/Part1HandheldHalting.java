@@ -12,12 +12,12 @@ public class Part1HandheldHalting extends Day08Challenge {
 
 
     @Override
-    protected int solveByInstructions(List<Instruction> instructions) {
+    protected int solveByInstructions(final List<Instruction> instructions) {
         return testInstructions(instructions).getGlobal();
     }
 
     @Override
-    protected String getMessage(String global) {
+    protected String getMessage(final String global) {
         return String.format("The value of the global variable before second execution: %s%n", global);
     }
 

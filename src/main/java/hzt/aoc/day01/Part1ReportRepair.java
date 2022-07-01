@@ -12,12 +12,12 @@ public class Part1ReportRepair extends Day01Challenge {
     }
 
     @Override
-    protected List<Integer[]> findIntegersListThatSumTo2020(SortedSet<Integer> integers) {
-        List<Integer[]> entriesList = new ArrayList<>();
-        for (Integer integer : integers) {
-            int difference = SUM_TO_BE_FOUND - integer;
+    protected List<Integer[]> findIntegersListThatSumTo2020(final SortedSet<Integer> integers) {
+        final List<Integer[]> entriesList = new ArrayList<>();
+        for (final Integer integer : integers) {
+            final int difference = SUM_TO_BE_FOUND - integer;
             if (integers.contains(difference)) {
-                Integer[] entries = {integer, difference};
+                final Integer[] entries = {integer, difference};
                 entriesList.add(entries);
                 break;
             }

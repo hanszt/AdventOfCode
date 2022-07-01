@@ -6,7 +6,7 @@ public class Policy {
     private final int upperBound;
     private final char character;
 
-    public Policy(int lowerBound, int upperBound, char character) {
+    public Policy(final int lowerBound, final int upperBound, final char character) {
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
         this.character = character;

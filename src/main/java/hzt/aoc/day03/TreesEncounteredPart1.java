@@ -1,6 +1,6 @@
 package hzt.aoc.day03;
 
-import java.awt.*;
+import hzt.aoc.Point2D;
 import java.util.List;
 
 public class TreesEncounteredPart1 extends Day03Challenge {
@@ -11,12 +11,12 @@ public class TreesEncounteredPart1 extends Day03Challenge {
     }
 
     @Override
-    protected long calculateResult(List<List<Boolean>> grid) {
-        return calculateNumberOfTreesEncountered(grid, new Point(0, 0), Path.SLOPE3_1.getSlope());
+    protected long calculateResult(final List<List<Boolean>> grid) {
+        return calculateNumberOfTreesEncountered(grid, new Point2D(0, 0), Path.SLOPE3_1.getSlope());
     }
 
     @Override
-    protected String getMessage(String result) {
+    protected String getMessage(final String result) {
         return String.format("The number of trees crossed is: %s%n", result);
     }
 

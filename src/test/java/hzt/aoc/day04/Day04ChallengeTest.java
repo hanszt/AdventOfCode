@@ -9,7 +9,7 @@ class Day04ChallengeTest {
 
     @Test
     void testPart1() {
-        Challenge challenge = new PassportProcessingPart1();
+        final Challenge challenge = new PassportProcessingPart1();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(245, Integer.parseInt(answer));
@@ -17,7 +17,7 @@ class Day04ChallengeTest {
 
     @Test
     void testPart2() {
-        Challenge challenge = new PassportProcessingPart2();
+        final Challenge challenge = new PassportProcessingPart2();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(133, Integer.parseInt(answer));

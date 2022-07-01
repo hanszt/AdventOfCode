@@ -6,17 +6,17 @@ import java.util.List;
 
 public abstract class Day25Challenge extends Challenge {
 
-    Day25Challenge(String challengeTitle, String description) {
-        super(challengeTitle, description, "20201225-input-day25.txt");
-    }
-
     static final int NUMBER_TO_DIVIDE_BY = 20201227;
     static final int INIT_SUBJECT_NUMBER = 7;
 
+    Day25Challenge(final String challengeTitle, final String description) {
+        super(challengeTitle, description, "20201225-input-day25.txt");
+    }
+
     @Override
-    protected String solve(List<String> inputList) {
-        long cardPublicKey = Long.parseLong(inputList.get(0));
-        long doorPublicKey = Long.parseLong(inputList.get(1));
+    protected String solve(final List<String> inputList) {
+        final long cardPublicKey = Long.parseLong(inputList.get(0));
+        final long doorPublicKey = Long.parseLong(inputList.get(1));
         return getMessage(solveByInput(cardPublicKey, doorPublicKey));
 
     }

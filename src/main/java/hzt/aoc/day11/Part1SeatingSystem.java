@@ -13,7 +13,7 @@ public class Part1SeatingSystem extends Day11Challenge {
     }
 
     @Override
-    protected String solve(List<String> inputList) {
+    protected String solve(final List<String> inputList) {
         int occupied = 0;
         int prevOccupied = -1;
         while (occupied != prevOccupied) {
@@ -23,13 +23,13 @@ public class Part1SeatingSystem extends Day11Challenge {
         return String.valueOf(occupied);
     }
 
-    private int checkOccupiedAndUpdateList(List<String> inputList) {
+    private int checkOccupiedAndUpdateList(final List<String> inputList) {
         int occupied = 0;
-        List<String> newList = new ArrayList<>();
+        final List<String> newList = new ArrayList<>();
         for (int row = 0; row < inputList.size(); row++) {
-            String curRow = inputList.get(row);
-            String upperRow = row > 0 ? inputList.get(row - 1) : null;
-            String lowerRow = row < inputList.size() - 1 ? inputList.get(row + 1) : null;
+            final String curRow = inputList.get(row);
+            final String upperRow = row > 0 ? inputList.get(row - 1) : null;
+            final String lowerRow = row < inputList.size() - 1 ? inputList.get(row + 1) : null;
             occupied += checkAndUpdateRow(upperRow, curRow, lowerRow, newList);
         }
         inputList.clear();
@@ -40,38 +40,46 @@ public class Part1SeatingSystem extends Day11Challenge {
     private static final int THRESHOLD_BECOMES_EMPTY = 4;
 
 
-    private int checkAndUpdateRow(String upperRow, String curRow, String lowerRow, List<String> newList) {
+    private int checkAndUpdateRow(final String upperRow, final String curRow, final String lowerRow, final List<String> newList) {
         int occupied = 0;
-        char[] charsNewRow = curRow.toCharArray();
+        final char[] charsNewRow = curRow.toCharArray();
         for (int col = 0; col < charsNewRow.length; col++) {
-            String neighbours = extractNeighBours(upperRow, curRow, lowerRow, col);
+            final String neighbours = extractNeighBours(upperRow, curRow, lowerRow, col);
             int occupiedNeighbours = 0;
-            for (char c : neighbours.toCharArray()) if (c == OCCUPIED_SEAT) occupiedNeighbours++;
+            for (final char c : neighbours.toCharArray()) {
+                if (c == OCCUPIED_SEAT) {
+                    occupiedNeighbours++;
+                }
+            }
             if (charsNewRow[col] == OCCUPIED_SEAT && occupiedNeighbours >= THRESHOLD_BECOMES_EMPTY) {
                 charsNewRow[col] = EMPTY_SEAT;
             }
             if (charsNewRow[col] == EMPTY_SEAT && !neighbours.contains(String.valueOf(OCCUPIED_SEAT))) {
                 charsNewRow[col] = OCCUPIED_SEAT;
             }
-            if (charsNewRow[col] == OCCUPIED_SEAT) occupied++;
+            if (charsNewRow[col] == OCCUPIED_SEAT) {
+                occupied++;
+            }
         }
         newList.add(String.copyValueOf(charsNewRow));
         return occupied;
     }
 
-    private String extractNeighBours(String upperRow, String curRow, String lowerRow, int col) {
-        String upperNeighBours = extractNeighboursByRow(upperRow, col);
-        String lowerNeighBours = extractNeighboursByRow(lowerRow, col);
-        String leftNeighBour = curRow.substring(col > 0 ? col - 1 : col, col);
-        String rightNeighBour = curRow.substring(col < curRow.length() - 1 ? col + 1 : col, col < curRow.length() - 1 ? col + 2 : col);
+    private String extractNeighBours(final String upperRow, final String curRow, final String lowerRow, final int col) {
+        final String upperNeighBours = extractNeighboursByRow(upperRow, col);
+        final String lowerNeighBours = extractNeighboursByRow(lowerRow, col);
+        final String leftNeighBour = curRow.substring(col > 0 ? col - 1 : col, col);
+        final String rightNeighBour = curRow.substring(col < curRow.length() - 1 ? col + 1 : col, col < curRow.length() - 1 ? col + 2 : col);
         return upperNeighBours.concat(lowerNeighBours).concat(leftNeighBour).concat(rightNeighBour);
     }
 
-    private String extractNeighboursByRow(String row, int col) {
-        String neighbours;
+    private String extractNeighboursByRow(final String row, final int col) {
+        final String neighbours;
         if (row != null) {
             neighbours = row.substring(col > 0 ? col - 1 : col, col < row.length() - 1 ? col + 2 : col + 1);
-        } else neighbours = "";
+        } else {
+            neighbours = "";
+        }
         return neighbours;
     }
 

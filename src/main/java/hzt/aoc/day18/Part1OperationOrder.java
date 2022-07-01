@@ -1,6 +1,6 @@
 package hzt.aoc.day18;
 
-import java.util.*;
+import java.util.List;
 
 public class Part1OperationOrder extends Day18Challenge {
 
@@ -10,12 +10,12 @@ public class Part1OperationOrder extends Day18Challenge {
     }
 
     @Override
-    String evaluateBetweenParentheses(List<String> subEquation) {
+    String evaluateBetweenParentheses(final List<String> subEquation) {
         return evaluateInOrder(subEquation);
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 }

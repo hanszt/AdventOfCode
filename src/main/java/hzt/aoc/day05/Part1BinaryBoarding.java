@@ -12,12 +12,12 @@ public class Part1BinaryBoarding extends Day05Challenge {
     }
 
     @Override
-    protected int calculateResult(List<Seat> seats) {
+    protected int calculateResult(final List<Seat> seats) {
         return findHighestSeatID(seats.stream().map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS)).collect(Collectors.toList()));
     }
 
     @Override
-    protected String getMessage(String result) {
+    protected String getMessage(final String result) {
         return String.format("The highest seat ID is: %s%n", result);
     }
 

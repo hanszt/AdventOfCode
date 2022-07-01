@@ -9,7 +9,7 @@ public class LinkedNode<T> {
         this(null);
     }
 
-    public LinkedNode(T value) {
+    public LinkedNode(final T value) {
         this.setValue(value);
     }
 
@@ -17,7 +17,7 @@ public class LinkedNode<T> {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(final T value) {
         this.value = value;
     }
 
@@ -25,7 +25,7 @@ public class LinkedNode<T> {
         return next;
     }
 
-    public void setNext(LinkedNode<T> next) {
+    public void setNext(final LinkedNode<T> next) {
         this.next = next;
     }
 

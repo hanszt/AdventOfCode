@@ -13,20 +13,22 @@ public class Part2EncodingError extends Day09Challenge {
     }
 
     @Override
-    protected long solveByXmasList(List<Long> longs) {
-        long resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
-        List<Long> contiguousSumList = findSumList(longs, resultStep1);
+    protected long solveByXmasList(final List<Long> longs) {
+        final long resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
+        final List<Long> contiguousSumList = findSumList(longs, resultStep1);
         return findSumMinAndMaxNumber(contiguousSumList);
     }
 
-    private List<Long> findSumList(List<Long> longs, long ref) {
+    private List<Long> findSumList(final List<Long> longs, final long ref) {
         long sum = 0;
-        List<Long> sumList = new ArrayList<>();
+        final List<Long> sumList = new ArrayList<>();
         for (int i = 0; i < longs.size(); i++) {
             for (int j = i; j < longs.size(); j++) {
                 sumList.add(longs.get(j));
                 sum += longs.get(j);
-                if (sum == ref) return sumList;
+                if (sum == ref) {
+                    return sumList;
+                }
             }
             sumList.clear();
             sum = 0;
@@ -34,14 +36,14 @@ public class Part2EncodingError extends Day09Challenge {
         return sumList;
     }
 
-    private long findSumMinAndMaxNumber(List<Long> list) {
-        long min = list.stream().reduce(Long::min).orElse(0L);
-        long max = list.stream().reduce(Long::max).orElse(0L);
+    private long findSumMinAndMaxNumber(final List<Long> list) {
+        final long min = list.stream().reduce(Long::min).orElse(0L);
+        final long max = list.stream().reduce(Long::max).orElse(0L);
         return min + max;
     }
 
     @Override
-    protected String getMessage(String sum) {
+    protected String getMessage(final String sum) {
         return String.format("%s%n", sum);
     }
 }

@@ -59,12 +59,26 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.lang.System.*;
+import static java.lang.System.exit;
+import static java.lang.System.in;
+import static java.lang.System.nanoTime;
+import static java.lang.System.out;
 
 /**
  * This is a project to participate in the Advent of code 2020.
@@ -72,8 +86,10 @@ import static java.lang.System.*;
  *
  * @author Hans Zuidervaart,
  */
+@SuppressWarnings("squid:S106")
 public class Launcher implements Runnable {
 
+    private static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
     public static final String DOTTED_LINE = "___________________________________________________________________";
     private static final Logger LOGGER = LogManager.getLogger(Launcher.class);
     private static final String RESET = "\u001B[0m";
@@ -82,25 +98,41 @@ public class Launcher implements Runnable {
     private static final String YELLOW = "\u001B[33m";
     private static final String CYAN = "\u001B[36m";
     private static final String BRIGHT_BLUE = "\u001B[94m";
-    private static final String TITTLE = RED +
-            "   __    ____  _  _  ____  _  _  ____    _____  ____     ___  _____  ____  ____    ___   ___  ___   ___  /\\        \n" +
-            "  /__\\  (  _ \\( \\/ )( ___)( \\( )(_  _)  (  _  )( ___)   / __)(  _  )(  _ \\( ___)  (__ \\ / _ \\(__ \\ / _ \\ )(\n" +
-            " /(__)\\  )(_) )\\  /  )__)  )  (   )(     )(_)(  )__)   ( (__  )(_)(  )(_) ))__)    / _/( (_) )/ _/( (_) )\\/      \n" +
-            "(__)(__)(____/  \\/  (____)(_)\\_) (__)   (_____)(__)     \\___)(_____)(____/(____)  (____)\\___/(____)\\___/ ()    \n" +
-            "__________________________________________________________________________________________________________          \n" +
-            RESET;
+    private static final String TITTLE = RED + loadBanner() + RESET;
+
+    private static final String EXIT = "e";
+    private static final String ALL = "a";
+    private static final String CLEAR = "c";
+    private static final String TRACE = "t";
+    private static final String INFO = "i";
 
     private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
+
 
     public Launcher() {
         populateChallengeDaysMap(challengeDays);
     }
 
-    private LocalDate dateOfDay(int day) {
+    private static String loadBanner() {
+        final var name = "/banner.txt";
+        final var path = Optional.ofNullable(Launcher.class.getResource(name))
+                .map(URL::getFile)
+                .map(File::new)
+                .map(File::toPath)
+                .orElseThrow(() -> new IllegalStateException("Could not load " + name));
+        try (final var lines = Files.lines(path)) {
+            return lines.collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+
+    private static LocalDate dateOfDay(final int day) {
         return LocalDate.of(2020, 12, day);
     }
 
-    private void populateChallengeDaysMap(Map<Integer, ChallengeDay> challengeDays) {
+    private static void populateChallengeDaysMap(final Map<Integer, ChallengeDay> challengeDays) {
         int day = 0;
         challengeDays.put(++day, new ChallengeDay("Report Repair", BRIGHT_BLUE, dateOfDay(day),
                 new Part1ReportRepair(), new Part2ReportRepair()));
@@ -155,7 +187,7 @@ public class Launcher implements Runnable {
                 new Part1ComboBreaker()));
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new Launcher().start();
     }
 
@@ -166,37 +198,43 @@ public class Launcher implements Runnable {
     @Override
     public void run() {
         String userInput = ALL;
-        long startTime = nanoTime();
+        final long startTime = nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
         while (!userInput.equals(EXIT)) {
             pressEnterToContinue();
             out.print(menuAsString());
             userInput = execute(new Scanner(in).next());
         }
-        long runtime = nanoTime() - startTime;
+        final long runtime = nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
         exit(0);
     }
 
     private void executeAllAndPrintSummary() {
         challengeDays.values().forEach(ChallengeDay::solveChallenges);
-        long totalSolveTime = challengeDays.values().stream()
+        final long totalSolveTime = challengeDays.values().stream()
                 .map(ChallengeDay::getSolveTime).reduce(Long::sum).orElseThrow();
         LOGGER.info(sortedSolveTimesAsString(new ArrayList<>(challengeDays.values())));
         LOGGER.info(String.format("%s%nTotal solve time: %.2f seconds%n%s%n",
                 DOTTED_LINE, totalSolveTime / 1e9, DOTTED_LINE));
     }
 
-    private static final String NUMBER_LENGTH_ONE_OR_MORE = "\\d+";
-
-    private String execute(String input) {
-        if (input.equals(EXIT)) return EXIT;
-        else if (input.equals(ALL)) executeAllAndPrintSummary();
-        else if (input.equals(CLEAR)) clearAnswers();
-        else if (input.equals(INFO)) setChallengeLoggerToLevel(Level.INFO);
-        else if (input.equals(TRACE)) setChallengeLoggerToLevel(Level.TRACE);
-        else if (input.matches(NUMBER_LENGTH_ONE_OR_MORE)) executeByChallengeNumber(input);
-        else out.println("You didn't enter a valid option...");
+    private String execute(final String input) {
+        if (input.equals(EXIT)) {
+            return EXIT;
+        } else if (input.equals(ALL)) {
+            executeAllAndPrintSummary();
+        } else if (input.equals(CLEAR)) {
+            clearAnswers();
+        } else if (input.equals(INFO)) {
+            setChallengeLoggerToLevel(Level.INFO);
+        } else if (input.equals(TRACE)) {
+            setChallengeLoggerToLevel(Level.TRACE);
+        } else if (NUMBER_LENGTH_ONE_OR_MORE.matcher(input).matches()) {
+            executeByChallengeNumber(input);
+        } else {
+            out.println("You didn't enter a valid option...");
+        }
         return input;
     }
 
@@ -205,27 +243,23 @@ public class Launcher implements Runnable {
         out.println("Answers cleared");
     }
 
-    private void setChallengeLoggerToLevel(Level level) {
+    private void setChallengeLoggerToLevel(final Level level) {
         Challenge.LOGGER.setLevel(level);
         clearAnswers();
         out.println("Challenge Logger level set to " + level.toString());
     }
 
-    private void executeByChallengeNumber(String input) {
-        int dayNr = Integer.parseInt(input);
+    private void executeByChallengeNumber(final String input) {
+        final int dayNr = Integer.parseInt(input);
         if (challengeDays.containsKey(dayNr)) {
             challengeDays.get(dayNr).solveChallenges();
-        } else out.println("The selected number is not in the challenge list...");
+        } else {
+            out.println("The selected number is not in the challenge list...");
+        }
     }
 
-    private static final String EXIT = "e";
-    private static final String ALL = "a";
-    private static final String CLEAR = "c";
-    private static final String TRACE = "t";
-    private static final String INFO = "i";
-
     private String menuAsString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
         challengeDays.forEach((dayNr, day) -> sb.append(menuOption(dayNr, day.getTitle())));
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
@@ -237,20 +271,21 @@ public class Launcher implements Runnable {
         return sb.toString();
     }
 
-    private String menuOption(int dayNr, String title) {
+    private static String menuOption(final int dayNr, final String title) {
         return String.format("Enter '%2d' and press 'Enter' to execute day %2d %s.%n", dayNr, dayNr, title);
     }
 
-    private String sortedSolveTimesAsString(List<ChallengeDay> challengeDays) {
-        List<Pair<Challenge, ChallengeDay>> challenges = challengeDays.stream()
+    private static String sortedSolveTimesAsString(final List<ChallengeDay> challengeDays) {
+        final List<Pair<Challenge, ChallengeDay>> challenges = challengeDays.stream()
                 .map(day -> day.challengesAsStream().map(c -> new Pair<>(c, day)))
                 .flatMap(Stream::distinct)
-                .sorted(Comparator.comparing(pair -> pair.getLeft().getSolveTime())).collect(Collectors.toList());
+                .sorted(Comparator.comparing(pair -> pair.getLeft().getSolveTime()))
+                .collect(Collectors.toList());
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(RESET);
         sb.append(String.format("%nChallenges sorted by solve time:%n"));
-        for (Pair<Challenge, ChallengeDay> p : challenges) {
+        for (final Pair<Challenge, ChallengeDay> p : challenges) {
             sb.append(String.format("Day %2d Challenge: %-50s, answer: %-50s, solve time: %8.3f milliseconds%n",
                     p.getRight().getDayOfMonth(),
                     p.getRight().getTitle() + " " + p.getLeft().getPart(),

@@ -2,41 +2,48 @@ package hzt.aoc.day24;
 
 import hzt.aoc.Challenge;
 
-import java.awt.Point;
+import hzt.aoc.Point2D;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static hzt.aoc.day24.Tile.*;
 
 public abstract class Day24Challenge extends Challenge {
 
-    Day24Challenge(String part, String description) {
+    static final Set<String> INSTRUCTION_SET = Set.of(EAST, SOUTH_EAST, SOUTH_WEST, WEST, NORTH_WEST, NORTH_EAST);
+
+    private static final Pattern COMMA_OR_COMMA_WITH_SPACE = Pattern.compile("\\s?[, ]\\s?", Pattern.UNICODE_CHARACTER_CLASS);
+
+    Day24Challenge(final String part, final String description) {
         super(part, description, "20201224-input-day24.txt");
     }
 
-    static final Set<String> INSTRUCTION_SET = Set.of(EAST, SOUTH_EAST, SOUTH_WEST, WEST, NORTH_WEST, NORTH_EAST);
-
-    private static final String COMMA_OR_COMMA_WITH_SPACE = "\\s?[, ]\\s?";
-
     @Override
-    protected String solve(List<String> inputList) {
-        List<List<String>> instructions = new ArrayList<>();
+    protected String solve(final List<String> inputList) {
+        final List<List<String>> instructions = new ArrayList<>();
         for (String line : inputList) {
-            List<String> instruction = new ArrayList<>();
+            final List<String> instruction = new ArrayList<>();
             line = line.replace(SOUTH_EAST, " " + SOUTH_EAST + ",");
             line = line.replace(SOUTH_WEST, " " + SOUTH_WEST + ",");
             line = line.replace(NORTH_WEST, " " + NORTH_WEST + ",");
             line = line.replace(NORTH_EAST, " " + NORTH_EAST + ",");
-            String[] array = line.split(COMMA_OR_COMMA_WITH_SPACE);
-            for (String string : array) {
+            final String[] array = COMMA_OR_COMMA_WITH_SPACE.split(line);
+            for (final String string : array) {
                 if (string.length() != 2 || !INSTRUCTION_SET.contains(string)) {
-                    instruction.addAll(string.chars().mapToObj(c -> (char) c).map(String::valueOf).map(String::strip).collect(Collectors.toList()));
-                } else if (!string.isBlank()) {
+                    instruction.addAll(string.chars()
+                            .mapToObj(Character::toString)
+                            .map(String::strip)
+                            .collect(Collectors.toList()));
+                    continue;
+                }
+                if (!string.isBlank()) {
                     instruction.add(string.strip());
                 }
             }
@@ -46,13 +53,13 @@ public abstract class Day24Challenge extends Challenge {
         return getMessage(calculateResult(instructions));
     }
 
-    Map<Point, Tile> buildFloorByInstructions(List<List<String>> instructionsList) {
-        Map<Point, Tile> tileMap = new HashMap<>();
-        Tile centerTile = new Tile(new Point(0, 0));
+    Map<Point2D, Tile> buildFloorByInstructions(final List<List<String>> instructionsList) {
+        final Map<Point2D, Tile> tileMap = new HashMap<>();
+        final Tile centerTile = new Tile(new Point2D(0, 0));
         tileMap.put(centerTile.getPosition(), centerTile);
-        for (List<String> instructions : instructionsList) {
+        for (final List<String> instructions : instructionsList) {
             Tile curTile = centerTile;
-            for (String instruction : instructions) {
+            for (final String instruction : instructions) {
                 curTile = curTile.getNeighborByInstruction(instruction, tileMap);
                 tileMap.put(curTile.getPosition(), curTile);
             }
@@ -62,7 +69,7 @@ public abstract class Day24Challenge extends Challenge {
         return tileMap;
     }
 
-    long countTilesWithBlackSideUp(Collection<Tile> tiles) {
+    long countTilesWithBlackSideUp(final Collection<Tile> tiles) {
         return tiles.stream().filter(Tile::isBlackUp).count();
     }
 

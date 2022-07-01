@@ -13,14 +13,14 @@ public class Part1EncodingError extends Day09Challenge {
 
 
     @Override
-    protected long solveByXmasList(List<Long> longs) {
+    protected long solveByXmasList(final List<Long> longs) {
         return findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
     }
 
 
 
     @Override
-    protected String getMessage(String number) {
+    protected String getMessage(final String number) {
         return String.format("The first number that is not the sum of two of the 25 numbers before it is: %s%n", number);
     }
 

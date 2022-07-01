@@ -14,16 +14,16 @@ public class Part1ShuttleSearch extends Day13Challenge {
     }
 
     @Override
-    protected String solve(List<String> inputList) {
-        int earliestTimestamp = Integer.parseInt(inputList.get(0));
-        List<Integer> integers = Arrays.stream(inputList.get(1).split(","))
+    protected String solve(final List<String> inputList) {
+        final int earliestTimestamp = Integer.parseInt(inputList.get(0));
+        final List<Integer> integers = Arrays.stream(inputList.get(1).split(","))
                 .filter(s -> !s.matches("x"))
                 .map(Integer::parseInt).collect(Collectors.toList());
-        Map<Integer, Integer> busNumbersToWaitingTimes = integers.stream()
+        final Map<Integer, Integer> busNumbersToWaitingTimes = integers.stream()
                 .collect(Collectors.toMap(busNr -> busNr, busNr -> busNr - earliestTimestamp % busNr));
         int timeToWaitForEarliestBus = Integer.MAX_VALUE;
         int busNumberBelongingToSmallest = 0;
-        for (Map.Entry<Integer, Integer> entry : busNumbersToWaitingTimes.entrySet()) {
+        for (final Map.Entry<Integer, Integer> entry : busNumbersToWaitingTimes.entrySet()) {
             if (entry.getValue() < timeToWaitForEarliestBus) {
                 timeToWaitForEarliestBus = entry.getValue();
                 busNumberBelongingToSmallest = entry.getKey();

@@ -1,7 +1,10 @@
 package hzt.aoc.day08;
 
+import java.util.regex.Pattern;
+
 class Instruction {
 
+    private static final Pattern ONE_OR_MORE_WHITE_SPACES = Pattern.compile("\\s", Pattern.UNICODE_CHARACTER_CLASS);
     private static int next = 0;
     private final int nr;
     private final int argument;
@@ -9,13 +12,21 @@ class Instruction {
     private boolean visited;
     private String descriptor;
 
-    public Instruction(String descriptor, int argument) {
+    public Instruction(final String descriptor, final int argument) {
         this.nr = ++next;
         this.descriptor = descriptor;
         this.argument = argument;
     }
 
-    public static void setNext(int next) {
+    static Instruction fromInput(final String string) {
+        final String[] strings = ONE_OR_MORE_WHITE_SPACES.split(string);
+        final String descriptor = strings[0];
+        final String stringArgument = strings[1];
+        final int argument = Integer.parseInt(stringArgument);
+        return new Instruction(descriptor, argument);
+    }
+
+    public static void setNext(final int next) {
         Instruction.next = next;
     }
 
@@ -31,7 +42,7 @@ class Instruction {
         return visited;
     }
 
-    public void setVisited(boolean visited) {
+    public void setVisited(final boolean visited) {
         this.visited = visited;
     }
 
@@ -39,7 +50,7 @@ class Instruction {
         return descriptor;
     }
 
-    public void setDescriptor(String descriptor) {
+    public void setDescriptor(final String descriptor) {
         this.descriptor = descriptor;
     }
 

@@ -7,22 +7,22 @@ import java.util.List;
 
 public abstract class Day14Challenge extends Challenge {
 
-    Day14Challenge(String challengeTitle, String description) {
+    Day14Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201214-input-day14.txt");
     }
 
     @Override
-    protected String solve(List<String> inputList) {
+    protected String solve(final List<String> inputList) {
         final List<Program> programs = new ArrayList<>();
         Program program = null;
-        for (String line : inputList) {
-            String[] array = line.split(" = ");
+        for (final String line : inputList) {
+            final String[] array = line.split(" = ");
             if (array[0].matches("mask")) {
                 program = new Program(array[1]);
                 programs.add(program);
             } else if (program != null) {
-                int value = Integer.parseInt(array[1]);
-                int memoryLocation = Integer.parseInt(array[0].substring(4, array[0].length() - 1));
+                final int value = Integer.parseInt(array[1]);
+                final int memoryLocation = Integer.parseInt(array[0].substring(4, array[0].length() - 1));
                 program.put(value, memoryLocation);
             }
         }

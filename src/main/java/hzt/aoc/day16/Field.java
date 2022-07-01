@@ -12,17 +12,19 @@ public class Field {
     private final String fieldName;
     private final List<Pair<Integer, Integer>> valueRanges = new ArrayList<>();
 
-    public Field(String fieldName) {
+    public Field(final String fieldName) {
         this.nr = next++;
         this.fieldName = fieldName;
     }
 
-    public void addRange(Pair<Integer, Integer> range) {
-        if (range != null) valueRanges.add(range);
+    public void addRange(final Pair<Integer, Integer> range) {
+        if (range != null) {
+            valueRanges.add(range);
+        }
     }
 
-    public boolean containsValueInRanges(Integer integer) {
-        for (Pair<Integer, Integer> p : valueRanges) {
+    public boolean containsValueInRanges(final Integer integer) {
+        for (final Pair<Integer, Integer> p : valueRanges) {
             if (integer >= p.getLeft() && integer <= p.getRight()) {
                 return true;
             }
@@ -38,7 +40,7 @@ public class Field {
         return fieldName;
     }
 
-    public static void setNext(int next) {
+    public static void setNext(final int next) {
         Field.next = next;
     }
 

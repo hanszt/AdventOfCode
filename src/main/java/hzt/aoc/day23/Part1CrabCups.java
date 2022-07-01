@@ -13,9 +13,9 @@ public class Part1CrabCups extends Day23Challenge {
     private static final int CUP_ONE_LABEL = 1;
 
     @Override
-    protected long calculateAnswer(List<Integer> cups) {
-        int lowestCupLabel = cups.stream().reduce(Integer::min).orElseThrow();
-        int highestCupLabel = cups.stream().reduce(Integer::max).orElseThrow();
+    protected long calculateAnswer(final List<Integer> cups) {
+        final int lowestCupLabel = cups.stream().reduce(Integer::min).orElseThrow();
+        final int highestCupLabel = cups.stream().reduce(Integer::max).orElseThrow();
         int indexCurrent = 0;
         for (int i = 0; i < NR_OF_MOVES; i++) {
             indexCurrent = makeMove(cups, indexCurrent, lowestCupLabel, highestCupLabel);
@@ -23,9 +23,9 @@ public class Part1CrabCups extends Day23Challenge {
         return arrangeInOrder(cups);
     }
 
-    private long arrangeInOrder(List<Integer> cups) {
-        int indexCupOne = getIndexByLabel(CUP_ONE_LABEL, cups);
-        StringBuilder stringBuilder = new StringBuilder();
+    private long arrangeInOrder(final List<Integer> cups) {
+        final int indexCupOne = getIndexByLabel(CUP_ONE_LABEL, cups);
+        final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < cups.size() - 1; i++) {
             stringBuilder.append(cups.get((indexCupOne + 1 + i) % cups.size()));
         }
@@ -33,7 +33,7 @@ public class Part1CrabCups extends Day23Challenge {
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

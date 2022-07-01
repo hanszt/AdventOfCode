@@ -9,7 +9,7 @@ class Day20ChallengeTest {
 
     @Test
     void testPart1() {
-        Challenge challenge = new Part1JurassicJigsaw();
+        final Challenge challenge = new Part1JurassicJigsaw();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(83775126454273L, Long.parseLong(answer));
@@ -17,7 +17,7 @@ class Day20ChallengeTest {
 
     @Test
     void testPart2() {
-        Challenge challenge = new Part2JurassicJigsaw();
+        final Challenge challenge = new Part2JurassicJigsaw();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(1993, Integer.parseInt(answer));

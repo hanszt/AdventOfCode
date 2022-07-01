@@ -2,7 +2,8 @@ package hzt.aoc.day03;
 
 import hzt.aoc.Challenge;
 
-import java.awt.*;
+import hzt.aoc.Point2D;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,40 +12,43 @@ public abstract class Day03Challenge extends Challenge {
 
     private static final Character TREE = '#';
 
-    protected Day03Challenge(String part, String description) {
+    protected Day03Challenge(final String part, final String description) {
         super(part, description, "20201203-input-day3.txt");
     }
 
     @Override
-    protected String solve(List<String> inputList) {
-        List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
+    protected String solve(final List<String> inputList) {
+        final List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
         LOGGER.trace(booleanGrid2DAsString(grid));
         return String.valueOf(calculateResult(grid));
     }
 
     protected abstract long calculateResult(List<List<Boolean>> grid);
 
-    int calculateNumberOfTreesEncountered(List<List<Boolean>> treeGrid, Point position, Point slope) {
+    int calculateNumberOfTreesEncountered(final List<List<Boolean>> treeGrid, final Point2D initPositin, final Point2D slope) {
         int numberOfTrees = 0;
+        Point2D position = initPositin;
         while (position.getY() < treeGrid.size()) {
-            LOGGER.trace("x: " + position.x + ", y: " + position.y + ", Is tree: " + treeGrid.get(position.y).get(position.x));
-            boolean isTree = treeGrid.get(position.y).get(position.x);
-            if (isTree) numberOfTrees++;
-            position.translate(slope.x, slope.y);
+            final boolean isTree = treeGrid.get(position.getY()).get(position.getX());
+            LOGGER.trace("x: " + position.getX() + ", y: " + position.getY() + ", " + "Is tree: " + isTree);
+            if (isTree) {
+                numberOfTrees++;
+            }
+            position = position.add(slope.getX(), slope.getY());
         }
         return numberOfTrees;
     }
 
-    private List<List<Boolean>> buildGrid(List<String> inputList) {
-        int patternLength = inputList.get(0).length();
-        int height = inputList.size();
-        double length = height * (Path.SLOPE7_1.getSlope().getX());
-        int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
-        List<List<Boolean>> gird = new ArrayList<>();
-        for (String patternRow : inputList) {
-            List<Boolean> newRow = new ArrayList<>();
-            char[] newRowArray = patternRow.repeat(timesRepeatedHorizontally).toCharArray();
-            for (Character c : newRowArray) {
+    private static List<List<Boolean>> buildGrid(final List<String> inputList) {
+        final int patternLength = inputList.get(0).length();
+        final int height = inputList.size();
+        final double length = height * (Path.SLOPE7_1.getSlope().getX());
+        final int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
+        final List<List<Boolean>> gird = new ArrayList<>();
+        for (final String patternRow : inputList) {
+            final List<Boolean> newRow = new ArrayList<>();
+            final char[] newRowArray = patternRow.repeat(timesRepeatedHorizontally).toCharArray();
+            for (final Character c : newRowArray) {
                 newRow.add(c.equals(TREE));
             }
             gird.add(newRow);
@@ -53,19 +57,19 @@ public abstract class Day03Challenge extends Challenge {
     }
 
     enum Path {
-        SLOPE3_1(new Point(3, 1)),
-        SLOPE1_1(new Point(1, 1)),
-        SLOPE5_1(new Point(5, 1)),
-        SLOPE7_1(new Point(7, 1)),
-        SLOPE1_2(new Point(1, 2));
+        SLOPE3_1(new Point2D(3, 1)),
+        SLOPE1_1(new Point2D(1, 1)),
+        SLOPE5_1(new Point2D(5, 1)),
+        SLOPE7_1(new Point2D(7, 1)),
+        SLOPE1_2(new Point2D(1, 2));
 
-        private final Point slope;
+        private final Point2D slope;
 
-        Path(Point slope) {
+        Path(final Point2D slope) {
             this.slope = slope;
         }
 
-        public Point getSlope() {
+        public Point2D getSlope() {
             return slope;
         }
     }

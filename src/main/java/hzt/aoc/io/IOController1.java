@@ -14,21 +14,23 @@ public class IOController1 implements IIOController {
 
     private static final Logger LOGGER = LogManager.getLogger(IOController1.class);
 
-    public List<String> readInputFileByLine(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
+    public List<String> readInputFileByLine(final String fileName) {
+        final URL url = getClass().getResource(RELATIVE_PATH + fileName);
         if (url != null) {
             try {
                 return Files.readAllLines(new File(url.getFile()).toPath());
-            } catch (IOException io) {
+            } catch (final IOException io) {
                 LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
                 io.printStackTrace();
             }
-        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
+        } else {
+            LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
+        }
         return Collections.emptyList();
     }
 
     @Override
-    public List<String> readInputFileByWord(String path) {
+    public List<String> readInputFileByWord(final String path) {
         throw new UnsupportedOperationException();
     }
 }

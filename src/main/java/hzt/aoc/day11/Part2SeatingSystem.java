@@ -5,6 +5,12 @@ import java.util.function.IntBinaryOperator;
 
 // Credits to Johan de Jong
 public class Part2SeatingSystem extends Day11Challenge {
+    private static final int THRESHOLD_BECOMES_EMPTY = 5;
+
+    private char[][] state;
+
+    private int width;
+    private int height;
 
     public Part2SeatingSystem() {
         super("part 2",
@@ -17,17 +23,13 @@ public class Part2SeatingSystem extends Day11Challenge {
                 "20201211-input-day11.txt");
     }
 
-    private char[][] state;
-    private int width;
-    private int height;
-
     @Override
-    protected String solve(List<String> inputList) {
+    protected String solve(final List<String> inputList) {
         width = inputList.get(0).length();
         height = inputList.size();
         state = new char[height][width];
         for (int y = 0; y < height; y++) {
-            String s = inputList.get(y);
+            final String s = inputList.get(y);
             for (int x = 0; x < width; x++) {
                 state[y][x] = s.charAt(x);
             }
@@ -35,7 +37,7 @@ public class Part2SeatingSystem extends Day11Challenge {
         return String.valueOf(iterate(this::adjacentOccupiedLine));
     }
 
-    private int iterate(IntBinaryOperator adjacentOccupiedFunction) {
+    private int iterate(final IntBinaryOperator adjacentOccupiedFunction) {
         boolean updated = true;
         while (updated) {
             updated = performUpdate(adjacentOccupiedFunction);
@@ -43,9 +45,9 @@ public class Part2SeatingSystem extends Day11Challenge {
         return countOccupied();
     }
 
-    private boolean performUpdate(IntBinaryOperator adjacentOccupiedFunction) {
+    private boolean performUpdate(final IntBinaryOperator adjacentOccupiedFunction) {
         boolean updated = false;
-        char[][] nextState = new char[height][width];
+        final char[][] nextState = new char[height][width];
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 if (state[row][col] == EMPTY_SEAT && adjacentOccupiedFunction.applyAsInt(col, row) == 0) {
@@ -64,9 +66,7 @@ public class Part2SeatingSystem extends Day11Challenge {
         return updated;
     }
 
-    private static final int THRESHOLD_BECOMES_EMPTY = 5;
-
-    private int adjacentOccupiedLine(int x, int y) {
+    private int adjacentOccupiedLine(final int x, final int y) {
         int result = 0;
         for (int dy = -1; dy <= 1; dy++) {
             for (int dx = -1; dx <= 1; dx++) {
@@ -78,13 +78,17 @@ public class Part2SeatingSystem extends Day11Challenge {
         return result;
     }
 
-    private boolean adjacentOccupiedLine(int x, int y, int dx, int dy) {
+    private boolean adjacentOccupiedLine(int x, int y, final int dx, final int dy) {
         while (true) {
             x += dx;
             y += dy;
-            char c = get(x, y);
-            if (c == OCCUPIED_SEAT) return true;
-            if (c == EMPTY_SEAT || c == '\0') return false;
+            final char c = get(x, y);
+            if (c == OCCUPIED_SEAT) {
+                return true;
+            }
+            if (c == EMPTY_SEAT || c == '\0') {
+                return false;
+            }
         }
     }
 
@@ -100,7 +104,7 @@ public class Part2SeatingSystem extends Day11Challenge {
         return result;
     }
 
-    private char get(int x, int y) {
+    private char get(final int x, final int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return '\0';
         }
@@ -108,7 +112,7 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     @Override
-    protected String getMessage(String value) {
+    protected String getMessage(final String value) {
         return String.format("The number of seats occupied after equilibrium: %s%n", value);
     }
 }

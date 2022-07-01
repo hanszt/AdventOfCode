@@ -1,8 +1,5 @@
 package hzt.aoc.io;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -12,40 +9,38 @@ import java.util.Scanner;
 
 public class IOController2 implements IIOController {
 
-    private static final Logger LOGGER = LogManager.getLogger(IOController2.class);
-
-    public List<String> readInputFileByLine(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
-        List<String> inputList = new ArrayList<>();
+    public List<String> readInputFileByLine(final String fileName) {
+        final URL url = getClass().getResource(RELATIVE_PATH + fileName);
         if (url != null) {
-            try (Scanner input = new Scanner(new File(url.getFile()))) {
+            try (final Scanner input = new Scanner(new File(url.getFile()))) {
+                final List<String> inputList = new ArrayList<>();
                 while (input.hasNextLine()) {
                     inputList.add(input.nextLine());
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("File with path " + RELATIVE_PATH + fileName + " not found...");
+                return inputList;
+            } catch (final FileNotFoundException e) {
+                throw new IllegalStateException("File with path " + RELATIVE_PATH + fileName + " not found...", e);
             }
-        } else LOGGER.error("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
-        return inputList;
+        } else {
+            throw new IllegalStateException("Resource url from relative path " + RELATIVE_PATH + fileName + " is null...");
+        }
     }
 
     @Override
-    public List<String> readInputFileByWord(String fileName) {
-        URL url = getClass().getResource(RELATIVE_PATH + fileName);
-        List<String> inputList = new ArrayList<>();
+    public List<String> readInputFileByWord(final String fileName) {
+        final URL url = getClass().getResource(RELATIVE_PATH + fileName);
         if (url != null) {
-            try (Scanner input = new Scanner(new File(url.getFile()))) {
+            try (final Scanner input = new Scanner(new File(url.getFile()))) {
+                final List<String> inputList = new ArrayList<>();
                 while (input.hasNext()) {
                     inputList.add(input.next());
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("File with path " + url.getFile() + " not found...");
+                return inputList;
+            } catch (final FileNotFoundException e) {
+                throw new IllegalStateException("File with path " + url.getFile() + " not found...", e);
             }
-            LOGGER.info(inputList.size());
-        } else LOGGER.error("Url is null...");
-        return inputList;
+        } else {
+            throw new IllegalStateException("Url is null...");
+        }
     }
 }
-
-
-

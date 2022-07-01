@@ -9,7 +9,7 @@ class Day24ChallengeTest {
 
     @Test
     void testPart1() {
-        Challenge challenge = new Part1LobbyLayout();
+        final Challenge challenge = new Part1LobbyLayout();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(500, Long.valueOf(answer));
@@ -17,7 +17,7 @@ class Day24ChallengeTest {
 
     @Test
     void testPart2() {
-        Challenge challenge = new Part2LobbyLayout();
+        final Challenge challenge = new Part2LobbyLayout();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals(4280, Long.valueOf(answer));

@@ -1,6 +1,7 @@
 package hzt.aoc.day03;
 
-import java.awt.*;
+import hzt.aoc.Point2D;
+
 import java.util.List;
 
 public class TreesEncounteredPart2 extends Day03Challenge {
@@ -11,10 +12,10 @@ public class TreesEncounteredPart2 extends Day03Challenge {
     }
 
     @Override
-    protected long calculateResult(List<List<Boolean>> grid) {
+    protected long calculateResult(final List<List<Boolean>> grid) {
         long product = 1;
-        for (Path path : Path.values()) {
-            int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point(0, 0), path.getSlope());
+        for (final Path path : Path.values()) {
+            final int numberOfTrees = calculateNumberOfTreesEncountered(grid, new Point2D(0, 0), path.getSlope());
             LOGGER.info(String.format("The number of trees crossed using %s is %d", path.name(), numberOfTrees));
             product *= numberOfTrees;
         }
@@ -23,7 +24,7 @@ public class TreesEncounteredPart2 extends Day03Challenge {
     }
 
     @Override
-   protected String getMessage(String result) {
+   protected String getMessage(final String result) {
         return String.format("The product of all the number of trees crossed is: %s%n", result);
     }
 

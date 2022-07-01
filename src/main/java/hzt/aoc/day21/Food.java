@@ -8,7 +8,7 @@ public class Food {
     private final Set<String> ingredients;
     private final Set<String> allergens;
 
-    public Food(Set<String> ingredients, Set<String> allergens) {
+    public Food(final Set<String> ingredients, final Set<String> allergens) {
         this.ingredients = ingredients;
         this.allergens = allergens;
     }

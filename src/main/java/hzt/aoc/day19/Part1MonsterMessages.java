@@ -16,49 +16,60 @@ public class Part1MonsterMessages extends Day19Challenge {
     @Override
     protected long countMatches() {
         LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
-        return messages.stream().map(this::asCharList).filter(this::matches).count();
+        return messages.stream()
+                .map(Part1MonsterMessages::asCharList)
+                .filter(this::matches)
+                .count();
     }
 
-    private List<Character> asCharList(String message) {
-        return message.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+    private static List<Character> asCharList(final String message) {
+        return message.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
     }
 
-    private boolean matches(List<Character> messageChars) {
+    private boolean matches(final List<Character> messageChars) {
         // chars has to be empty to match the same length after going through matches method
         return matches(messageChars, START_RULE) && messageChars.isEmpty();
     }
 
     // requires a mutableList so that's why a list of chars is passed instead of a string
-    private boolean matches(List<Character> messageChars, int rule) {
-        if (endChars.containsKey(rule)) return ruleIsEndRule(rule, messageChars);
+    private boolean matches(final List<Character> messageChars, final int rule) {
+        if (endChars.containsKey(rule)) {
+            return ruleIsEndRule(rule, messageChars);
+        }
 
-        List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
-        for (List<Integer> subRules : allSubRules) {
-            List<Character> charsCopy = new ArrayList<>(messageChars);
+        final List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
+        for (final List<Integer> subRules : allSubRules) {
+            final List<Character> charsCopy = new ArrayList<>(messageChars);
             boolean matchesAll = true;
-            for (int curRule : subRules) {
+            for (final int curRule : subRules) {
                 if (!matches(charsCopy, curRule)) {
                     matchesAll = false;
                     break;
                 }
             }
             if (matchesAll) {
-                while (messageChars.size() > charsCopy.size()) messageChars.remove(0);
+                while (messageChars.size() > charsCopy.size()) {
+                    messageChars.remove(0);
+                }
                 return true;
             }
         }
         return false;
     }
 
-    private boolean ruleIsEndRule(int rule, List<Character> messageChars) {
+    private boolean ruleIsEndRule(final int rule, final List<Character> messageChars) {
         if (messageChars.get(0).equals(endChars.get(rule))) {
             messageChars.remove(0);
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    String getMessage(long answer) {
+    String getMessage(final long answer) {
         return String.format("%d", answer);
     }
 

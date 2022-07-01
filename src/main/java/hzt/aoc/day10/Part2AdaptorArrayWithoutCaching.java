@@ -13,19 +13,21 @@ public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(List<Integer> sortedList) {
+    protected Number solveByList(final List<Integer> sortedList) {
 
 
         return numberOfWaysToCompleteAdaptorChain(sortedList);
     }
 
-    private BigInteger numberOfWaysToCompleteAdaptorChain(List<Integer> sortedList) {
-        if (sortedList.size() == 1) return BigInteger.ONE;
+    private static BigInteger numberOfWaysToCompleteAdaptorChain(final List<Integer> sortedList) {
+        if (sortedList.size() == 1) {
+            return BigInteger.ONE;
+        }
         BigInteger arrangements = BigInteger.ZERO;
         int index = 1;
-        Integer current = sortedList.get(0); // first index in sorted list
+        final Integer current = sortedList.get(0); // first index in sorted list
         while (sortedList.size() > index && sortedList.get(index) - current <= MAX_STEP_APART) {
-            BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(sortedList.subList(index, sortedList.size()));
+            final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(sortedList.subList(index, sortedList.size()));
             arrangements = arrangements.add(subArrangements);
             index++;
         }
@@ -33,7 +35,7 @@ public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
     }
 
     @Override
-    protected String getMessage(String number) {
+    protected String getMessage(final String number) {
         return String.format("The number of distinct ways to connect your adaptor is (Only works for small input set): %s%n", number);
     }
 }

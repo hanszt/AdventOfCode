@@ -11,10 +11,10 @@ public class Part1JurassicJigsaw extends Day20Challenge {
     }
 
     @Override
-    protected long calculateAnswer(Map<Integer, Tile> tiles) {
+    protected long calculateAnswer(final Map<Integer, Tile> tiles) {
         long result = 1L;
-        for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
-            Tile tile = entry.getValue();
+        for (final Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
+            final Tile tile = entry.getValue();
             if (tile.isBorder(tiles)) {
                 result *= entry.getKey();
             }
@@ -23,7 +23,7 @@ public class Part1JurassicJigsaw extends Day20Challenge {
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

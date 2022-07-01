@@ -1,6 +1,5 @@
 package hzt.aoc.day13;
 
-import hzt.aoc.Challenge;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

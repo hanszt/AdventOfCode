@@ -1,11 +1,11 @@
 package hzt.aoc;
 
-public class Pair<L, R> {
+public final class Pair<L, R> {
 
     private final L left;
     private final R right;
 
-    public Pair(L left, R right) {
+    public Pair(final L left, final R right) {
         this.left = left;
         this.right = right;
     }

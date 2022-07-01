@@ -1,74 +1,79 @@
 package hzt.aoc.day20;
 
-import java.awt.*;
-import java.util.*;
+import hzt.aoc.Point2D;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
 
 // Credits to Johan de Jong
 public class Tile {
 
-    private Point position;
+    private static final int CORNERS = 4;
+    private Point2D position;
     private final List<String> content;
     private final List<List<String>> orientations;
 
-    public Tile(List<String> content) {
-        this.position = position;
+
+    public Tile(final List<String> content) {
         this.content = content;
-        this.orientations = calculateOrientations();
+        this.orientations = calculateOrientations(content);
     }
 
     private List<String> tileSides() {
-        List<String> sidesWithoutFlip = new ArrayList<>();
+        final List<String> sidesWithoutFlip = new ArrayList<>();
         sidesWithoutFlip.add(content.get(0));
         sidesWithoutFlip.add(content.get(content.size() - 1));
-        StringBuilder left = new StringBuilder();
-        StringBuilder right = new StringBuilder();
-        for (String line : content) {
+        final StringBuilder left = new StringBuilder();
+        final StringBuilder right = new StringBuilder();
+        for (final String line : content) {
             left.append(line.charAt(0));
             right.append(line.charAt(line.length() - 1));
         }
         sidesWithoutFlip.add(left.toString());
         sidesWithoutFlip.add(right.toString());
-        List<String> sides = new ArrayList<>();
-        for (String side : sidesWithoutFlip) {
+
+        final List<String> sides = new ArrayList<>();
+        for (final String side : sidesWithoutFlip) {
             sides.add(side);
-            StringBuilder sb = new StringBuilder(side);
-            sb.reverse();
-            sides.add(sb.toString());
+            sides.add(reverseString(side));
         }
         return sides;
     }
 
-    private static final int CORNERS = 4;
-
-    public boolean isBorder(Map<Integer, Tile> tiles) {
-        Set<String> otherTiles = otherTileBorders(tiles);
-        Set<String> sideTiles = new HashSet<>(tileSides());
+    public boolean isBorder(final Map<Integer, Tile> tiles) {
+        final Set<String> otherTiles = otherTileBorders(tiles);
+        final Set<String> sideTiles = new HashSet<>(tileSides());
         return countCommonElements(sideTiles, otherTiles) == CORNERS;
     }
 
-    private long countCommonElements(Set<String> sideTiles, Set<String> otherTiles) {
-        return sideTiles.stream().filter(otherTiles::contains).count();
+    private static long countCommonElements(final Set<String> sideTiles, final Set<String> otherTiles) {
+        return sideTiles.stream()
+                .filter(otherTiles::contains)
+                .count();
     }
 
-    private Set<String> otherTileBorders(Map<Integer, Tile> tiles) {
-        Set<String> otherSet = new HashSet<>();
-        for (Tile otherTile : tiles.values()) {
-            if (!equals(otherTile)) {
-                otherSet.addAll(otherTile.tileSides());
-            }
-        }
-        return otherSet;
+    private Set<String> otherTileBorders(final Map<Integer, Tile> tiles) {
+        return tiles.values().stream()
+                .filter(not(this::equals))
+                .map(Tile::tileSides)
+                .flatMap(List::stream)
+                .collect(Collectors.toSet());
     }
 
-    private List<List<String>> calculateOrientations() {
+    private static List<List<String>> calculateOrientations(List<String> content) {
         List<List<String>> result = new ArrayList<>();
         collectRotations(result, content);
-        collectRotations(result, flip());
+        collectRotations(result, flip(content));
         return result;
     }
 
-    private void collectRotations(List<List<String>> result, List<String> input) {
+    private static void collectRotations(List<List<String>> result, List<String> input) {
         result.add(input);
         List<String> temp = rotate(input);
         result.add(temp);
@@ -78,20 +83,20 @@ public class Tile {
         result.add(temp);
     }
 
-    private List<String> flip() {
-        List<String> result = new ArrayList<>();
-        for (String line : content) {
-            StringBuilder sb = new StringBuilder(line);
-            sb.reverse();
-            result.add(sb.toString());
-        }
-        return result;
+    private static List<String> flip(List<String> content) {
+        return content.stream()
+                .map(Tile::reverseString)
+                .collect(Collectors.toList());
     }
 
-    private List<String> rotate(List<String> original) {
-        List<String> result = new ArrayList<>();
+    private static String reverseString(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
+
+    private static List<String> rotate(final List<String> original) {
+        final List<String> result = new ArrayList<>();
         for (int x = 0; x < original.size(); x++) {
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             for (int y = original.size() - 1; y >= 0; y--) {
                 sb.append(original.get(y).charAt(x));
             }
@@ -100,18 +105,18 @@ public class Tile {
         return result;
     }
 
-    private String asString(List<String> content) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        content.forEach(s -> sb.append(s).append(String.format("%n")));
-        return sb.toString();
+    private static String asString(final List<String> content) {
+        return "\n" + String.join("\n", content);
+    }
+
+    String asString() {
+        return asString(content);
     }
 
     public String orientationsAsString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        orientations.forEach(o -> sb.append(asString(o)));
-        return sb.toString();
+        return orientations.stream()
+                .map(Tile::asString)
+                .collect(Collectors.joining("\n"));
     }
 
     public String getTop() {
@@ -123,43 +128,39 @@ public class Tile {
     }
 
     public String getLeft() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String line : content) {
             sb.append(line.charAt(0));
         }
         return sb.toString();
     }
 
     public String getRight() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : content) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String line : content) {
             sb.append(line.charAt(line.length() - 1));
         }
         return sb.toString();
     }
 
     public List<String> getInner() {
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
         for (int i = 1; i < content.size() - 1; i++) {
-            String line = content.get(i);
+            final String line = content.get(i);
             result.add(line.substring(1, line.length() - 1));
         }
         return result;
-    }
-
-    public List<String> getContent() {
-        return content;
     }
 
     public List<List<String>> getOrientations() {
         return orientations;
     }
 
-    public Point getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 
-    public void setPosition(Point position) {
+    public void setPosition(final Point2D position) {
         this.position = position;
     }
 

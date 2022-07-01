@@ -11,16 +11,16 @@ public class Part1HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(Map<String, Bag> bags) {
+    protected long solveByRules(final Map<String, Bag> bags) {
         return bags.values().stream().filter(bag -> hasDescendent(bags, SHINY_GOLD, bag)).count();
     }
 
-    private boolean hasDescendent(Map<String, Bag> bags, String target, Bag bag) {
+    private static boolean hasDescendent(final Map<String, Bag> bags, final String target, final Bag bag) {
         return bag.childBagColorsToAmounts.keySet().stream()
                 .anyMatch(color -> color.equals(target) || hasDescendent(bags, target, bags.get(color)));
     }
 @Override
-    protected String getMessage(String numberOfBags) {
+    protected String getMessage(final String numberOfBags) {
         return String.format("The number of bags containing a %s bag at least once: %s%n", SHINY_GOLD, numberOfBags);
     }
 

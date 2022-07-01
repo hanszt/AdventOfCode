@@ -6,13 +6,13 @@ public class Seat {
     private final int row;
     private final int col;
 
-    public Seat(String boardingPass, int row, int col) {
+    public Seat(final String boardingPass, final int row, final int col) {
         this.boardingPass = boardingPass;
         this.row = row;
         this.col = col;
     }
 
-    public int getSeatID(int numberOfColumns) {
+    public int getSeatID(final int numberOfColumns) {
         return numberOfColumns * row + col;
     }
 

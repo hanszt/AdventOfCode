@@ -12,8 +12,8 @@ public class Part1TicketTranslation extends Day16Challenge {
     }
 
     @Override
-    protected long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, List<List<Integer>> nearbyTicketValues) {
-        List<Integer> inValidTicketValues = nearbyTicketValues.stream()
+    protected long solveByParsedInput(final List<Field> fields, final List<Integer> yourTicketValues, final List<List<Integer>> nearbyTicketValues) {
+        final List<Integer> inValidTicketValues = nearbyTicketValues.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         inValidTicketValues.removeAll(findValidTicketValues(fields, nearbyTicketValues));
@@ -21,7 +21,7 @@ public class Part1TicketTranslation extends Day16Challenge {
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

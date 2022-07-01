@@ -9,15 +9,15 @@ class Day21ChallengeTest {
 
     @Test
     void testPart1() {
-        Challenge challenge = new Part1AllergenAssessment();
+        final Challenge challenge = new Part1AllergenAssessment();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(2072, Integer.valueOf(answer));
+        assertEquals(2072, Integer.parseInt(answer));
     }
 
     @Test
     void testPart2() {
-        Challenge challenge = new Part2AllergenAssessment();
+        final Challenge challenge = new Part2AllergenAssessment();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
         assertEquals("fdsfpg,jmvxx,lkv,cbzcgvc,kfgln,pqqks,pqrvc,lclnj", answer);

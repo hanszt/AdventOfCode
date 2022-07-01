@@ -27,7 +27,8 @@ public abstract class Challenge {
     private ZonedDateTime startTimeSolve;
     private String answer;
 
-    protected Challenge(String part, String description, String inputFileName) {
+    protected Challenge(final String part, final String description, final String inputFileName) {
+        this.title = "test";
         this.part = part;
         this.description = description;
         this.inputFileName = inputFileName;
@@ -36,31 +37,31 @@ public abstract class Challenge {
     public void solveChallenge() {
         LOGGER.info(String.format("%n%s %s%nInput: %s%nChallenge: %s%n%s",
                 title, part, inputFileName, description, DOTTED_LINE));
-        List<String> inputList = loadInputList();
-        long startTime = System.nanoTime();
+        final List<String> inputList = loadInputList();
+        final long startTime = System.nanoTime();
         if (!inputList.isEmpty()) {
             if (answer == null) {
                 startTimeSolve = ZonedDateTime.now();
                 answer = solve(inputList);
-                long endTime = System.nanoTime();
+                final long endTime = System.nanoTime();
                 solveTime = endTime - startTime;
             }
             logResult(answer);
-            String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
+            final String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
                     startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
             LOGGER.info(message + DOTTED_LINE);
         }
     }
 
-    protected List<Integer> commaSeparatedStringToIntegerList(String s) {
+    protected List<Integer> commaSeparatedStringToIntegerList(final String s) {
         return Arrays.stream(s.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 
-    protected String listOfStringListsAsString(List<List<String>> listOfStringLists) {
-        StringBuilder sb = new StringBuilder();
+    protected String listOfStringListsAsString(final List<List<String>> listOfStringLists) {
+        final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (List<String> row : listOfStringLists) {
-            for (String s : row) {
+        for (final List<String> row : listOfStringLists) {
+            for (final String s : row) {
                 sb.append(s).append(", ");
             }
             sb.append(String.format("%n"));
@@ -69,11 +70,11 @@ public abstract class Challenge {
         return sb.toString();
     }
 
-    protected String booleanGrid2DAsString(List<List<Boolean>> grid) {
-        StringBuilder sb = new StringBuilder();
+    protected String booleanGrid2DAsString(final List<List<Boolean>> grid) {
+        final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (List<Boolean> row : grid) {
-            for (boolean active : row) {
+        for (final List<Boolean> row : grid) {
+            for (final boolean active : row) {
                 sb.append(active ? 1 : 0).append(", ");
             }
             sb.append(String.format("%n"));
@@ -82,11 +83,11 @@ public abstract class Challenge {
         return sb.toString();
     }
 
-    protected String booleanGrid2DAsString(boolean[][] grid) {
-        StringBuilder sb = new StringBuilder();
+    protected String booleanGrid2DAsString(final boolean[][] grid) {
+        final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (boolean[] row : grid) {
-            for (boolean active : row) {
+        for (final boolean[] row : grid) {
+            for (final boolean active : row) {
                 sb.append(active ? 1 : 0).append(", ");
             }
             sb.append(String.format("%n"));
@@ -101,11 +102,11 @@ public abstract class Challenge {
 
     protected abstract String solve(List<String> inputList);
 
-    protected String getMessage(String result) {
+    protected String getMessage(final String result) {
         return result;
     }
 
-    protected void logResult(String result) {
+    protected void logResult(final String result) {
         LOGGER.info(String.format("%s%nAnswer:%n%s", DOTTED_LINE, getMessage(result)));
     }
 
@@ -117,7 +118,7 @@ public abstract class Challenge {
         return part;
     }
 
-    public Challenge setTitle(String title) {
+    public Challenge setTitle(final String title) {
         this.title = title;
         return this;
     }

@@ -30,20 +30,22 @@ public class Part2OperationOrder extends Day18Challenge {
             elementList = newList;
             LOGGER.trace(elementList);
         }
-        if (elementList.size() > 1) subResult = evaluateInOrder(elementList);
+        if (elementList.size() > 1) {
+            subResult = evaluateInOrder(elementList);
+        }
         LOGGER.trace("Sub result part 2: " + subResult);
         return subResult;
     }
 
-    private String parseAndCalculateSubResult(List<String> elementList, int index) {
-        long first = Long.parseLong(elementList.get(index - 1));
-        long second = Long.parseLong(elementList.get(index + 1));
-        long longSubResult = evaluate(first, OPERATOR_TO_EVALUATE_FIRST, second);
+    private String parseAndCalculateSubResult(final List<String> elementList, final int index) {
+        final long first = Long.parseLong(elementList.get(index - 1));
+        final long second = Long.parseLong(elementList.get(index + 1));
+        final long longSubResult = evaluate(first, OPERATOR_TO_EVALUATE_FIRST, second);
         return String.valueOf(longSubResult);
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 }

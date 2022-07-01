@@ -12,19 +12,19 @@ public class Part1CrabCombat extends Day22Challenge {
 
 
     @Override
-    protected long play(Deque<Integer> player1Cards, Deque<Integer> player2Cards) {
+    protected long play(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
         while (!player1Cards.isEmpty() && !player2Cards.isEmpty()) {
             playRound(player1Cards, player2Cards);
         }
-        Deque<Integer> winningPlayerCards = player1Cards.isEmpty() ? player2Cards : player1Cards;
+        final Deque<Integer> winningPlayerCards = player1Cards.isEmpty() ? player2Cards : player1Cards;
         return calculateScoreWinningPlayer(winningPlayerCards);
     }
 
 
 
-    private void playRound(Deque<Integer> player1Cards, Deque<Integer> player2Cards) {
-        int player1TopCard = player1Cards.pop();
-        int player2TopCard = player2Cards.pop();
+    private static void playRound(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
+        final int player1TopCard = player1Cards.pop();
+        final int player2TopCard = player2Cards.pop();
         if (player1TopCard > player2TopCard) {
             player1Cards.addLast(player1TopCard);
             player1Cards.addLast(player2TopCard);
@@ -35,7 +35,7 @@ public class Part1CrabCombat extends Day22Challenge {
     }
 
     @Override
-    String getMessage(long global) {
+    String getMessage(final long global) {
         return String.format("%d", global);
     }
 

@@ -10,19 +10,21 @@ public class Part2HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(Map<String, Bag> bags) {
-        return !bags.isEmpty() ? countInnerBagsRecursive(bags, bags.get(SHINY_GOLD)) - 1 : 0; // We counted the target bag, reduce count by 1.
+    protected long solveByRules(final Map<String, Bag> bags) {
+        // We counted the target bag, reduce count by 1.
+        return !bags.isEmpty() ? (countInnerBagsRecursive(bags, bags.get(SHINY_GOLD)) - 1) : 0;
     }
 
-    private long countInnerBagsRecursive(Map<String, Bag> bags, Bag bag) {
-        long accumulator = 1;
-        accumulator += bag.childBagColorsToAmounts.entrySet().stream()
-                .mapToLong(entry -> entry.getValue() * countInnerBagsRecursive(bags, bags.get(entry.getKey()))).sum();
-        return accumulator;
+    private static long countInnerBagsRecursive(final Map<String, Bag> bags, final Bag bag) {
+        long sum = 1L;
+        for (final var entry : bag.childBagColorsToAmounts.entrySet()) {
+            sum += entry.getValue() * countInnerBagsRecursive(bags, bags.get(entry.getKey()));
+        }
+        return sum;
     }
 
     @Override
-    public String getMessage(String numberOfBags) {
+    public String getMessage(final String numberOfBags) {
         return String.format("The number of individual bags required inside the %s bag: %s%n", SHINY_GOLD, numberOfBags);
     }
 }

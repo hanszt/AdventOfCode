@@ -12,23 +12,23 @@ class Part1ConwayCubesTest {
 
     @Test
     void countActiveNeighbors() {
-        int[][] input = {
+        final int[][] input = {
                 {0, 1, 0},
                 {0, 0, 1},
                 {1, 1, 1},
         };
-        List<List<List<Boolean>>> grid = convertIntArrayToBooleanList(input);
+        final List<List<List<Boolean>>> grid = convertIntArrayToBooleanList(input);
         System.out.println(conwayCubes.grid3DAsString(grid));
-        int neighbours = conwayCubes.countActiveNeighbors(new Point(1, 2, 0), grid);
+        final int neighbours = conwayCubes.countActiveNeighbors(new Point3D(1, 2, 0), grid);
         Assertions.assertEquals(3, neighbours);
     }
 
-    List<List<List<Boolean>>> convertIntArrayToBooleanList(int[][] input) {
-        List<List<List<Boolean>>> grid3D = new ArrayList<>();
-        List<List<Boolean>> grid2D = new ArrayList<>();
-        for (int[] intRow : input) {
-            List<Boolean> row = new ArrayList<>();
-            for (int value : intRow) {
+    List<List<List<Boolean>>> convertIntArrayToBooleanList(final int[][] input) {
+        final List<List<List<Boolean>>> grid3D = new ArrayList<>();
+        final List<List<Boolean>> grid2D = new ArrayList<>();
+        for (final int[] intRow : input) {
+            final List<Boolean> row = new ArrayList<>();
+            for (final int value : intRow) {
                 row.add(value == 1);
             }
             grid2D.add(row);
