@@ -30,7 +30,8 @@ public class Part1ConwayCubes extends Day17Challenge {
         return grid3d.stream()
                 .flatMap(Collection::stream)
                 .flatMap(Collection::stream)
-                .filter(b -> b).count();
+                .filter(Boolean.TRUE::equals)
+                .count();
     }
 
     private List<List<List<Boolean>>> updateGrid(final List<List<List<Boolean>>> grid3d) {
@@ -50,6 +51,7 @@ public class Part1ConwayCubes extends Day17Challenge {
         return newGrid3d;
     }
 
+    @SuppressWarnings("squid:S134")
     int countActiveNeighbors(final Point3D cur, final List<List<List<Boolean>>> curGrid3d) {
         int activeNeighbors = 0;
         for (int z = Math.max(cur.getZ() - 1, 0); z <= upperBound(cur.getZ(), curGrid3d.size()); z++) {

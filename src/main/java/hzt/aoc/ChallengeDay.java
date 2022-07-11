@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import static hzt.Launcher.DOTTED_LINE;
 
-public class ChallengeDay {
+public final class ChallengeDay {
 
     private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
 
